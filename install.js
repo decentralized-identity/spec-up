@@ -2,20 +2,19 @@
 
 const fs = require('fs-extra');
 const pkg = require('pkg-dir');
-const projectPath = await pkg(__dirname);
+await pkg(__dirname).then(projectPath => {
 
-// only copy files if version has changed
-try {
+  fs.copy(projectPath + '/spec-up', './spec-up').then(() => {
+    console.log('----- FILES COPIED -----');
+  }).catch(e => console.log(e));
 
   // const moduleVersion = (await fs.readJson(projectPath + '/package.json')).version;
   // const projectVersion = (await fs.readJson('./package.json')).dependencies['spec-up'].match(/[0-9.]+/)[0]
   // console.log(moduleVersion, projectVersion);
 
   // if (moduleVersion !== projectVersion) {
-    await fs.copy(projectPath + '/spec-up', './spec-up');
-    console.log('installed');
-  //}
-} catch(e){ console.log(e) }
+
+});
 
   // const projectPath = await pkg(__dirname);
   // fs.copy(projectPath + '/spec-up', './spec-up').then(async () => {
