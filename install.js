@@ -2,7 +2,8 @@
 
 const fs = require('fs-extra');
 const pkg = require('pkg-dir');
-await pkg(__dirname).then(projectPath => {
+
+pkg(__dirname).then(projectPath => {
 
   fs.copy(projectPath + '/spec-up', './spec-up').then(() => {
     console.log('----- FILES COPIED -----');
