@@ -73,7 +73,8 @@ module.exports = async () => {
     return new Promise((resolve, reject) => {
       fs.readFile(config.path + '/spec.md', 'utf8', function(err, doc) {
         if (err) return reject(err);
-        fs.writeFile(config.output_path ? './' + config.rootRelativePrefix + config.output_path : config.path + '/index.html', `
+        var basePath = config.output_path || config.assetRelativePrefix;
+        fs.writeFile(basePath + 'index.html', `
           <!DOCTYPE html>
           <html lang="en">
             <head>
@@ -82,9 +83,9 @@ module.exports = async () => {
               <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
               <title>${config.title}</title>
-              <link href="${config.moduleRelativeLocation}spec-up/css/index.css" rel="stylesheet">
-              <link href="${config.moduleRelativeLocation}spec-up/css/prism.css" rel="stylesheet">
-              <link href="${config.moduleRelativeLocation}spec-up/css/font-awesome.css" rel="stylesheet">
+              <link href="${basePath}spec-up/css/index.css" rel="stylesheet">
+              <link href="${basePath}spec-up/css/prism.css" rel="stylesheet">
+              <link href="${basePath}spec-up/css/font-awesome.css" rel="stylesheet">
             </head>
             <body>
               <main>
@@ -108,9 +109,9 @@ module.exports = async () => {
                 </aside>
               </main>
             </body>
-            <script src="${config.moduleRelativeLocation}spec-up/js/mermaid.js"></script>
+            <script src="${basePath}spec-up/js/mermaid.js"></script>
             <script>mermaid.initialize({ startOnLoad: true, theme: "neutral" });</script>
-            <script src="${config.moduleRelativeLocation}spec-up/js/index.js"></script>
+            <script src="${basePath}spec-up/js/index.js"></script>
           </html>
         `, function(err, data){
           if (err) reject(err);
@@ -133,7 +134,7 @@ module.exports = async () => {
         let config = JSON.parse(data);
             config.path = path;
             config.rootRelativePrefix = rootRelativePrefix;
-            config.moduleRelativeLocation = getRelativePrefix(path);
+            config.assetRelativePrefix = getRelativePrefix(config.output_path || path);
         gulp.watch(
           [path + '/**/*', '!' + path + '/index.html'],
           { ignoreInitial: false },
