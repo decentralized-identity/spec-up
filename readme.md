@@ -1,5 +1,7 @@
 # Spec-Up
 
+![Spec-Up logo](./logo.png "Spec-Up logo")
+
 Markdown. Spec-Up. It's that simple, folks.
 
 Spec-Up is a technical specification development tool that enables you to create rich specification documents for standards bodies and engineering projects by writing in an extended version of markdown that features all the bells and whistles - for example: advanced syntax highlighting, notice blocks, complex tables, charts, UML diagrams, and more.
