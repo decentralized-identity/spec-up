@@ -1,6 +1,6 @@
 {
   "name": "spec-up",
-  "version": "0.9.2",
+  "version": "0.9.3",
   "description": "Technical specification drafting tool that generates rich specification documents from markdown.",
   "main": "index.js",
   "repository": {
@@ -24,6 +24,7 @@
     "gulp": "4.0.2",
     "globby": "11.0.0",
     "pkg-dir": "4.2.0",
+    "fs-extra": "8.1.0",
     "markdown-it": "10.0.0",
     "markdown-it-modify-token": "1.0.2",
     "markdown-it-abbr": "^1.0.4",
