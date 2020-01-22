@@ -1,5 +1,4 @@
 
-module.exports = async () => {
 
 const fs = require('fs-extra');
 const pkg = require('pkg-dir');
@@ -181,6 +180,3 @@ try {
   //   });
 
   // }).catch(err => console.error(err))
-
-
-}
