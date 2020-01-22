@@ -1,0 +1,50 @@
+{
+  "name": "spec-up",
+  "version": "0.9.0",
+  "description": "Technical specification drafting tool that generates rich specification documents from markdown.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/csuwildcat/spec-up.git"
+  },
+  "keywords": [
+    "spec",
+    "specs",
+    "markdown",
+    "editor",
+    "standards"
+  ],
+  "author": "Daniel Buchner",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/csuwildcat/spec-up/issues"
+  },
+  "homepage": "https://github.com/csuwildcat/spec-up#readme",
+  "dependencies": {
+    "gulp": "4.0.2",
+    "globby": "11.0.0",
+    "pkg-dir": "4.2.0",
+    "markdown-it": "10.0.0",
+    "markdown-it-modify-token": "1.0.2",
+    "markdown-it-abbr": "^1.0.4",
+    "markdown-it-anchor": "5.2.5",
+    "markdown-it-attrs": "3.0.1",
+    "markdown-it-chart": "^0.2.0",
+    "markdown-it-container": "^2.0.0",
+    "markdown-it-deflist": "^2.0.3",
+    "markdown-it-footnote": "^3.0.1",
+    "markdown-it-ins": "^2.0.0",
+    "markdown-it-latex": "^0.2.0",
+    "markdown-it-mark": "^2.0.0",
+    "markdown-it-mermaid": "^0.2.5",
+    "markdown-it-multimd-table": "4.0.0",
+    "markdown-it-prism": "2.0.3",
+    "markdown-it-sub": "^1.0.0",
+    "markdown-it-sup": "^1.0.0",
+    "markdown-it-task-lists": "2.1.1",
+    "markdown-it-toc-and-anchor": "4.2.0"
+  }
+}
