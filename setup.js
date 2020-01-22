@@ -1,7 +1,6 @@
 
 
 const fs = require('fs-extra');
-const pkg = require('pkg-dir');
 
 let options = {};
 process.argv.slice(2).forEach(arg => {
