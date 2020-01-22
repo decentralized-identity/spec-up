@@ -3,9 +3,11 @@
 const fs = require('fs-extra');
 const pkg = require('pkg-dir');
 
-fs.copy('./spec-up', '../../spec-up').then(() => {
-  console.log('----- FILES COPIED -----');
-}).catch(e => console.log(e));
+console.log('process.argv', process.argv);
+
+// fs.copy('./spec-up', '../../spec-up').then(() => {
+//   console.log('----- FILES COPIED -----');
+// }).catch(e => console.log(e));
 
   // const projectPath = await pkg(__dirname);
   // fs.copy(projectPath + '/spec-up', './spec-up').then(async () => {
