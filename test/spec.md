@@ -42,16 +42,33 @@ We talked a lot of game, so let's see what Spec-Up can do:
 
 ### Notices
 
+```
+::: note Basic Note
+  Check this out.
+:::
+```
 
 ::: note Basic Note
   Check this out.
 :::
 
-::: issue Basic Note
+```
+::: issue Issue Notice
+  I take issue with that, kind sir.
+:::
+```
+
+::: issue Issue Notice
   I take issue with that, kind sir.
 :::
 
-::: warning Basic Note
+```
+::: warning Warning Notice
+  I take issue with that, kind sir.
+:::
+```
+
+::: warning Warning Notice
   Houston, I think we have a problem
 :::
 
@@ -104,10 +121,36 @@ Citric acid cycle | 2 ATP ||
 |♙|♙|♙|♙|  |♙|♙|♙ |
 |♖|♘|♗|♕|♔|  |  |♖ |
 
-### Charts
+
+### Diagrams
+<pre>
+```mermaid
+sequenceDiagram
+  participant Alice
+  participant Bob
+  Alice->>Bob: Hey Bob
+  Bob-->>Alice: Great!
+  Alice->>Bob: How about you?
+  Bob-->>Alice: Doing well!
+```
+</pre>
 
 ```
-\```chart
+
+```mermaid
+sequenceDiagram
+  participant Alice
+  participant Bob
+  Alice->>Bob: Hey Bob
+  Bob-->>Alice: Great!
+  Alice->>Bob: How about you?
+  Bob-->>Alice: Doing well!
+```
+
+### Charts
+
+<pre>
+```chart
 {
   "type": "pie",
   "data": {
@@ -137,8 +180,8 @@ Citric acid cycle | 2 ATP ||
     ]
   }
 }
-\```
 ```
+</pre>
 
 ```chart
 {
@@ -174,8 +217,8 @@ Citric acid cycle | 2 ATP ||
 
 ### Syntax Highlighting
 
-```
-\```json
+<pre>
+```json
 {
   "@context": "https://www.w3.org/ns/did/v1",
   "id": "did:example:123456789abcdefghi",
@@ -193,8 +236,8 @@ Citric acid cycle | 2 ATP ||
     "serviceEndpoint": "https://example.com/vc/"
   }]
 }
-\```
 ```
+</pre>
 
 ```json
 {

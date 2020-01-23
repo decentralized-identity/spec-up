@@ -57,11 +57,23 @@
 <h3 id="table-of-contents"><a class="toc-anchor" href="#table-of-contents">§</a> Table of Contents</h3>
 <p>&lt;-- You see that beautiful TOC over there to your left? (tap the header link to slide it out on mobile) Yeah, you don’t need to do a damn thing, that just magically appears based on your use of <code>h2</code>, <code>h3</code>, and <code>h4</code> headings.</p>
 <h3 id="notices"><a class="toc-anchor" href="#notices">§</a> Notices</h3>
+<pre><code>::: note Basic Note
+  Check this out.
+:::
+</code></pre>
 <div id="note-basic-note" class="notice note"><a class="notice-link" href="#note-basic-note"></a><p>Check this out.</p>
 </div>
-<div id="issue-basic-note" class="notice issue"><a class="notice-link" href="#issue-basic-note"></a><p>I take issue with that, kind sir.</p>
+<pre><code>::: issue Issue Notice
+  I take issue with that, kind sir.
+:::
+</code></pre>
+<div id="issue-issue-notice" class="notice issue"><a class="notice-link" href="#issue-issue-notice"></a><p>I take issue with that, kind sir.</p>
 </div>
-<div id="warning-basic-note" class="notice warning"><a class="notice-link" href="#warning-basic-note"></a><p>Houston, I think we have a problem</p>
+<pre><code>::: warning Warning Notice
+  I take issue with that, kind sir.
+:::
+</code></pre>
+<div id="warning-warning-notice" class="notice warning"><a class="notice-link" href="#warning-warning-notice"></a><p>Houston, I think we have a problem</p>
 </div>
 <h3 id="tables"><a class="toc-anchor" href="#tables">§</a> Tables</h3>
 <pre><code>Stage | Direct Products | ATP Yields
@@ -209,60 +221,84 @@ Citric acid cycle | 2 ATP ||
 </tr>
 </tbody>
 </table>
+<h3 id="diagrams"><a class="toc-anchor" href="#diagrams">§</a> Diagrams</h3>
+<pre>
+```mermaid
+sequenceDiagram
+  participant Alice
+  participant Bob
+  Alice->>Bob: Hey Bob
+  Bob-->>Alice: Great!
+  Alice->>Bob: How about you?
+  Bob-->>Alice: Doing well!
+```
+</pre>
+<pre><code>
+```mermaid
+sequenceDiagram
+  participant Alice
+  participant Bob
+  Alice-&gt;&gt;Bob: Hey Bob
+  Bob--&gt;&gt;Alice: Great!
+  Alice-&gt;&gt;Bob: How about you?
+  Bob--&gt;&gt;Alice: Doing well!
+</code></pre>
 <h3 id="charts"><a class="toc-anchor" href="#charts">§</a> Charts</h3>
-<pre><code>\```chart
+<pre>
+```chart
 {
-  &quot;type&quot;: &quot;pie&quot;,
-  &quot;data&quot;: {
-    &quot;labels&quot;: [
-      &quot;Red&quot;,
-      &quot;Blue&quot;,
-      &quot;Yellow&quot;
+  "type": "pie",
+  "data": {
+    "labels": [
+      "Red",
+      "Blue",
+      "Yellow"
     ],
-    &quot;datasets&quot;: [
+    "datasets": [
       {
-        &quot;data&quot;: [
+        "data": [
           300,
           50,
           100
         ],
-        &quot;backgroundColor&quot;: [
-          &quot;#FF6384&quot;,
-          &quot;#36A2EB&quot;,
-          &quot;#FFCE56&quot;
+        "backgroundColor": [
+          "#FF6384",
+          "#36A2EB",
+          "#FFCE56"
         ],
-        &quot;hoverBackgroundColor&quot;: [
-          &quot;#FF6384&quot;,
-          &quot;#36A2EB&quot;,
-          &quot;#FFCE56&quot;
+        "hoverBackgroundColor": [
+          "#FF6384",
+          "#36A2EB",
+          "#FFCE56"
         ]
       }
     ]
   }
 }
-\```
-</code></pre>
+```
+</pre>
 <canvas class="chartjs">{"type":"pie","data":{"labels":["Red","Blue","Yellow"],"datasets":[{"data":[300,50,100],"backgroundColor":["#FF6384","#36A2EB","#FFCE56"],"hoverBackgroundColor":["#FF6384","#36A2EB","#FFCE56"]}]}}</canvas><h3 id="syntax-highlighting"><a class="toc-anchor" href="#syntax-highlighting">§</a> Syntax Highlighting</h3>
-<pre><code>\```json
+<pre>
+```json
 {
-  &quot;@context&quot;: &quot;https://www.w3.org/ns/did/v1&quot;,
-  &quot;id&quot;: &quot;did:example:123456789abcdefghi&quot;,
-  &quot;authentication&quot;: [{
+  "@context": "https://www.w3.org/ns/did/v1",
+  "id": "did:example:123456789abcdefghi",
+  "authentication": [{
     
-    &quot;id&quot;: &quot;did:example:123456789abcdefghi#keys-1&quot;,
-    &quot;type&quot;: &quot;RsaVerificationKey2018&quot;,
-    &quot;controller&quot;: &quot;did:example:123456789abcdefghi&quot;,
-    &quot;publicKeyPem&quot;: &quot;-----BEGIN PUBLIC KEY...END PUBLIC KEY-----\r\n&quot;
+    "id": "did:example:123456789abcdefghi#keys-1",
+    "type": "RsaVerificationKey2018",
+    "controller": "did:example:123456789abcdefghi",
+    "publicKeyPem": "-----BEGIN PUBLIC KEY...END PUBLIC KEY-----\r\n"
   }],
-  &quot;service&quot;: [{
+  "service": [{
     
-    &quot;id&quot;:&quot;did:example:123456789abcdefghi#vcs&quot;,
-    &quot;type&quot;: &quot;VerifiableCredentialService&quot;,
-    &quot;serviceEndpoint&quot;: &quot;https://example.com/vc/&quot;
+    "id":"did:example:123456789abcdefghi#vcs",
+    "type": "VerifiableCredentialService",
+    "serviceEndpoint": "https://example.com/vc/"
   }]
 }
-\```
-</code></pre>
+```
+</pre>
 <pre class="language-json"><code class="language-json"><span class="token punctuation">{</span>
   <span class="token property">"@context"</span><span class="token operator">:</span> <span class="token string">"https://www.w3.org/ns/did/v1"</span><span class="token punctuation">,</span>
   <span class="token property">"id"</span><span class="token operator">:</span> <span class="token string">"did:example:123456789abcdefghi"</span><span class="token punctuation">,</span>
@@ -297,6 +333,7 @@ Citric acid cycle | 2 ATP ||
 <li><a href="#table-of-contents">Table of Contents</a></li>
 <li><a href="#notices">Notices</a></li>
 <li><a href="#tables">Tables</a></li>
+<li><a href="#diagrams">Diagrams</a></li>
 <li><a href="#charts">Charts</a></li>
 <li><a href="#syntax-highlighting">Syntax Highlighting</a></li>
 </ul>
