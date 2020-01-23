@@ -24,7 +24,7 @@
                 <h1 id="spec-up-example"><a class="toc-anchor" href="#spec-up-example">§</a> Spec-Up Example</h1>
 <p><strong>Specification Status:</strong> Strawman</p>
 <p><strong>Latest Draft:</strong>
-<a href="https://csuwildcat.github.io/spec-up">identity.foundation/proof-presentation</a></p>
+<a href="https://csuwildcat.github.io/spec-up">https://csuwildcat.github.io/spec-up</a></p>
 <dl>
 <dt><strong>Editors:</strong></dt>
 <dd><a href="https://www.linkedin.com/in/dbuchner/">Daniel Buchner</a></dd>
@@ -210,7 +210,39 @@ Citric acid cycle | 2 ATP ||
 </tbody>
 </table>
 <h3 id="charts"><a class="toc-anchor" href="#charts">§</a> Charts</h3>
-<canvas class="chartjs">{"type":"pie","data":{"labels":["Red","Blue","Yellow"],"datasets":[{"data":[300,50,100],"backgroundColor":["#FF6384","#36A2EB","#FFCE56"],"hoverBackgroundColor":["#FF6384","#36A2EB","#FFCE56"]}]},"options":{}}</canvas><h3 id="syntax-highlighting"><a class="toc-anchor" href="#syntax-highlighting">§</a> Syntax Highlighting</h3>
+<pre><code>\```chart
+{
+  &quot;type&quot;: &quot;pie&quot;,
+  &quot;data&quot;: {
+    &quot;labels&quot;: [
+      &quot;Red&quot;,
+      &quot;Blue&quot;,
+      &quot;Yellow&quot;
+    ],
+    &quot;datasets&quot;: [
+      {
+        &quot;data&quot;: [
+          300,
+          50,
+          100
+        ],
+        &quot;backgroundColor&quot;: [
+          &quot;#FF6384&quot;,
+          &quot;#36A2EB&quot;,
+          &quot;#FFCE56&quot;
+        ],
+        &quot;hoverBackgroundColor&quot;: [
+          &quot;#FF6384&quot;,
+          &quot;#36A2EB&quot;,
+          &quot;#FFCE56&quot;
+        ]
+      }
+    ]
+  }
+}
+\```
+</code></pre>
+<canvas class="chartjs">{"type":"pie","data":{"labels":["Red","Blue","Yellow"],"datasets":[{"data":[300,50,100],"backgroundColor":["#FF6384","#36A2EB","#FFCE56"],"hoverBackgroundColor":["#FF6384","#36A2EB","#FFCE56"]}]}}</canvas><h3 id="syntax-highlighting"><a class="toc-anchor" href="#syntax-highlighting">§</a> Syntax Highlighting</h3>
 <pre><code>\```json
 {
   &quot;@context&quot;: &quot;https://www.w3.org/ns/did/v1&quot;,

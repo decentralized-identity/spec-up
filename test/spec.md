@@ -4,7 +4,7 @@ Spec-Up Example
 **Specification Status:** Strawman
 
 **Latest Draft:**
-  [identity.foundation/proof-presentation](https://csuwildcat.github.io/spec-up)
+  [https://csuwildcat.github.io/spec-up](https://csuwildcat.github.io/spec-up)
 
 **Editors:**
 ~ [Daniel Buchner](https://www.linkedin.com/in/dbuchner/)
@@ -106,6 +106,40 @@ Citric acid cycle | 2 ATP ||
 
 ### Charts
 
+```
+\```chart
+{
+  "type": "pie",
+  "data": {
+    "labels": [
+      "Red",
+      "Blue",
+      "Yellow"
+    ],
+    "datasets": [
+      {
+        "data": [
+          300,
+          50,
+          100
+        ],
+        "backgroundColor": [
+          "#FF6384",
+          "#36A2EB",
+          "#FFCE56"
+        ],
+        "hoverBackgroundColor": [
+          "#FF6384",
+          "#36A2EB",
+          "#FFCE56"
+        ]
+      }
+    ]
+  }
+}
+\```
+```
+
 ```chart
 {
   "type": "pie",
@@ -134,8 +168,7 @@ Citric acid cycle | 2 ATP ||
         ]
       }
     ]
-  },
-  "options": {}
+  }
 }
 ```
 
