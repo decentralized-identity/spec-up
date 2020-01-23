@@ -1,6 +1,6 @@
 # Spec-Up
 
-![Spec-Up logo](./logo.png "Spec-Up logo")
+![Spec-Up logo](./logo.svg "Spec-Up logo")
 
 Markdown. Spec-Up. It's that simple, folks.
 
