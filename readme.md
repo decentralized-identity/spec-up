@@ -1,11 +1,12 @@
 
 
-<span style="display:block; font-size: 1.5em; text-align:center">
+<p align="center">
 
-![Spec-Up logo](./logo.svg "Spec-Up logo")
-### Markdown » Spec-Up
+<img src="./logo.svg">
 
-</span>
+<h3 style="display: block; margin: 0 auto; text-align: center;">Markdown » Spec-Up</h3>
+
+</p>
 
 
 
