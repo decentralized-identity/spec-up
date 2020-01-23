@@ -109,6 +109,7 @@ async function render(config) {
             <title>${config.title}</title>
             <link href="${basePath}spec-up/css/index.css" rel="stylesheet">
             <link href="${basePath}spec-up/css/prism.css" rel="stylesheet">
+            <link href="${basePath}spec-up/css/chart.css" rel="stylesheet">
             <link href="${basePath}spec-up/css/font-awesome.css" rel="stylesheet">
           </head>
           <body>
@@ -134,7 +135,7 @@ async function render(config) {
             </main>
           </body>
           <script src="${basePath}spec-up/js/mermaid.js"></script>
-          <script>mermaid.initialize({ startOnLoad: true, theme: "neutral" });</script>
+          <script src="${basePath}spec-up/js/chart.js"></script>
           <script src="${basePath}spec-up/js/index.js"></script>
         </html>
       `, function(err, data){

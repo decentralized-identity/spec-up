@@ -1,0 +1,282 @@
+
+        <!DOCTYPE html>
+        <html lang="en">
+          <head>
+            <meta charset="utf-8">
+            <meta http-equiv="X-UA-Compatible" content="IE=edge">
+            <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+            <title>Spec-Up Example</title>
+            <link href="./spec-up/css/index.css" rel="stylesheet">
+            <link href="./spec-up/css/prism.css" rel="stylesheet">
+            <link href="./spec-up/css/chart.css" rel="stylesheet">
+            <link href="./spec-up/css/font-awesome.css" rel="stylesheet">
+          </head>
+          <body>
+            <main>
+              <header id="header">
+                <a id="logo" href="https://github.com/csuwildcat/spec-up">
+                  <img src="./logo.svg" />
+                </a>
+                <a id="sidebar_toggle" href="#sidebar">Table of Contents</a>
+              </header>
+              <article id="content">
+                <h1 id="spec-up-example"><a class="toc-anchor" href="#spec-up-example">§</a> Spec-Up Example</h1>
+<p><strong>Specification Status:</strong> Strawman</p>
+<p><strong>Latest Draft:</strong>
+<a href="https://csuwildcat.github.io/spec-up">identity.foundation/proof-presentation</a></p>
+<dl>
+<dt><strong>Editors:</strong></dt>
+<dd><a href="https://www.linkedin.com/in/dbuchner/">Daniel Buchner</a></dd>
+</dl>
+<!-- -->
+<dl>
+<dt><strong>Participate:</strong></dt>
+<dd><a href="https://github.com/csuwildcat/spec-up">GitHub repo</a></dd>
+<dd><a href="https://github.com/csuwildcat/spec-up/issues">File a bug</a></dd>
+<dd><a href="https://github.com/csuwildcat/spec-up/commits/master">Commit history</a></dd>
+</dl>
+<hr>
+<h2 id="abstract"><a class="toc-anchor" href="#abstract">§</a> Abstract</h2>
+<p>Let’s face it, other tools and generators for writing technical specifications aimed at standards bodies or industry groups are cumbersome, underwhelming, and lack the features you might want in a technical specification document. Spec-Up’s goal is to deliver you a better spec-writing experience with far less effort and tedium than other tools in the ecosystem. Spec-Up is a dead simple tool that auto-generates great specs from markdown. The version of markdown Spec-up uses contains all the same features you might expect from common implementations, like GitHub, but adds much more, including notice blocks, complex tables, charts, advanced syntax highlighting, UML diagrams, etc.</p>
+<h2 id="getting-started"><a class="toc-anchor" href="#getting-started">§</a> Getting Started</h2>
+<p>Using Spec-Up is easy peasy lemon squeezy:</p>
+<ol>
+<li><code>npm install spec-up</code></li>
+<li>Create a subdirectory in your project with two files:
+<ul>
+<li><code>spec.json</code> - add some basic config values, like your desired HTML page title, etc.</li>
+<li><code>spec.md</code> - write the markdown version of your spec here (duh)</li>
+</ul>
+</li>
+<li>In your main node.js file, drop in this bad boy: <code>require('spec-up')()</code></li>
+</ol>
+<p>Boom! That’s it. Spec-Up will auto-detect the location of your spec files and auto-generate your spec’s HTML version every time you hit save after editing your <code>spec.md</code> files. Did I mention you can have multiple specs located at any depth in your project and Spec-Up will crawl up in there and render all those specs like a damn boss? Well it does, because why the hell not.</p>
+<h2 id="feature-flexin-on-em"><a class="toc-anchor" href="#feature-flexin-on-em">§</a> Feature Flexin on Em</h2>
+<p>We talked a lot of game, so let’s see what Spec-Up can do:</p>
+<h3 id="table-of-contents"><a class="toc-anchor" href="#table-of-contents">§</a> Table of Contents</h3>
+<p>&lt;-- You see that beautiful TOC over there to your left? (tap the header link to slide it out on mobile) Yeah, you don’t need to do a damn thing, that just magically appears based on your use of <code>h2</code>, <code>h3</code>, and <code>h4</code> headings.</p>
+<h3 id="notices"><a class="toc-anchor" href="#notices">§</a> Notices</h3>
+<div id="note-basic-note" class="notice note"><a class="notice-link" href="#note-basic-note"></a><p>Check this out.</p>
+</div>
+<div id="issue-basic-note" class="notice issue"><a class="notice-link" href="#issue-basic-note"></a><p>I take issue with that, kind sir.</p>
+</div>
+<div id="warning-basic-note" class="notice warning"><a class="notice-link" href="#warning-basic-note"></a><p>Houston, I think we have a problem</p>
+</div>
+<h3 id="tables"><a class="toc-anchor" href="#tables">§</a> Tables</h3>
+<pre><code>Stage | Direct Products | ATP Yields
+----: | --------------: | ---------:
+Glycolysis | 2 ATP ||
+^^ | 2 NADH | 3--5 ATP |
+Pyruvaye oxidation | 2 NADH | 5 ATP |
+Citric acid cycle | 2 ATP ||
+^^ | 6 NADH | 15 ATP |
+^^ | 2 FADH2 | 3 ATP |
+**30--32** ATP |||
+[Net ATP yields per hexose]
+</code></pre>
+<table>
+<caption id="netatpyieldsperhexose">Net ATP yields per hexose</caption>
+<thead>
+<tr>
+<th style="text-align:right">Stage</th>
+<th style="text-align:right">Direct Products</th>
+<th style="text-align:right">ATP Yields</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:right" rowspan="2">Glycolysis</td>
+<td style="text-align:right" colspan="2">2 ATP</td>
+</tr>
+<tr>
+<td style="text-align:right">2 NADH</td>
+<td style="text-align:right">3–5 ATP</td>
+</tr>
+<tr>
+<td style="text-align:right">Pyruvaye oxidation</td>
+<td style="text-align:right">2 NADH</td>
+<td style="text-align:right">5 ATP</td>
+</tr>
+<tr>
+<td style="text-align:right" rowspan="3">Citric acid cycle</td>
+<td style="text-align:right" colspan="2">2 ATP</td>
+</tr>
+<tr>
+<td style="text-align:right">6 NADH</td>
+<td style="text-align:right">15 ATP</td>
+</tr>
+<tr>
+<td style="text-align:right">2 FADH2</td>
+<td style="text-align:right">3 ATP</td>
+</tr>
+<tr>
+<td style="text-align:right" colspan="3"><strong>30–32</strong> ATP</td>
+</tr>
+</tbody>
+</table>
+<pre><code>|--|--|--|--|--|--|--|--|
+|♜|  |♝|♛|♚|♝|♞|♜|
+|  |♟|♟|♟|  |♟|♟|♟|
+|♟|  |♞|  |  |  |  | |
+|  |♗|  |  |♟|  |  | |
+|  |  |  |  |♙|  |  | |
+|  |  |  |  |  |♘|  | |
+|♙|♙|♙|♙|  |♙|♙|♙|
+|♖|♘|♗|♕|♔|  |  |♖|
+</code></pre>
+<table>
+<tbody>
+<tr>
+<td>♜</td>
+<td></td>
+<td>♝</td>
+<td>♛</td>
+<td>♚</td>
+<td>♝</td>
+<td>♞</td>
+<td>♜</td>
+</tr>
+<tr>
+<td></td>
+<td>♟</td>
+<td>♟</td>
+<td>♟</td>
+<td></td>
+<td>♟</td>
+<td>♟</td>
+<td>♟</td>
+</tr>
+<tr>
+<td>♟</td>
+<td></td>
+<td>♞</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>♗</td>
+<td></td>
+<td></td>
+<td>♟</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>♙</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>♘</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>♙</td>
+<td>♙</td>
+<td>♙</td>
+<td>♙</td>
+<td></td>
+<td>♙</td>
+<td>♙</td>
+<td>♙</td>
+</tr>
+<tr>
+<td>♖</td>
+<td>♘</td>
+<td>♗</td>
+<td>♕</td>
+<td>♔</td>
+<td></td>
+<td></td>
+<td>♖</td>
+</tr>
+</tbody>
+</table>
+<h3 id="charts"><a class="toc-anchor" href="#charts">§</a> Charts</h3>
+<canvas class="chartjs">{"type":"pie","data":{"labels":["Red","Blue","Yellow"],"datasets":[{"data":[300,50,100],"backgroundColor":["#FF6384","#36A2EB","#FFCE56"],"hoverBackgroundColor":["#FF6384","#36A2EB","#FFCE56"]}]},"options":{}}</canvas><h3 id="syntax-highlighting"><a class="toc-anchor" href="#syntax-highlighting">§</a> Syntax Highlighting</h3>
+<pre><code>\```json
+{
+  &quot;@context&quot;: &quot;https://www.w3.org/ns/did/v1&quot;,
+  &quot;id&quot;: &quot;did:example:123456789abcdefghi&quot;,
+  &quot;authentication&quot;: [{
+    
+    &quot;id&quot;: &quot;did:example:123456789abcdefghi#keys-1&quot;,
+    &quot;type&quot;: &quot;RsaVerificationKey2018&quot;,
+    &quot;controller&quot;: &quot;did:example:123456789abcdefghi&quot;,
+    &quot;publicKeyPem&quot;: &quot;-----BEGIN PUBLIC KEY...END PUBLIC KEY-----\r\n&quot;
+  }],
+  &quot;service&quot;: [{
+    
+    &quot;id&quot;:&quot;did:example:123456789abcdefghi#vcs&quot;,
+    &quot;type&quot;: &quot;VerifiableCredentialService&quot;,
+    &quot;serviceEndpoint&quot;: &quot;https://example.com/vc/&quot;
+  }]
+}
+\```
+</code></pre>
+<pre class="language-json"><code class="language-json"><span class="token punctuation">{</span>
+  <span class="token property">"@context"</span><span class="token operator">:</span> <span class="token string">"https://www.w3.org/ns/did/v1"</span><span class="token punctuation">,</span>
+  <span class="token property">"id"</span><span class="token operator">:</span> <span class="token string">"did:example:123456789abcdefghi"</span><span class="token punctuation">,</span>
+  <span class="token property">"authentication"</span><span class="token operator">:</span> <span class="token punctuation">[</span><span class="token punctuation">{</span>
+    
+    <span class="token property">"id"</span><span class="token operator">:</span> <span class="token string">"did:example:123456789abcdefghi#keys-1"</span><span class="token punctuation">,</span>
+    <span class="token property">"type"</span><span class="token operator">:</span> <span class="token string">"RsaVerificationKey2018"</span><span class="token punctuation">,</span>
+    <span class="token property">"controller"</span><span class="token operator">:</span> <span class="token string">"did:example:123456789abcdefghi"</span><span class="token punctuation">,</span>
+    <span class="token property">"publicKeyPem"</span><span class="token operator">:</span> <span class="token string">"-----BEGIN PUBLIC KEY...END PUBLIC KEY-----\r\n"</span>
+  <span class="token punctuation">}</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+  <span class="token property">"service"</span><span class="token operator">:</span> <span class="token punctuation">[</span><span class="token punctuation">{</span>
+    
+    <span class="token property">"id"</span><span class="token operator">:</span><span class="token string">"did:example:123456789abcdefghi#vcs"</span><span class="token punctuation">,</span>
+    <span class="token property">"type"</span><span class="token operator">:</span> <span class="token string">"VerifiableCredentialService"</span><span class="token punctuation">,</span>
+    <span class="token property">"serviceEndpoint"</span><span class="token operator">:</span> <span class="token string">"https://example.com/vc/"</span>
+  <span class="token punctuation">}</span><span class="token punctuation">]</span>
+<span class="token punctuation">}</span>
+</code></pre>
+
+              </article>
+              <aside id="sidebar">
+                <a id="sidebar_closer" href="#_"></a>
+                <section>
+                  <header>
+                    <a href="#_"></a>
+                  </header>
+                  <ul class="toc">
+<li><a href="#abstract">Abstract</a></li>
+<li><a href="#getting-started">Getting Started</a></li>
+<li><a href="#feature-flexin-on-em">Feature Flexin on Em</a>
+<ul>
+<li><a href="#table-of-contents">Table of Contents</a></li>
+<li><a href="#notices">Notices</a></li>
+<li><a href="#tables">Tables</a></li>
+<li><a href="#charts">Charts</a></li>
+<li><a href="#syntax-highlighting">Syntax Highlighting</a></li>
+</ul>
+</li>
+</ul>
+
+                </section>
+              </aside>
+            </main>
+          </body>
+          <script src="./spec-up/js/mermaid.js"></script>
+          <script src="./spec-up/js/chart.js"></script>
+          <script src="./spec-up/js/index.js"></script>
+        </html>
+      
