@@ -18,7 +18,7 @@
                 <a id="logo" href="https://github.com/csuwildcat/spec-up">
                   <img src="./logo.svg" />
                 </a>
-                <a id="sidebar_toggle" href="#sidebar">Table of Contents</a>
+                <span id="sidebar_toggle" class="sidebar-toggle">Table of Contents</span>
               </header>
               <article id="content">
                 <h1 id="spec-up-example"><a class="toc-anchor" href="#spec-up-example">§</a> Spec-Up Example</h1>
@@ -52,31 +52,42 @@
 <li>In your main node.js file, drop in this bad boy: <code>require('spec-up')()</code></li>
 </ol>
 <p>Boom! That’s it. Spec-Up will auto-detect the location of your spec files and auto-generate your spec’s HTML version every time you hit save after editing your <code>spec.md</code> files. Did I mention you can have multiple specs located at any depth in your project and Spec-Up will crawl up in there and render all those specs like a damn boss? Well it does, because why the hell not.</p>
-<h2 id="feature-flexin-on-em"><a class="toc-anchor" href="#feature-flexin-on-em">§</a> Feature Flexin on Em</h2>
-<p>We talked a lot of game, so let’s see what Spec-Up can do:</p>
+<h2 id="feature-flexin"><a class="toc-anchor" href="#feature-flexin">§</a> Feature Flexin</h2>
+<p>In addition to all the normal markdown support (things like headings, lists, etc.), which you can see in this example document and all over GitHub readme pages, Spec-Up integrates a ton of other useful features that make it easy to articulate your technical content. Let’s checkout some of the goodies:</p>
 <h3 id="table-of-contents"><a class="toc-anchor" href="#table-of-contents">§</a> Table of Contents</h3>
 <p>&lt;-- You see that beautiful TOC over there to your left? (tap the header link to slide it out on mobile) Yeah, you don’t need to do a damn thing, that just magically appears based on your use of <code>h2</code>, <code>h3</code>, and <code>h4</code> headings.</p>
 <h3 id="notices"><a class="toc-anchor" href="#notices">§</a> Notices</h3>
-<pre><code>::: note Basic Note
+<pre>
+::: note Basic Note
   Check this out.
 :::
-</code></pre>
-<div id="note-basic-note" class="notice note"><a class="notice-link" href="#note-basic-note"></a><p>Check this out.</p>
+</pre>
+<div id="basic-note" class="notice note"><a class="notice-link" href="#basic-note"></a><p>Check this out.</p>
 </div>
-<pre><code>::: issue Issue Notice
+<pre>
+::: issue Issue Notice
   I take issue with that, kind sir.
 :::
-</code></pre>
-<div id="issue-issue-notice" class="notice issue"><a class="notice-link" href="#issue-issue-notice"></a><p>I take issue with that, kind sir.</p>
+</pre>
+<div id="issue-notice" class="notice issue"><a class="notice-link" href="#issue-notice"></a><p>I take issue with that, kind sir.</p>
 </div>
-<pre><code>::: warning Warning Notice
-  I take issue with that, kind sir.
+<pre>
+::: warning Warning Notice
+  Houston, I think we have a problem
 :::
-</code></pre>
-<div id="warning-warning-notice" class="notice warning"><a class="notice-link" href="#warning-warning-notice"></a><p>Houston, I think we have a problem</p>
+</pre>
+<div id="warning-notice" class="notice warning"><a class="notice-link" href="#warning-notice"></a><p>Houston, I think we have a problem</p>
+</div>
+<pre>
+::: example Code Example
+  Put your code block here
+:::
+</pre>
+<div id="code-example" class="notice example"><a class="notice-link" href="#code-example"></a><p>Put your code block here</p>
 </div>
 <h3 id="tables"><a class="toc-anchor" href="#tables">§</a> Tables</h3>
-<pre><code>Stage | Direct Products | ATP Yields
+<pre>
+Stage | Direct Products | ATP Yields
 ----: | --------------: | ---------:
 Glycolysis | 2 ATP ||
 ^^ | 2 NADH | 3--5 ATP |
@@ -86,7 +97,7 @@ Citric acid cycle | 2 ATP ||
 ^^ | 2 FADH2 | 3 ATP |
 **30--32** ATP |||
 [Net ATP yields per hexose]
-</code></pre>
+</pre>
 <table>
 <caption id="netatpyieldsperhexose">Net ATP yields per hexose</caption>
 <thead>
@@ -127,7 +138,8 @@ Citric acid cycle | 2 ATP ||
 </tr>
 </tbody>
 </table>
-<pre><code>|--|--|--|--|--|--|--|--|
+<pre>
+|--|--|--|--|--|--|--|--|
 |♜|  |♝|♛|♚|♝|♞|♜|
 |  |♟|♟|♟|  |♟|♟|♟|
 |♟|  |♞|  |  |  |  | |
@@ -136,7 +148,7 @@ Citric acid cycle | 2 ATP ||
 |  |  |  |  |  |♘|  | |
 |♙|♙|♙|♙|  |♙|♙|♙|
 |♖|♘|♗|♕|♔|  |  |♖|
-</code></pre>
+</pre>
 <table>
 <tbody>
 <tr>
@@ -233,17 +245,13 @@ sequenceDiagram
   Bob-->>Alice: Doing well!
 ```
 </pre>
-<pre><code>
-```mermaid
-sequenceDiagram
+<div class="mermaid">sequenceDiagram
   participant Alice
   participant Bob
-  Alice-&gt;&gt;Bob: Hey Bob
-  Bob--&gt;&gt;Alice: Great!
-  Alice-&gt;&gt;Bob: How about you?
-  Bob--&gt;&gt;Alice: Doing well!
-</code></pre>
-<h3 id="charts"><a class="toc-anchor" href="#charts">§</a> Charts</h3>
+  Alice->>Bob: Hey Bob
+  Bob-->>Alice: Great!
+  Alice->>Bob: How about you?
+  Bob-->>Alice: Doing well!</div><h3 id="charts"><a class="toc-anchor" href="#charts">§</a> Charts</h3>
 <pre>
 ```chart
 {
@@ -320,15 +328,13 @@ sequenceDiagram
 
               </article>
               <aside id="sidebar">
-                <a id="sidebar_closer" href="#_"></a>
-                <section>
-                  <header>
-                    <a href="#_"></a>
-                  </header>
-                  <ul class="toc">
+                <header>
+                  <span class="sidebar-toggle">✕</span>
+                </header>
+                <ul class="toc">
 <li><a href="#abstract">Abstract</a></li>
 <li><a href="#getting-started">Getting Started</a></li>
-<li><a href="#feature-flexin-on-em">Feature Flexin on Em</a>
+<li><a href="#feature-flexin">Feature Flexin</a>
 <ul>
 <li><a href="#table-of-contents">Table of Contents</a></li>
 <li><a href="#notices">Notices</a></li>
@@ -340,8 +346,8 @@ sequenceDiagram
 </li>
 </ul>
 
-                </section>
               </aside>
+              <div id="sidebar_cover" class="sidebar-toggle"></div>
             </main>
           </body>
           <script src="./spec-up/js/mermaid.js"></script>

@@ -32,9 +32,9 @@ Using Spec-Up is easy peasy lemon squeezy:
 
 Boom! That's it. Spec-Up will auto-detect the location of your spec files and auto-generate your spec's HTML version every time you hit save after editing your `spec.md` files. Did I mention you can have multiple specs located at any depth in your project and Spec-Up will crawl up in there and render all those specs like a damn boss? Well it does, because why the hell not.
 
-## Feature Flexin on Em
+## Feature Flexin
 
-We talked a lot of game, so let's see what Spec-Up can do:
+In addition to all the normal markdown support (things like headings, lists, etc.), which you can see in this example document and all over GitHub readme pages, Spec-Up integrates a ton of other useful features that make it easy to articulate your technical content. Let's checkout some of the goodies:
 
 ### Table of Contents
 
@@ -42,40 +42,50 @@ We talked a lot of game, so let's see what Spec-Up can do:
 
 ### Notices
 
-```
+<pre>
 ::: note Basic Note
   Check this out.
 :::
-```
+</pre>
 
 ::: note Basic Note
   Check this out.
 :::
 
-```
+<pre>
 ::: issue Issue Notice
   I take issue with that, kind sir.
 :::
-```
+</pre>
 
 ::: issue Issue Notice
   I take issue with that, kind sir.
 :::
 
-```
+<pre>
 ::: warning Warning Notice
-  I take issue with that, kind sir.
+  Houston, I think we have a problem
 :::
-```
+</pre>
 
 ::: warning Warning Notice
   Houston, I think we have a problem
 :::
 
+<pre>
+::: example Code Example
+  Put your code block here
+:::
+</pre>
+
+::: example Code Example
+  Put your code block here
+:::
+
 
 ### Tables
 
-```
+<pre>
 Stage | Direct Products | ATP Yields
 ----: | --------------: | ---------:
 Glycolysis | 2 ATP ||
@@ -86,7 +96,7 @@ Citric acid cycle | 2 ATP ||
 ^^ | 2 FADH2 | 3 ATP |
 **30--32** ATP |||
 [Net ATP yields per hexose]
-```
+</pre>
 
 Stage | Direct Products | ATP Yields
 ----: | --------------: | ---------:
@@ -99,7 +109,7 @@ Citric acid cycle | 2 ATP ||
 **30--32** ATP |||
 [Net ATP yields per hexose]
 
-```
+<pre>
 |--|--|--|--|--|--|--|--|
 |♜|  |♝|♛|♚|♝|♞|♜|
 |  |♟|♟|♟|  |♟|♟|♟|
@@ -109,7 +119,7 @@ Citric acid cycle | 2 ATP ||
 |  |  |  |  |  |♘|  | |
 |♙|♙|♙|♙|  |♙|♙|♙|
 |♖|♘|♗|♕|♔|  |  |♖|
-```
+</pre>
 
 |--|--|--|--|--|--|--|--|
 |♜|  |♝|♛|♚|♝|♞|♜ |
@@ -134,8 +144,6 @@ sequenceDiagram
   Bob-->>Alice: Doing well!
 ```
 </pre>
-
-```
 
 ```mermaid
 sequenceDiagram

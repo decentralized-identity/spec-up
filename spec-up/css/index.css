@@ -95,9 +95,18 @@ h4:after {
   }
 
 code {
-  color: #bb0000;
-  vertical-align: middle;
+  padding: 0 0.3em 0.1em;
   font-size: 1.075em;
+  color: #e00000;
+  vertical-align: middle;
+  background: #eaeaea;
+  border-radius: 2px;
+}
+
+pre code {
+  background: unset;
+  padding: unset;
+  border-radius: unset;
 }
 
 h1 code,
@@ -197,6 +206,10 @@ table pre[class*="language-"] {
 
 table pre[class*="language-"]:before {
   display: none;
+}
+
+.sidebar-toggle {
+  cursor: pointer;
 }
 
 .notice {
@@ -329,26 +342,18 @@ pre[class*="language-"] {
   display: none;
 }
 
-#sidebar {
-  box-sizing: border-box;
+#sidebar_cover {
   position: fixed;
   top: 0;
   left: 0;
-  height: 100%;
   width: 100%;
+  height: 100%;
   z-index: -1;
-  transition: transform 0s ease;
 }
 
-  #sidebar:target {
-    transform: translateX(0%);
-    transition: transform 0.4s ease;
-  }
-
-
-#sidebar section {
+#sidebar {
   box-sizing: border-box;
-  position: absolute;
+  position: fixed;
   top: 0;
   left: 0;
   height: 100%;
@@ -358,6 +363,8 @@ pre[class*="language-"] {
   padding: 0 0.9em 1.3em;
   background: #eceff1;
   box-shadow: 0 0 15px 2px rgba(0,0,0,0.3);
+  transition: transform 0s ease;
+  z-index: -1;
 }
 
 #sidebar header {
@@ -376,7 +383,7 @@ pre[class*="language-"] {
     content: "Table of Contents";
   }
 
-  #sidebar header a {
+  #sidebar header .sidebar-toggle {
     display: none;
     height: var(--header-height);
     line-height: var(--header-height);
@@ -386,18 +393,6 @@ pre[class*="language-"] {
     font-weight: bold;
     text-decoration: none;
   }
-
-  #sidebar header a:before {
-    content: "✕";
-  }
-
-#sidebar_closer {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-}
 
 .toc {
   font-size: 0.85em;
@@ -471,12 +466,20 @@ pre[class*="language-"] {
   }
 
   #sidebar {
-    z-index: 1;
+    z-index: 2;
     transform: translateX(-100%);
-    transition: transform 0.75s ease;
+    transition: transform 0.35s ease;
   }
 
-  #sidebar header a {
+  #sidebar[open] {
+    transform: translateX(0%);
+  }
+
+  #sidebar[open] + #sidebar_cover {
+    z-index: 1;
+  }
+
+  #sidebar header .sidebar-toggle {
     display: block;
   }
 

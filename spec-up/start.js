@@ -50,7 +50,7 @@ var noticeParser = {
     let matches = tokens[idx].info.match(/(\w+)\s?(.*)?/);
     if (matches && tokens[idx].nesting === 1) {
       let type = matches[1];
-      let id = type + '-' + (matches[2] ? matches[2].trim().replace(/\s/g , '-').toLowerCase() : noticeTypes[type]++);
+      let id = (matches[2] ? matches[2].trim().replace(/\s/g , '-').toLowerCase() : type + '-' + noticeTypes[type]++);
       return `<div id="${id}" class="notice ${type}"><a class="notice-link" href="#${id}"></a>`;
     }
     else return '</div>\n';
@@ -118,20 +118,18 @@ async function render(config) {
                 <a id="logo" href="${config.logo_link ? config.logo_link : '#_'}">
                   <img src="${config.logo}" />
                 </a>
-                <a id="sidebar_toggle" href="#sidebar">Table of Contents</a>
+                <span id="sidebar_toggle" class="sidebar-toggle">Table of Contents</span>
               </header>
               <article id="content">
                 ${md.render(doc)}
               </article>
               <aside id="sidebar">
-                <a id="sidebar_closer" href="#_"></a>
-                <section>
-                  <header>
-                    <a href="#_"></a>
-                  </header>
-                  ${toc}
-                </section>
+                <header>
+                  <span class="sidebar-toggle">✕</span>
+                </header>
+                ${toc}
               </aside>
+              <div id="sidebar_cover" class="sidebar-toggle"></div>
             </main>
           </body>
           <script src="${basePath}spec-up/js/mermaid.js"></script>
