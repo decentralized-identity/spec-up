@@ -1,6 +1,6 @@
 
 const gulp = require('gulp');
-const fs = require('fs');
+const fs = require('fs-extra');
 const pkg = require('pkg-dir');
 const globby = require('globby');
 
@@ -95,9 +95,18 @@ const md = require('markdown-it')({
 async function render(config) {
   console.log('Rendering: ' + config.title);
   return new Promise((resolve, reject) => {
-    fs.readFile(config.path + '/spec.md', 'utf8', function(err, doc) {
+    fs.readFile(config.path + '/spec.md', 'utf8', async function(err, doc) {
       if (err) return reject(err);
+      var features = (({ source, logo }) => ({ source, logo }))(config);
       var basePath = config.output_path || config.assetRelativePrefix;
+      var svg = '';
+      try {
+        svg = await fs.readFile('./spec-up/icons.svg', 'utf8');
+      }
+      catch (e) {
+        console.log(e);
+      }
+
       fs.writeFile(basePath + 'index.html', `
         <!DOCTYPE html>
         <html lang="en">
@@ -107,31 +116,60 @@ async function render(config) {
             <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
             <title>${config.title}</title>
-            <link href="${basePath}spec-up/css/index.css" rel="stylesheet">
+            <link href="${basePath}spec-up/css/custom-elements.css" rel="stylesheet">
             <link href="${basePath}spec-up/css/prism.css" rel="stylesheet">
             <link href="${basePath}spec-up/css/chart.css" rel="stylesheet">
             <link href="${basePath}spec-up/css/font-awesome.css" rel="stylesheet">
+            <link href="${basePath}spec-up/css/index.css" rel="stylesheet">
+            <script src="${basePath}spec-up/js/custom-elements.js"></script>
           </head>
-          <body>
+          <body features="${Object.keys(features).join(' ')}">
+            
+            ${svg}
+
             <main>
-              <header id="header">
+
+              <header id="header" class="panel-header">
+                <span id="toc_toggle" panel-toggle="toc">
+                  <svg><use xlink:href="#nested_list"></use></svg>
+                </span>
                 <a id="logo" href="${config.logo_link ? config.logo_link : '#_'}">
                   <img src="${config.logo}" />
                 </a>
-                <span id="sidebar_toggle" class="sidebar-toggle">Table of Contents</span>
+                <span issue-count animate panel-toggle="repo_issues">
+                  <svg><use xlink:href="#github"></use></svg>
+                </span>
               </header>
+
               <article id="content">
                 ${md.render(doc)}
-              </article>
-              <aside id="sidebar">
-                <header>
-                  <span class="sidebar-toggle">✕</span>
-                </header>
-                ${toc}
-              </aside>
-              <div id="sidebar_cover" class="sidebar-toggle"></div>
+              </article>    
+
             </main>
+
+            <slide-panels id="slidepanels">
+              <slide-panel id="repo_issues" options="right">
+                <header class="panel-header">
+                  <svg><use xlink:href="#github"></use></svg>
+                  <span issue-count></span>
+                  <span class="repo-issue-toggle" panel-toggle="repo_issues">✕</span>
+                </header>
+                <ul id="repo_issue_list"></ul>
+              </slide-panel>
+
+              <slide-panel id="toc">
+                <header class="panel-header">
+                  <span panel-toggle="toc">✕</span>
+                </header>
+                <div id="toc_list">
+                  ${toc}
+                </div>
+              </slide-panel>
+              
+            </slide-panels>
+
           </body>
+          <script>window.specConfig = ${JSON.stringify(config)}</script>
           <script src="${basePath}spec-up/js/mermaid.js"></script>
           <script src="${basePath}spec-up/js/chart.js"></script>
           <script src="${basePath}spec-up/js/index.js"></script>

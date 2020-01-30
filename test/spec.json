@@ -1,6 +1,11 @@
 {
   "logo": "./logo.svg",
   "logo_link": "https://github.com/csuwildcat/spec-up",
+  "source": {
+    "host": "github",
+    "account": "csuwildcat",
+    "repo": "spec-up"
+  },
   "title": "Spec-Up Example",
   "output_path": "./"
 }
