@@ -170,6 +170,7 @@ async function render(config) {
 
           </body>
           <script>window.specConfig = ${JSON.stringify(config)}</script>
+          <script src="${basePath}spec-up/js/markdown-it.js"></script>
           <script src="${basePath}spec-up/js/mermaid.js"></script>
           <script src="${basePath}spec-up/js/chart.js"></script>
           <script src="${basePath}spec-up/js/index.js"></script>

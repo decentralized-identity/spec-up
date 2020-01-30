@@ -10,6 +10,8 @@ function delegateEvent(type, selector, fn, container){
   });
 }
 
+var markdown = window.markdownit();
+
 /* Sidebar Interactions */
 
 delegateEvent('pointerup', '[panel-toggle]', (e, delegate) => {
@@ -38,7 +40,7 @@ window.onhashchange = e => {
                 <span class="repo-issue-number">${issue.number}</span>
                 <a href="${issue.url}">${issue.title}</a>
               </div>
-              <p>${issue.body}</p>
+              ${markdown.render(issue.body)}
             </li>`
           }).join('');
         })
