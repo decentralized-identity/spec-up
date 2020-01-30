@@ -387,7 +387,7 @@ pre[class*="language-"] {
     margin-left: auto;
   }
 
-#toc_toggle {
+#header #toc_toggle {
   display: none;
   border-right: 1px solid rgba(0,0,0,0.15);
 }
@@ -627,8 +627,8 @@ pre[class*="language-"] {
     display: block;
   }
 
-  #toc_toggle {
-    display: block;
+  #header #toc_toggle {
+    display: flex;
   }
 }
 
