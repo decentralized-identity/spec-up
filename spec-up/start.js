@@ -148,7 +148,7 @@ async function render(config) {
             </main>
 
             <slide-panels id="slidepanels">
-              <slide-panel id="repo_issues" options="right">
+              <slide-panel id="repo_issues" options="right" gap="1.5em">
                 <header class="panel-header">
                   <svg><use xlink:href="#github"></use></svg>
                   <span issue-count></span>

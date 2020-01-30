@@ -1,5 +1,5 @@
 
-customElements.define('slide-panels', class PanelSet extends HTMLElement {
+customElements.define('slide-panels', class SidePanels extends HTMLElement {
   static get observedAttributes() {
     return ['open'];
   }
@@ -29,6 +29,17 @@ customElements.define('slide-panels', class PanelSet extends HTMLElement {
         else child.removeAttribute('open', '');
       }
       break;
+    }
+  }
+});
+
+customElements.define('slide-panel', class SidePanel extends HTMLElement {
+  static get observedAttributes() {
+    return ['gap'];
+  }
+  attributeChangedCallback(attr, last, current) {
+    switch(attr) {
+      case 'gap': this.style.setProperty('--gap', current);
     }
   }
 });
