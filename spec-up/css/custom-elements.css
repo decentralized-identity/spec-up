@@ -31,6 +31,8 @@ slide-panels[open]:before {
 }
 
 slide-panel {
+  display: flex;
+  flex-direction: column;
   box-sizing: border-box;
   position: absolute;
   top: 0;

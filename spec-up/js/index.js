@@ -43,6 +43,7 @@ window.onhashchange = e => {
               ${markdown.render(issue.body)}
             </li>`
           }).join('');
+          Prism.highlightAllUnder(repo_issue_list);
         })
     }
   }
