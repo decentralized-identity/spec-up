@@ -40,7 +40,9 @@ window.onhashchange = e => {
                 <span class="repo-issue-number">${issue.number}</span>
                 <a href="${issue.url}">${issue.title}</a>
               </div>
-              ${markdown.render(issue.body)}
+              <detail-box class="repo-issue-body">
+                ${markdown.render(issue.body)}
+              </detail-box>
             </li>`
           }).join('');
           Prism.highlightAllUnder(repo_issue_list);

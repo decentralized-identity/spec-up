@@ -31,7 +31,7 @@
                 <span id="toc_toggle" panel-toggle="toc">
                   <svg><use xlink:href="#nested_list"></use></svg>
                 </span>
-                <a id="logo" href="https://github.com/csuwildcat/spec-up">
+                <a id="logo" class="panel-title" href="https://github.com/csuwildcat/spec-up">
                   <img src="./logo.svg" />
                 </a>
                 <span issue-count animate panel-toggle="repo_issues">
@@ -311,14 +311,12 @@ sequenceDiagram
   "@context": "https://www.w3.org/ns/did/v1",
   "id": "did:example:123456789abcdefghi",
   "authentication": [{
-    
     "id": "did:example:123456789abcdefghi#keys-1",
     "type": "RsaVerificationKey2018",
     "controller": "did:example:123456789abcdefghi",
     "publicKeyPem": "-----BEGIN PUBLIC KEY...END PUBLIC KEY-----\r\n"
   }],
   "service": [{
-    
     "id":"did:example:123456789abcdefghi#vcs",
     "type": "VerifiableCredentialService",
     "serviceEndpoint": "https://example.com/vc/"
@@ -329,15 +327,13 @@ sequenceDiagram
 <pre class="language-json"><code class="language-json"><span class="token punctuation">{</span>
   <span class="token property">"@context"</span><span class="token operator">:</span> <span class="token string">"https://www.w3.org/ns/did/v1"</span><span class="token punctuation">,</span>
   <span class="token property">"id"</span><span class="token operator">:</span> <span class="token string">"did:example:123456789abcdefghi"</span><span class="token punctuation">,</span>
-  <span class="token property">"authentication"</span><span class="token operator">:</span> <span class="token punctuation">[</span><span class="token punctuation">{</span>
-    
+  <span class="token property">"authentication"</span><span class="token operator">:</span> <span class="token punctuation">[</span><span class="token punctuation">{</span> 
     <span class="token property">"id"</span><span class="token operator">:</span> <span class="token string">"did:example:123456789abcdefghi#keys-1"</span><span class="token punctuation">,</span>
     <span class="token property">"type"</span><span class="token operator">:</span> <span class="token string">"RsaVerificationKey2018"</span><span class="token punctuation">,</span>
     <span class="token property">"controller"</span><span class="token operator">:</span> <span class="token string">"did:example:123456789abcdefghi"</span><span class="token punctuation">,</span>
     <span class="token property">"publicKeyPem"</span><span class="token operator">:</span> <span class="token string">"-----BEGIN PUBLIC KEY...END PUBLIC KEY-----\r\n"</span>
   <span class="token punctuation">}</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
   <span class="token property">"service"</span><span class="token operator">:</span> <span class="token punctuation">[</span><span class="token punctuation">{</span>
-    
     <span class="token property">"id"</span><span class="token operator">:</span><span class="token string">"did:example:123456789abcdefghi#vcs"</span><span class="token punctuation">,</span>
     <span class="token property">"type"</span><span class="token operator">:</span> <span class="token string">"VerifiableCredentialService"</span><span class="token punctuation">,</span>
     <span class="token property">"serviceEndpoint"</span><span class="token operator">:</span> <span class="token string">"https://example.com/vc/"</span>
@@ -350,10 +346,12 @@ sequenceDiagram
             </main>
 
             <slide-panels id="slidepanels">
-              <slide-panel id="repo_issues" options="right" gap="1.5em">
+              <slide-panel id="repo_issues" options="right">
                 <header class="panel-header">
-                  <svg><use xlink:href="#github"></use></svg>
-                  <span issue-count></span>
+                  <span class="panel-title">
+                    <svg><use xlink:href="#github"></use></svg>
+                    <span issue-count></span>
+                  </span>
                   <span class="repo-issue-toggle" panel-toggle="repo_issues">✕</span>
                 </header>
                 <ul id="repo_issue_list"></ul>
@@ -361,6 +359,7 @@ sequenceDiagram
 
               <slide-panel id="toc">
                 <header class="panel-header">
+                  <span class="panel-title">Table of Contents</span>
                   <span panel-toggle="toc">✕</span>
                 </header>
                 <div id="toc_list">
@@ -387,7 +386,7 @@ sequenceDiagram
           </body>
           <script>window.specConfig = {"logo":"./logo.svg","logo_link":"https://github.com/csuwildcat/spec-up","source":{"host":"github","account":"csuwildcat","repo":"spec-up"},"title":"Spec-Up Example","output_path":"./","path":"test","rootRelativePrefix":"../","assetRelativePrefix":"../"}</script>
           <script src="./spec-up/js/markdown-it.js"></script>
-          <script src="./spec-up/js/prism.js"></script>
+          <script src="./spec-up/js/prism.js" data-manual></script>
           <script src="./spec-up/js/mermaid.js"></script>
           <script src="./spec-up/js/chart.js"></script>
           <script src="./spec-up/js/index.js"></script>

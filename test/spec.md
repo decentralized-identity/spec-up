@@ -231,14 +231,12 @@ sequenceDiagram
   "@context": "https://www.w3.org/ns/did/v1",
   "id": "did:example:123456789abcdefghi",
   "authentication": [{
-    
     "id": "did:example:123456789abcdefghi#keys-1",
     "type": "RsaVerificationKey2018",
     "controller": "did:example:123456789abcdefghi",
     "publicKeyPem": "-----BEGIN PUBLIC KEY...END PUBLIC KEY-----\r\n"
   }],
   "service": [{
-    
     "id":"did:example:123456789abcdefghi#vcs",
     "type": "VerifiableCredentialService",
     "serviceEndpoint": "https://example.com/vc/"
@@ -251,15 +249,13 @@ sequenceDiagram
 {
   "@context": "https://www.w3.org/ns/did/v1",
   "id": "did:example:123456789abcdefghi",
-  "authentication": [{
-    
+  "authentication": [{ 
     "id": "did:example:123456789abcdefghi#keys-1",
     "type": "RsaVerificationKey2018",
     "controller": "did:example:123456789abcdefghi",
     "publicKeyPem": "-----BEGIN PUBLIC KEY...END PUBLIC KEY-----\r\n"
   }],
   "service": [{
-    
     "id":"did:example:123456789abcdefghi#vcs",
     "type": "VerifiableCredentialService",
     "serviceEndpoint": "https://example.com/vc/"
