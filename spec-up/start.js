@@ -20,6 +20,7 @@ let init = new Promise(async (resolve, reject) => {
       if (err) return reject(err);
       let config = JSON.parse(data);
           config.path = path;
+          config.destination = config.output_path || path;
           config.rootRelativePrefix = rootRelativePrefix;
           config.assetRelativePrefix = getRelativePrefix(config.output_path || path);
       gulp.watch(
@@ -107,7 +108,7 @@ async function render(config) {
         console.log(e);
       }
 
-      fs.writeFile(basePath + 'index.html', `
+      fs.writeFile(config.destination + 'index.html', `
         <!DOCTYPE html>
         <html lang="en">
           <head>
