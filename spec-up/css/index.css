@@ -458,13 +458,11 @@ pre[class*="language-"] {
   }
 
 .repo-issue detail-box {
-  margin: 0;
-  padding: 1.5em 0 1.5em;
   border-bottom: 1px solid #ddd;
 }
 
 .repo-issue-title {
-  position: relative;
+  padding: 1.5em 0 1.5em;
 }
 
 .repo-issue-title a {

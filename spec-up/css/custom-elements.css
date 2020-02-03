@@ -57,32 +57,24 @@ slide-panel[open] {
 }
 
 detail-box {
-  display: flex;
-  flex-wrap: wrap;
+  display: block;
 }
 
-detail-box:focus {
-  outline: none;
-}
-
-detail-box:before {
+detail-box > header:after {
   content: "⏷";
-  font-size: 2em;
+  float: right;
+  margin: 0 0 0 1em;
+  font-size: 1.75em;
+  background: rgba(0,0,0,0.15);
+  border: 1px solid rgba(0,0,0,0.3);
+  border-radius: 10em;
   opacity: 0.5;
-  transition: opacity 0.3s;
+  line-height: 1em;
+  cursor: pointer;
 }
 
-detail-box:hover:before {
-  opacity: 1;
-}
-
-detail-box:focus:before {
+detail-box[open] header:after {
   content: "⏶";
-}
-
-detail-box header {
-  flex-grow: 1;
-  order: -1;
 }
 
 detail-box section {
@@ -92,7 +84,6 @@ detail-box section {
   overflow: hidden;
 }
 
-detail-box:focus section,
-detail-box:focus-within section {
+detail-box[open] section {
   height: auto;
 }

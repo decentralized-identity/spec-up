@@ -36,10 +36,10 @@ window.onhashchange = e => {
           });
           repo_issue_list.innerHTML = issues.map(issue => {
             return `<li class="repo-issue">
-              <detail-box class="repo-issue-title">
-              <header>
+              <detail-box>
+              <header class="repo-issue-title">
                 <span class="repo-issue-number">${issue.number}</span>
-                <a href="${issue.url}">${issue.title}</a>
+                <a href="${issue.html_url}" target="_blank">${issue.title}</a>
               </header>
               <section>
                 ${markdown.render(issue.body)}
