@@ -418,17 +418,17 @@ pre[class*="language-"] {
   border-left: 1px solid rgba(0,0,0,0.15);
 }
 
-#repo_issues header {
+#repo_issues > header {
   background: #eee;
   border-bottom: 1px solid #ddd;
 }
 
-#repo_issues header span:first-of-type {
+#repo_issues > header span:first-of-type {
   font-weight: bold;
   padding-top: 0.1em;
 }
 
-#repo_issues header .repo-issue-toggle {
+#repo_issues > header .repo-issue-toggle {
   margin-left: auto;
   color: inherit;
   font-weight: bold;
@@ -438,7 +438,7 @@ pre[class*="language-"] {
 #repo_issue_list {
   list-style: none;
   margin: 0;
-  padding: 1.25em;
+  padding: 0 1.25em 1.25em;
   font-size: 0.85em;
   overflow: auto;
   -ms-overflow-style: none;  /* Internet Explorer 10+ */
@@ -457,9 +457,9 @@ pre[class*="language-"] {
     margin: 1em 0 0;
   }
 
-.repo-issue {
-  margin: 0 0 1.6em;
-  padding: 0 0 1.5em;
+.repo-issue detail-box {
+  margin: 0;
+  padding: 1.5em 0 1.5em;
   border-bottom: 1px solid #ddd;
 }
 
@@ -488,13 +488,6 @@ pre[class*="language-"] {
   content: "#";
   font-weight: normal;
   margin: 0 0.1em 0 0;
-}
-
-.repo-issue p {
-  line-clamp: 3; 
-  -webkit-line-clamp: 3;   
-  -webkit-box-orient: vertical;   
-  overflow: hidden; 
 }
 
 #toc {

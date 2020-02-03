@@ -57,8 +57,42 @@ slide-panel[open] {
 }
 
 detail-box {
-  display: block;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+detail-box:focus {
+  outline: none;
+}
+
+detail-box:before {
+  content: "⏷";
+  font-size: 2em;
+  opacity: 0.5;
+  transition: opacity 0.3s;
+}
+
+detail-box:hover:before {
+  opacity: 1;
+}
+
+detail-box:focus:before {
+  content: "⏶";
+}
+
+detail-box header {
+  flex-grow: 1;
+  order: -1;
+}
+
+detail-box section {
   height: 0;
+  min-width: 100%;
   transition: height 0.3s ease;
   overflow: hidden;
+}
+
+detail-box:focus section,
+detail-box:focus-within section {
+  height: auto;
 }

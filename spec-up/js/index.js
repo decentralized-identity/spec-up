@@ -36,13 +36,14 @@ window.onhashchange = e => {
           });
           repo_issue_list.innerHTML = issues.map(issue => {
             return `<li class="repo-issue">
-              <div class="repo-issue-title">
+              <detail-box class="repo-issue-title">
+              <header>
                 <span class="repo-issue-number">${issue.number}</span>
                 <a href="${issue.url}">${issue.title}</a>
-              </div>
-              <detail-box class="repo-issue-body">
+              </header>
+              <section>
                 ${markdown.render(issue.body)}
-              </detail-box>
+              </section>
             </li>`
           }).join('');
           Prism.highlightAllUnder(repo_issue_list);

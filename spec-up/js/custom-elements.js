@@ -50,7 +50,13 @@ customElements.define('detail-box', class DetailBox extends HTMLElement {
   }
   constructor() {
     super();   
+    this.setAttribute('tabindex', '-1');
     this.addEventListener('transitionend', e => {
+      // if (e.target === this && this.offsetHeight === 0) {
+      //   this.style.height = null;
+      // }
+    });
+    this.addEventListener('pointerup', e => {
       // if (e.target === this && this.offsetHeight === 0) {
       //   this.style.height = null;
       // }
