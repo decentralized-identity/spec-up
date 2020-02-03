@@ -7,5 +7,5 @@
     "repo": "spec-up"
   },
   "title": "Spec-Up Example",
-  "output_path": "./"
+  "output_path": "."
 }

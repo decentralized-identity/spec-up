@@ -108,7 +108,7 @@ async function render(config) {
         console.log(e);
       }
 
-      fs.writeFile(config.destination + 'index.html', `
+      fs.writeFile(config.destination + '/index.html', `
         <!DOCTYPE html>
         <html lang="en">
           <head>
