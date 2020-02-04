@@ -142,7 +142,7 @@ async function render(config) {
                   <svg icon><use xlink:href="#nested_list"></use></svg>
                 </span>
                 <a id="logo" href="${config.logo_link ? config.logo_link : '#_'}">
-                  <img src="${basePath + config.logo}" />
+                  <img src="${config.logo.match(':') ? config.logo : basePath + config.logo}" />
                 </a>
                 <span issue-count animate panel-toggle="repo_issues">
                   <svg icon><use xlink:href="#github"></use></svg>
