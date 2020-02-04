@@ -39,6 +39,7 @@ body {
 h1 {
   font-size: 2em;
   font-weight: bold;
+  line-height: 1.2em;
 }
 
 main article h1,
@@ -219,7 +220,7 @@ table pre[class*="language-"]:before {
   display: none;
 }
 
-svg {
+svg[icon] {
   width: 1.25em;
   height: 1.25em;
   vertical-align: text-top;

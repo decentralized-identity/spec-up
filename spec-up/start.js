@@ -14,8 +14,8 @@ let init = new Promise(async (resolve, reject) => {
   var projectPath = await pkg(__dirname);
   var moduleLocation = __dirname.replace(projectPath, ''); 
   var rootRelativePrefix = getRelativePrefix(moduleLocation);
-  (await globby(['./**/spec.md', `!./node_modules`])).forEach(match => {
-    let path = match.replace('/spec.md', '');
+  (await globby(['./**/spec.json', `!./node_modules`])).forEach(match => {
+    let path = match.replace('/spec.json', '');
     fs.readFile(path + '/spec.json', function(err, data) {
       if (err) return reject(err);
       let config = JSON.parse(data);
@@ -93,11 +93,18 @@ const md = require('markdown-it')({
     anchorClassName: 'toc-anchor'
   })
 
+function readMDFile(path, reject) {
+  return fs.readFile(path, 'utf8').catch(e => reject(e));
+}
+
 async function render(config) {
   console.log('Rendering: ' + config.title);
-  return new Promise((resolve, reject) => {
-    fs.readFile(config.path + '/spec.md', 'utf8', async function(err, doc) {
-      if (err) return reject(err);
+  return new Promise(async (resolve, reject) => {
+    Promise.all(config.mutli_file ?
+      config.mutli_file.map(path => readMDFile(path, reject)) :
+      [readMDFile(config.path + '/spec.md', reject)]).then(async docs => {
+      //console.log(docs);  
+      let doc = docs.join("\n");
       var features = (({ source, logo }) => ({ source, logo }))(config);
       var basePath = config.output_path || config.assetRelativePrefix;
       var svg = '';
@@ -132,13 +139,13 @@ async function render(config) {
 
               <header id="header" class="panel-header">
                 <span id="toc_toggle" panel-toggle="toc">
-                  <svg><use xlink:href="#nested_list"></use></svg>
+                  <svg icon><use xlink:href="#nested_list"></use></svg>
                 </span>
                 <a id="logo" href="${config.logo_link ? config.logo_link : '#_'}">
-                  <img src="${config.logo}" />
+                  <img src="${basePath + config.logo}" />
                 </a>
                 <span issue-count animate panel-toggle="repo_issues">
-                  <svg><use xlink:href="#github"></use></svg>
+                  <svg icon><use xlink:href="#github"></use></svg>
                 </span>
               </header>
 
@@ -152,7 +159,7 @@ async function render(config) {
               <slide-panel id="repo_issues" options="right">
                 <header class="panel-header">
                   <span>
-                    <svg><use xlink:href="#github"></use></svg>
+                    <svg icon><use xlink:href="#github"></use></svg>
                     <span issue-count></span>
                   </span>
                   <span class="repo-issue-toggle" panel-toggle="repo_issues">✕</span>

@@ -6,13 +6,13 @@
             <meta http-equiv="X-UA-Compatible" content="IE=edge">
             <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-            <title>Spec-Up Example</title>
-            <link href="./spec-up/css/custom-elements.css" rel="stylesheet">
-            <link href="./spec-up/css/prism.css" rel="stylesheet">
-            <link href="./spec-up/css/chart.css" rel="stylesheet">
-            <link href="./spec-up/css/font-awesome.css" rel="stylesheet">
-            <link href="./spec-up/css/index.css" rel="stylesheet">
-            <script src="./spec-up/js/custom-elements.js"></script>
+            <title>Spec-Up Multi-File Example</title>
+            <link href="../spec-up/css/custom-elements.css" rel="stylesheet">
+            <link href="../spec-up/css/prism.css" rel="stylesheet">
+            <link href="../spec-up/css/chart.css" rel="stylesheet">
+            <link href="../spec-up/css/font-awesome.css" rel="stylesheet">
+            <link href="../spec-up/css/index.css" rel="stylesheet">
+            <script src="../spec-up/js/custom-elements.js"></script>
           </head>
           <body features="source logo">
             
@@ -32,7 +32,7 @@
                   <svg icon><use xlink:href="#nested_list"></use></svg>
                 </span>
                 <a id="logo" href="https://github.com/csuwildcat/spec-up">
-                  <img src="./logo.svg" />
+                  <img src="../logo.svg" />
                 </a>
                 <span issue-count animate panel-toggle="repo_issues">
                   <svg icon><use xlink:href="#github"></use></svg>
@@ -40,7 +40,7 @@
               </header>
 
               <article id="content">
-                <h1 id="spec-up-example"><a class="toc-anchor" href="#spec-up-example">§</a> Spec-Up Example</h1>
+                <h1 id="spec-up-multi-file-example"><a class="toc-anchor" href="#spec-up-multi-file-example">§</a> Spec-Up Multi-File Example</h1>
 <p><strong>Specification Status:</strong> Strawman</p>
 <p><strong>Latest Draft:</strong>
 <a href="https://csuwildcat.github.io/spec-up">https://csuwildcat.github.io/spec-up</a></p>
@@ -71,187 +71,7 @@
 <li>In your main node.js file, drop in this bad boy: <code>require('spec-up')()</code></li>
 </ol>
 <p>Boom! That’s it. Spec-Up will auto-detect the location of your spec files and auto-generate your spec’s HTML version every time you hit save after editing your <code>spec.md</code> files. Did I mention you can have multiple specs located at any depth in your project and Spec-Up will crawl up in there and render all those specs like a damn boss? Well it does, because why the hell not.</p>
-<h2 id="feature-flexin"><a class="toc-anchor" href="#feature-flexin">§</a> Feature Flexin</h2>
-<p>In addition to all the normal markdown support (things like headings, lists, etc.), which you can see in this example document and all over GitHub readme pages, Spec-Up integrates a ton of other useful features that make it easy to articulate your technical content. Let’s checkout some of the goodies:</p>
-<h3 id="table-of-contents"><a class="toc-anchor" href="#table-of-contents">§</a> Table of Contents</h3>
-<p>&lt;-- You see that beautiful TOC over there to your left? (tap the header link to slide it out on mobile) Yeah, you don’t need to do a damn thing, that just magically appears based on your use of <code>h2</code>, <code>h3</code>, and <code>h4</code> headings.</p>
-<h3 id="notices"><a class="toc-anchor" href="#notices">§</a> Notices</h3>
-<pre>
-::: note Basic Note
-  Check this out.
-:::
-</pre>
-<div id="basic-note" class="notice note"><a class="notice-link" href="#basic-note"></a><p>Check this out.</p>
-</div>
-<pre>
-::: issue Issue Notice
-  I take issue with that, kind sir.
-:::
-</pre>
-<div id="issue-notice" class="notice issue"><a class="notice-link" href="#issue-notice"></a><p>I take issue with that, kind sir.</p>
-</div>
-<pre>
-::: warning Warning Notice
-  Houston, I think we have a problem
-:::
-</pre>
-<div id="warning-notice" class="notice warning"><a class="notice-link" href="#warning-notice"></a><p>Houston, I think we have a problem</p>
-</div>
-<pre>
-::: example Code Example
-  Put your code block here
-:::
-</pre>
-<div id="code-example" class="notice example"><a class="notice-link" href="#code-example"></a><p>Put your code block here</p>
-</div>
-<h3 id="tables"><a class="toc-anchor" href="#tables">§</a> Tables</h3>
-<pre>
-Stage | Direct Products | ATP Yields
-----: | --------------: | ---------:
-Glycolysis | 2 ATP ||
-^^ | 2 NADH | 3--5 ATP |
-Pyruvaye oxidation | 2 NADH | 5 ATP |
-Citric acid cycle | 2 ATP ||
-^^ | 6 NADH | 15 ATP |
-^^ | 2 FADH2 | 3 ATP |
-**30--32** ATP |||
-[Net ATP yields per hexose]
-</pre>
-<table>
-<caption id="netatpyieldsperhexose">Net ATP yields per hexose</caption>
-<thead>
-<tr>
-<th style="text-align:right">Stage</th>
-<th style="text-align:right">Direct Products</th>
-<th style="text-align:right">ATP Yields</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:right" rowspan="2">Glycolysis</td>
-<td style="text-align:right" colspan="2">2 ATP</td>
-</tr>
-<tr>
-<td style="text-align:right">2 NADH</td>
-<td style="text-align:right">3–5 ATP</td>
-</tr>
-<tr>
-<td style="text-align:right">Pyruvaye oxidation</td>
-<td style="text-align:right">2 NADH</td>
-<td style="text-align:right">5 ATP</td>
-</tr>
-<tr>
-<td style="text-align:right" rowspan="3">Citric acid cycle</td>
-<td style="text-align:right" colspan="2">2 ATP</td>
-</tr>
-<tr>
-<td style="text-align:right">6 NADH</td>
-<td style="text-align:right">15 ATP</td>
-</tr>
-<tr>
-<td style="text-align:right">2 FADH2</td>
-<td style="text-align:right">3 ATP</td>
-</tr>
-<tr>
-<td style="text-align:right" colspan="3"><strong>30–32</strong> ATP</td>
-</tr>
-</tbody>
-</table>
-<pre>
-|--|--|--|--|--|--|--|--|
-|♜|  |♝|♛|♚|♝|♞|♜|
-|  |♟|♟|♟|  |♟|♟|♟|
-|♟|  |♞|  |  |  |  | |
-|  |♗|  |  |♟|  |  | |
-|  |  |  |  |♙|  |  | |
-|  |  |  |  |  |♘|  | |
-|♙|♙|♙|♙|  |♙|♙|♙|
-|♖|♘|♗|♕|♔|  |  |♖|
-</pre>
-<table>
-<tbody>
-<tr>
-<td>♜</td>
-<td></td>
-<td>♝</td>
-<td>♛</td>
-<td>♚</td>
-<td>♝</td>
-<td>♞</td>
-<td>♜</td>
-</tr>
-<tr>
-<td></td>
-<td>♟</td>
-<td>♟</td>
-<td>♟</td>
-<td></td>
-<td>♟</td>
-<td>♟</td>
-<td>♟</td>
-</tr>
-<tr>
-<td>♟</td>
-<td></td>
-<td>♞</td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td></td>
-<td>♗</td>
-<td></td>
-<td></td>
-<td>♟</td>
-<td></td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td>♙</td>
-<td></td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td>♘</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td>♙</td>
-<td>♙</td>
-<td>♙</td>
-<td>♙</td>
-<td></td>
-<td>♙</td>
-<td>♙</td>
-<td>♙</td>
-</tr>
-<tr>
-<td>♖</td>
-<td>♘</td>
-<td>♗</td>
-<td>♕</td>
-<td>♔</td>
-<td></td>
-<td></td>
-<td>♖</td>
-</tr>
-</tbody>
-</table>
+<h2 id="features"><a class="toc-anchor" href="#features">§</a> Features</h2>
 <h3 id="diagrams"><a class="toc-anchor" href="#diagrams">§</a> Diagrams</h3>
 <pre>
 ```mermaid
@@ -366,11 +186,8 @@ sequenceDiagram
                   <ul class="toc">
 <li><a href="#abstract">Abstract</a></li>
 <li><a href="#getting-started">Getting Started</a></li>
-<li><a href="#feature-flexin">Feature Flexin</a>
+<li><a href="#features">Features</a>
 <ul>
-<li><a href="#table-of-contents">Table of Contents</a></li>
-<li><a href="#notices">Notices</a></li>
-<li><a href="#tables">Tables</a></li>
 <li><a href="#diagrams">Diagrams</a></li>
 <li><a href="#charts">Charts</a></li>
 <li><a href="#syntax-highlighting">Syntax Highlighting</a></li>
@@ -384,11 +201,11 @@ sequenceDiagram
             </slide-panels>
 
           </body>
-          <script>window.specConfig = {"logo":"logo.svg","logo_link":"https://github.com/csuwildcat/spec-up","source":{"host":"github","account":"csuwildcat","repo":"spec-up"},"title":"Spec-Up Example","output_path":"./","path":"single-file-test","destination":"./","rootRelativePrefix":"../","assetRelativePrefix":"../"}</script>
-          <script src="./spec-up/js/markdown-it.js"></script>
-          <script src="./spec-up/js/prism.js" data-manual></script>
-          <script src="./spec-up/js/mermaid.js"></script>
-          <script src="./spec-up/js/chart.js"></script>
-          <script src="./spec-up/js/index.js"></script>
+          <script>window.specConfig = {"logo":"logo.svg","logo_link":"https://github.com/csuwildcat/spec-up","source":{"host":"github","account":"csuwildcat","repo":"spec-up"},"title":"Spec-Up Multi-File Example","mutli_file":["./multi-file-test/md/header.md","./multi-file-test/md/abstract.md","./multi-file-test/md/getting-started.md","./multi-file-test/md/features.md"],"path":"multi-file-test","destination":"multi-file-test","rootRelativePrefix":"../","assetRelativePrefix":"../"}</script>
+          <script src="../spec-up/js/markdown-it.js"></script>
+          <script src="../spec-up/js/prism.js" data-manual></script>
+          <script src="../spec-up/js/mermaid.js"></script>
+          <script src="../spec-up/js/chart.js"></script>
+          <script src="../spec-up/js/index.js"></script>
         </html>
       

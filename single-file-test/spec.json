@@ -1,5 +1,5 @@
 {
-  "logo": "./logo.svg",
+  "logo": "logo.svg",
   "logo_link": "https://github.com/csuwildcat/spec-up",
   "source": {
     "host": "github",
