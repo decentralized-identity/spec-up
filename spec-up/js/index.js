@@ -40,6 +40,7 @@ window.onhashchange = e => {
               <header class="repo-issue-title">
                 <span class="repo-issue-number">${issue.number}</span>
                 <a href="${issue.html_url}" target="_blank">${issue.title}</a>
+                <span detail-box-toggle></span>
               </header>
               <section>
                 ${markdown.render(issue.body)}

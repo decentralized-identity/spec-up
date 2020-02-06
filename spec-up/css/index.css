@@ -109,10 +109,10 @@ pre {
 code {
   padding: 0 0.3em 0.1em;
   font-size: 1.075em;
-  color: #e00000;
+  color: #c7001c;
   vertical-align: middle;
   background: #eaeaea;
-  border-radius: 2px;
+  border-radius: 4px;
 }
 
 pre code {
@@ -459,34 +459,57 @@ pre[class*="language-"] {
   }
 
 .repo-issue detail-box {
+  padding: 1.5em 0;
   border-bottom: 1px solid #ddd;
 }
 
 .repo-issue-title {
-  padding: 1.5em 0 1.5em;
+  display: flex;
+  align-items: center;
 }
 
 .repo-issue-title a {
-  display: inline-block;
-  margin: 0 0 0 2.3em;
+  flex: 1;
+  margin: 0 0 0 0.5em;
 }
 
 .repo-issue-number {
-  position: absolute;
-  padding: 0.2em 0.25em 0.1em;
+  height: 1em;
+  padding: 0.3em 0.25em 0;
   border-radius: 3px;
-  font-size: 0.95em;  
   font-weight: bold;
   background: #eee;
   border: 1px solid #ddd;
   text-align: center;
-  line-height: 1.1em;
+  line-height: 1em;
 }
 
 .repo-issue-number:before {
   content: "#";
   font-weight: normal;
   margin: 0 0.1em 0 0;
+}
+
+.repo-issue [detail-box-toggle] {
+  margin: 0 0 0 1em;
+  padding: 0.5em;
+  opacity: 0.35;
+  transition: opacity 0.4s;
+}
+
+.repo-issue [detail-box-toggle]:before {
+  display: block;
+  height: 1em;
+  width: 1em;
+  font-size: 2em;
+  line-height: 1em;
+  text-align: center;
+  cursor: pointer;
+}
+
+.repo-issue [detail-box-toggle]:hover,
+.repo-issue detail-box[open] [detail-box-toggle] {
+  opacity: 1;
 }
 
 #toc {

@@ -60,20 +60,15 @@ detail-box {
   display: block;
 }
 
-detail-box > header:after {
-  content: "⏷";
-  float: right;
-  margin: 0 0 0 1em;
-  font-size: 1.75em;
-  background: rgba(0,0,0,0.15);
-  border: 1px solid rgba(0,0,0,0.3);
-  border-radius: 10em;
-  opacity: 0.5;
-  line-height: 1em;
+detail-box > header [detail-box-toggle] {
   cursor: pointer;
 }
 
-detail-box[open] header:after {
+detail-box > header [detail-box-toggle]:before {
+  content: "⏷";
+}
+
+detail-box[open] header [detail-box-toggle]:before {
   content: "⏶";
 }
 
@@ -84,6 +79,6 @@ detail-box section {
   overflow: hidden;
 }
 
-detail-box[open] section {
+detail-box[open="complete"] section {
   height: auto;
 }
