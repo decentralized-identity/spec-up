@@ -39,18 +39,20 @@ customElements.define('detail-box', class DetailBox extends HTMLElement {
   }
   constructor() {
     super();   
+    
+    this.addEventListener('pointerup', e => {
+      if (e.target.hasAttribute('detail-box-toggle')) {
+        e.stopPropagation();
+        this.toggle();   
+      }
+    });
+
     this.addEventListener('transitionend', e => {
       let node = e.target;
       if (node.parentElement === this && node.tagName === 'SECTION' && e.propertyName === 'height') {
         node.style.height = this.hasAttribute('open') ? 'auto' : null;
       }
     });
-    this.addEventListener('pointerup', e => {
-      if (e.target.hasAttribute('detail-box-toggle')) {
-        e.stopPropagation();
-        this.toggle();   
-      }
-    })
   }
   toggle(){
     this.toggleAttribute('open');

@@ -2,7 +2,7 @@
 
 <p align="center">
 
-<img src="./logo.svg">
+<img src="./logo.png">
 
 <h3 style="display: block; margin: 0 auto; text-align: center;">Markdown » Spec-Up</h3>
 

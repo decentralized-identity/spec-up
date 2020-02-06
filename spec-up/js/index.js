@@ -37,21 +37,22 @@ window.onhashchange = e => {
           repo_issue_list.innerHTML = issues.map(issue => {
             return `<li class="repo-issue">
               <detail-box>
-              <header class="repo-issue-title">
-                <span class="repo-issue-number">${issue.number}</span>
-                <a href="${issue.html_url}" target="_blank">${issue.title}</a>
-                <span detail-box-toggle></span>
-              </header>
-              <section>
-                ${markdown.render(issue.body)}
-              </section>
+                <section>${markdown.render(issue.body)}</section>
+                <header class="repo-issue-title">
+                  <span class="repo-issue-number">${issue.number}</span>
+                  <span class="repo-issue-link">
+                    <a href="${issue.html_url}" target="_blank">${issue.title}</a>
+                  </span>
+                  <span detail-box-toggle></span>
+                </header>
+              </detail-box>
             </li>`
           }).join('');
           Prism.highlightAllUnder(repo_issue_list);
         })
     }
   }
-
+  //${markdown.render(issue.body)}
 
 /* Mermaid Diagrams */
 

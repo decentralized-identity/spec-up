@@ -72,13 +72,14 @@ detail-box[open] header [detail-box-toggle]:before {
   content: "⏶";
 }
 
-detail-box section {
+detail-box > section {
   height: 0;
+  opacity: 0;
   min-width: 100%;
-  transition: height 0.3s ease;
+  transition: height 0.3s ease, opacity 0.3s;
   overflow: hidden;
 }
 
-detail-box[open="complete"] section {
-  height: auto;
+detail-box[open] > section {
+  opacity: 1;
 }

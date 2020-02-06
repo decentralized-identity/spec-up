@@ -459,8 +459,18 @@ pre[class*="language-"] {
   }
 
 .repo-issue detail-box {
-  padding: 1.5em 0;
+  display: flex;
+  flex-direction: column;
+  padding: 1em 0;
   border-bottom: 1px solid #ddd;
+}
+
+.repo-issue detail-box > section {
+  order: 1;
+}
+
+.repo-issue detail-box > section:empty + .repo-issue-title [detail-box-toggle] {
+  display: none;
 }
 
 .repo-issue-title {
@@ -468,13 +478,14 @@ pre[class*="language-"] {
   align-items: center;
 }
 
-.repo-issue-title a {
+.repo-issue-link {
   flex: 1;
   margin: 0 0 0 0.5em;
 }
 
 .repo-issue-number {
   height: 1em;
+  margin: 0 0.4em 0 0;
   padding: 0.3em 0.25em 0;
   border-radius: 3px;
   font-weight: bold;
