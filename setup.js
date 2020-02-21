@@ -15,13 +15,15 @@ function copyFiles(path){
 
 let writeResources = async () => {
   try{
+    let resourcePath = '../../spec-up';
     if (options.event === 'start') {
       let config = await fs.readJson('../../specs.json');
-      let resourcePath = `../../${
+      resourcePath = `../../${
         config.resource_path ? config.resource_path.trim().replace(/^\/|^[./]+/, '').replace(/\/$/g, '') + '/' : ''
       }spec-up`;
+      console.log(resourcePath);
       fs.pathExists(resourcePath).then(exists => {
-        if (!exists) copyFiles(resourcePath)
+        if (!exists) copyFiles()
       }).catch(err => console.error(err))
     }
     else copyFiles(resourcePath);
