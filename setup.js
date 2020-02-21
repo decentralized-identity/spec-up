@@ -21,12 +21,13 @@ let writeResources = async () => {
       resourcePath = `../../${
         config.resource_path ? config.resource_path.trim().replace(/^\/|^[./]+/, '').replace(/\/$/g, '') + '/' : ''
       }spec-up`;
-      console.log(resourcePath);
       fs.pathExists(resourcePath).then(exists => {
-        if (!exists) copyFiles()
+        if (!exists) copyFiles(resourcePath)
       }).catch(err => console.error(err))
     }
-    else copyFiles(resourcePath);
+    else {
+      copyFiles(resourcePath);
+    }
   }
   catch(e) {
     console.log(e);
