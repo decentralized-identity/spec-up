@@ -5,33 +5,35 @@ const pkg = require('pkg-dir');
 const globby = require('globby');
 
 function getRelativePrefix(location){
-  return (location.match(/[a-zA-Z0-9-\._]+/g) || []).map(() => '../').join('');
+  return (location.match(/\/[a-zA-Z0-9-\._]+/g) || []).map(() => '../').join('') || './';
 }
 
 /* FILE DISCOVERY & CHANGE WATCHING */
 
-let init = new Promise(async (resolve, reject) => {
-  var projectPath = await pkg(__dirname);
-  var moduleLocation = __dirname.replace(projectPath, ''); 
-  var rootRelativePrefix = getRelativePrefix(moduleLocation);
-  (await globby(['./**/spec.json', `!./node_modules`])).forEach(match => {
-    let path = match.replace('/spec.json', '');
-    fs.readFile(path + '/spec.json', function(err, data) {
-      if (err) return reject(err);
-      let config = JSON.parse(data);
-          config.path = path;
-          config.destination = config.output_path || path;
-          config.rootRelativePrefix = rootRelativePrefix;
-          config.assetRelativePrefix = getRelativePrefix(config.output_path || path);
+let init = async () => {
+  try {
+    let projectPath = await pkg(__dirname);
+    let json = await fs.readJson(projectPath + '/specs.json');
+    json.specs.forEach(config => {
+      config.destination = (config.output_path || config.spec_directory).trim().replace(/\/$/g, '') + '/';
+      config.assetRelativePrefix = getRelativePrefix(config.destination);
+      if (json.resource_path) {
+        config.assetRelativePrefix += json.resource_path.trim().replace(/^\/|^[./]+/, '').replace(/\/$/g, '') + '/';
+      } 
       gulp.watch(
-        [path + '/**/*', '!' + path + '/index.html'],
+        [config.spec_directory + '/**/*', '!' + config.destination + 'index.html'],
         { ignoreInitial: false },
         render.bind(null, config)
       )
     });
-  });
+    console.log(json);
+  }
+  catch (e) {
+    console.log(e);
+  }
+};
 
-});
+init();
 
 /* RENDERING */
 
@@ -98,24 +100,19 @@ function readMDFile(path, reject) {
 }
 
 async function render(config) {
+
   console.log('Rendering: ' + config.title);
   return new Promise(async (resolve, reject) => {
-    Promise.all(config.mutli_file ?
-      config.mutli_file.map(path => readMDFile(path, reject)) :
-      [readMDFile(config.path + '/spec.md', reject)]).then(async docs => {
-      //console.log(docs);  
+    Promise.all((config.markdown_paths || ['spec.md']).map(path => {
+      return readMDFile(config.spec_directory + '/' + path, reject)
+    })).then(async docs => {
       let doc = docs.join("\n");
       var features = (({ source, logo }) => ({ source, logo }))(config);
-      var basePath = config.output_path || config.assetRelativePrefix;
-      var svg = '';
-      try {
-        svg = await fs.readFile('./spec-up/icons.svg', 'utf8');
-      }
-      catch (e) {
-        console.log(e);
-      }
+      var assetPrefix = config.assetRelativePrefix;
+      console.log(assetPrefix);
+      var svg = await fs.readFile('./spec-up/icons.svg', 'utf8') || '';
 
-      fs.writeFile(config.destination + (config.destination.match(/\//g) ? '' : '/') + 'index.html', `
+      fs.writeFile(config.destination + 'index.html', `
         <!DOCTYPE html>
         <html lang="en">
           <head>
@@ -124,12 +121,12 @@ async function render(config) {
             <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
             <title>${config.title}</title>
-            <link href="${basePath}spec-up/css/custom-elements.css" rel="stylesheet">
-            <link href="${basePath}spec-up/css/prism.css" rel="stylesheet">
-            <link href="${basePath}spec-up/css/chart.css" rel="stylesheet">
-            <link href="${basePath}spec-up/css/font-awesome.css" rel="stylesheet">
-            <link href="${basePath}spec-up/css/index.css" rel="stylesheet">
-            <script src="${basePath}spec-up/js/custom-elements.js"></script>
+            <link href="${assetPrefix}spec-up/css/custom-elements.css" rel="stylesheet">
+            <link href="${assetPrefix}spec-up/css/prism.css" rel="stylesheet">
+            <link href="${assetPrefix}spec-up/css/chart.css" rel="stylesheet">
+            <link href="${assetPrefix}spec-up/css/font-awesome.css" rel="stylesheet">
+            <link href="${assetPrefix}spec-up/css/index.css" rel="stylesheet">
+            <script src="${assetPrefix}spec-up/js/custom-elements.js"></script>
           </head>
           <body features="${Object.keys(features).join(' ')}">
             
@@ -142,7 +139,7 @@ async function render(config) {
                   <svg icon><use xlink:href="#nested_list"></use></svg>
                 </span>
                 <a id="logo" href="${config.logo_link ? config.logo_link : '#_'}">
-                  <img src="${config.logo.match(':') ? config.logo : basePath + config.logo}" />
+                  <img src="${config.logo.match(':') ? config.logo : assetPrefix + config.logo}" />
                 </a>
                 <span issue-count animate panel-toggle="repo_issues">
                   <svg icon><use xlink:href="#github"></use></svg>
@@ -181,11 +178,11 @@ async function render(config) {
 
           </body>
           <script>window.specConfig = ${JSON.stringify(config)}</script>
-          <script src="${basePath}spec-up/js/markdown-it.js"></script>
-          <script src="${basePath}spec-up/js/prism.js" data-manual></script>
-          <script src="${basePath}spec-up/js/mermaid.js"></script>
-          <script src="${basePath}spec-up/js/chart.js"></script>
-          <script src="${basePath}spec-up/js/index.js"></script>
+          <script src="${assetPrefix}spec-up/js/markdown-it.js"></script>
+          <script src="${assetPrefix}spec-up/js/prism.js" data-manual></script>
+          <script src="${assetPrefix}spec-up/js/mermaid.js"></script>
+          <script src="${assetPrefix}spec-up/js/chart.js"></script>
+          <script src="${assetPrefix}spec-up/js/index.js"></script>
         </html>
       `, function(err, data){
         if (err) reject(err);
@@ -194,5 +191,3 @@ async function render(config) {
     });
   });
 }
-
-// Mermaid CDN version: https://cdn.jsdelivr.net/npm/mermaid@8.4.5/dist/mermaid.min.js

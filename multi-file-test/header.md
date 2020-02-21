@@ -1,4 +1,4 @@
-Spec-Up Multi-File Example
+Spec-Up Multi-File Examplish
 ==================
 
 **Specification Status:** Strawman

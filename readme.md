@@ -21,3 +21,5 @@ Using Spec-Up is easy peasy lemon squeezy:
 3. In your main node.js file, drop in this bad boy: `require('spec-up')()`
 
 Boom! That's it. Spec-Up will auto-detect the location of your spec files and auto-generate your spec's HTML version every time you hit save after editing your `spec.md` files. Did I mention you can have multiple specs located at any depth in your project and Spec-Up will crawl up in there and render all those specs like a damn boss? Well it does, because why the hell not.
+
+ // "resource_path": "/docs",

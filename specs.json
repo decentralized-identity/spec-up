@@ -1,0 +1,34 @@
+
+{
+  "specs": [
+    {
+      "title": "Spec-Up Example",
+      "spec_directory": "./single-file-test",
+      "output_path": "./",
+      "logo": "logo.svg",
+      "logo_link": "https://github.com/csuwildcat/spec-up",
+      "source": {
+        "host": "github",
+        "account": "csuwildcat",
+        "repo": "spec-up"
+      }
+    },
+    {
+      "title": "Spec-Up Multi-File Example",
+      "spec_directory": "./multi-file-test",
+      "markdown_paths": [
+        "header.md",
+        "abstract.md",
+        "getting-started.md",
+        "features.md"
+      ],
+      "logo": "logo.svg",
+      "logo_link": "https://github.com/csuwildcat/spec-up",
+      "source": {
+        "host": "github",
+        "account": "csuwildcat",
+        "repo": "spec-up"
+      }
+    }
+  ]
+}

@@ -23,7 +23,7 @@ Let's face it, other tools and generators for writing technical specifications a
 ## Getting Started
 
 Using Spec-Up is easy peasy lemon squeezy:
-
+s
 1. `npm install spec-up`
 2. Create a subdirectory in your project with two files:
     - `spec.json` - add some basic config values, like your desired HTML page title, etc.
