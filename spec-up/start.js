@@ -26,7 +26,7 @@ let init = async () => {
         render.bind(null, config)
       )
     });
-    console.log(json);
+    // console.log(json);
   }
   catch (e) {
     console.log(e);
@@ -109,7 +109,6 @@ async function render(config) {
       let doc = docs.join("\n");
       var features = (({ source, logo }) => ({ source, logo }))(config);
       var assetPrefix = config.assetRelativePrefix;
-      console.log(assetPrefix);
       var svg = await fs.readFile('./spec-up/icons.svg', 'utf8') || '';
 
       fs.writeFile(config.destination + 'index.html', `
