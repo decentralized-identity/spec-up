@@ -15,18 +15,18 @@ function copyFiles(path){
 
 let writeResources = async () => {
   try{
-    let resourcePath = '../../spec-up';
-    if (options.event === 'start') {
-      let config = await fs.readJson('../../specs.json');
-      resourcePath = `../../${
-        config.resource_path ? config.resource_path.trim().replace(/^\/|^[./]+/, '').replace(/\/$/g, '') + '/' : ''
-      }spec-up`;
+    console.log(process.env.npm_lifecycle_event, process.env.npm_package_version);
+    let config = await fs.readJson('../../specs.json');
+    let resourcePath = `../../${
+      config.resource_path ? config.resource_path.trim().replace(/^\/|^[./]+/, '').replace(/\/$/g, '') + '/' : ''
+    }spec-up`;
+    if (process.env.npm_lifecycle_event === 'postinstall') {
+      copyFiles(resourcePath); 
+    }
+    else {
       fs.pathExists(resourcePath).then(exists => {
         if (!exists) copyFiles(resourcePath)
       }).catch(err => console.error(err))
-    }
-    else {
-      copyFiles(resourcePath);
     }
   }
   catch(e) {
