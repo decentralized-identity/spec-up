@@ -1,12 +1,6 @@
 
 const fs = require('fs-extra');
 
-let options = {};
-process.argv.slice(2).forEach(arg => {
-  let kv = arg.split('=');
-  args[kv[0]] = kv[1] || true;
-});
-
 function copyFiles(path){
   fs.copy('./spec-up', path).then(() => {
     console.log('----- FILES COPIED -----');
@@ -16,14 +10,15 @@ function copyFiles(path){
 let writeResources = async () => {
   try{
     console.log(process.env.npm_lifecycle_event, process.env.npm_package_version);
+    let event = process.env.npm_lifecycle_event;
     let config = await fs.readJson('../../specs.json');
     let resourcePath = `../../${
       config.resource_path ? config.resource_path.trim().replace(/^\/|^[./]+/, '').replace(/\/$/g, '') + '/' : ''
     }spec-up`;
-    if (process.env.npm_lifecycle_event === 'postinstall') {
+    if (event === 'postinstall') {
       copyFiles(resourcePath); 
     }
-    else {
+    else if (event === 'prestart'){
       fs.pathExists(resourcePath).then(exists => {
         if (!exists) copyFiles(resourcePath)
       }).catch(err => console.error(err))
