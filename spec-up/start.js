@@ -16,9 +16,11 @@ let init = async () => {
     let json = await fs.readJson(projectPath + '/specs.json');
     json.specs.forEach(config => {
       config.destination = (config.output_path || config.spec_directory).trim().replace(/\/$/g, '') + '/';
-      config.assetRelativePrefix = getRelativePrefix(config.destination);
+      config.destinationResourcePrefix = getRelativePrefix(config.destination);
+      config.rootResourcePrefix = './';
       if (json.resource_path) {
-        config.assetRelativePrefix += json.resource_path.trim().replace(/^\/|^[./]+/, '').replace(/\/$/g, '') + '/';
+        let path = config.rootResourcePrefix = json.resource_path.trim().replace(/\/$/g, '') + '/';
+        config.destinationResourcePrefix += path.replace(/^\/|^[./]+/, '');
       } 
       gulp.watch(
         [config.spec_directory + '/**/*', '!' + config.destination + 'index.html'],
@@ -108,9 +110,8 @@ async function render(config) {
     })).then(async docs => {
       let doc = docs.join("\n");
       var features = (({ source, logo }) => ({ source, logo }))(config);
-      var assetPrefix = config.assetRelativePrefix;
-      var svg = await fs.readFile('./spec-up/icons.svg', 'utf8') || '';
-
+      var assetPrefix = config.destinationResourcePrefix;
+      var svg = await fs.readFile(config.rootResourcePrefix + 'spec-up/icons.svg', 'utf8') || '';
       fs.writeFile(config.destination + 'index.html', `
         <!DOCTYPE html>
         <html lang="en">
