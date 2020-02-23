@@ -17,7 +17,7 @@ module.exports = async () => {
   let writeResources = async () => {
     try{
       let event = process.env.npm_lifecycle_event;
-      let prefix = ''
+      let prefix = '';
       if (event === 'postinstall') prefix = '../.';
       let config = await fs.readJson(prefix + './specs.json');
       let resourcePath = prefix + `./${
