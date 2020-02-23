@@ -23,8 +23,6 @@ module.exports = () => {
       let resourcePath = prefix + `./${
         config.resource_path ? config.resource_path.trim().replace(/^\/|^[./]+/, '').replace(/\/$/g, '') + '/' : ''
       }spec-up`;
-
-      console.log(postinstall, resourcePath);
       if (postinstall || !(await fs.pathExists(resourcePath))) await copyFiles(resourcePath);
       if (!postinstall) startModule(resourcePath)
     }
