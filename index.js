@@ -1,5 +1,5 @@
 
-module.exports = async () => {
+module.exports = () => {
 
   const fs = require('fs-extra');
   const pkg = require('pkg-dir');
@@ -16,19 +16,17 @@ module.exports = async () => {
   
   let writeResources = async () => {
     try{
-      let event = process.env.npm_lifecycle_event;
       let prefix = '';
-      if (event === 'postinstall') prefix = '../.';
+      let postinstall = process.env.npm_lifecycle_event === 'postinstall';
+      if (postinstall) prefix = '../.';
       let config = await fs.readJson(prefix + './specs.json');
       let resourcePath = prefix + `./${
         config.resource_path ? config.resource_path.trim().replace(/^\/|^[./]+/, '').replace(/\/$/g, '') + '/' : ''
       }spec-up`;
-      if (event === 'postinstall') copyFiles(resourcePath); 
-      else {
-        fs.pathExists(resourcePath).then(exists => {
-          exists ? startModule(resourcePath) : copyFiles(resourcePath).then(() => startModule(resourcePath))
-        }).catch(err => console.error(err))
-      }
+
+      console.log(postinstall, resourcePath);
+      if (postinstall || !(await fs.pathExists(resourcePath))) await copyFiles(resourcePath);
+      if (!postinstall) startModule(resourcePath)
     }
     catch(e) {
       console.log(e);
