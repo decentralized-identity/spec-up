@@ -1,6 +1,6 @@
 {
   "name": "spec-up",
-  "version": "0.9.51",
+  "version": "0.9.52",
   "description": "Technical specification drafting tool that generates rich specification documents from markdown.",
   "main": "./index",
   "repository": {
