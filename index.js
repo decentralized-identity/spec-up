@@ -1,5 +1,5 @@
 
-module.exports = () => {
+module.exports = async () => {
 
   const fs = require('fs-extra');
   const pkg = require('pkg-dir');
@@ -13,24 +13,19 @@ module.exports = () => {
       console.log('--- Spec-Up files copied ---');
     }).catch(e => console.log(e));
   }
-  
-  let writeResources = async () => {
-    try{
-      let prefix = '';
-      let postinstall = process.env.npm_lifecycle_event === 'postinstall';
-      if (postinstall) prefix = '../.';
-      let config = await fs.readJson(prefix + './specs.json');
-      let resourcePath = prefix + `./${
-        config.resource_path ? config.resource_path.trim().replace(/^\/|^[./]+/, '').replace(/\/$/g, '') + '/' : ''
-      }spec-up`;
-      if (postinstall || !(await fs.pathExists(resourcePath))) await copyFiles(resourcePath);
-      if (!postinstall) startModule(resourcePath)
-    }
-    catch(e) {
-      console.log(e);
-    }
+
+  try{
+    let postinstall = process.env.npm_lifecycle_event === 'postinstall';
+    let prefix = postinstall ? '../.' : '';
+    let config = await fs.readJson(prefix + './specs.json');
+    let resourcePath = prefix + `./${
+      config.resource_path ? config.resource_path.trim().replace(/^\/|^[./]+/, '').replace(/\/$/g, '') + '/' : ''
+    }spec-up`;
+    if (postinstall || !(await fs.pathExists(resourcePath))) await copyFiles(resourcePath);
+    if (!postinstall) startModule(resourcePath)
   }
-  
-  writeResources();
+  catch(e) {
+    console.log(e);
+  }
 
 }
