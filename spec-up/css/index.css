@@ -135,7 +135,11 @@ h6 code {
 
 ol {
   margin: 0;
-  padding: 0 1em;
+  padding: 0 2em;
+}
+
+dt {
+  margin: 1em 0 0;
 }
 
 dd {
@@ -225,6 +229,10 @@ svg[icon] {
   height: 1.25em;
   vertical-align: text-top;
   pointer-events: none;
+}
+
+p > img {
+  max-width: 100%;
 }
 
 /* Custom Elements */
