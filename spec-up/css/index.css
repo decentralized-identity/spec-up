@@ -26,6 +26,14 @@
   scroll-margin: calc(var(--header-height) / 0.75) 0 0;
 }
 
+body:not([hashscroll]) *:target {
+  animation: highlight 1.5s 0.25s ease;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
 body {
   margin: 0;
   padding: 0;
@@ -674,5 +682,11 @@ pre[class*="language-"] {
   }
   100% {
     opacity: 1;
+  }
+}
+
+@keyframes highlight {
+  50% {
+    background-color: yellow;
   }
 }
