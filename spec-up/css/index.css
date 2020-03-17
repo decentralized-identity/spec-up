@@ -319,9 +319,6 @@ slide-panel > *:not(header):not(footer) {
     display: block;
     color: #178217;
   }
-  .note .notice-link:before {
-    content: "NOTE";
-  }
 
 .issue {
   background: rgb(233, 240, 251);
@@ -332,22 +329,13 @@ slide-panel > *:not(header):not(footer) {
     color: rgb(30, 76, 174);
   }
 
-  .issue .notice-link:before {
-    content: "ISSUE";
-  }
-
 .warning {
   background: #FBE9E9;
   border-color: #E05252;
 }
   .warning .notice-link {
-    content: "WARNING";
     display: block;
     color: #AE1E1E;
-  }
-
-  .warning .notice-link:before {
-    content: "WARNING";
   }
 
 .example {
@@ -363,13 +351,18 @@ slide-panel > *:not(header):not(footer) {
     font-family: Heebo, san-serif;
   }
 
-  .example .notice-link:before {
-    content: "EXAMPLE";
-  }
-
   .example pre[class*="language-"] {
     padding: 0;
     border-radius: 0;
+  }
+
+.todo {
+  background: #fbe4ff;
+  border-color: #9700e2;
+}
+  .todo .notice-link {
+    display: block;
+    color: #6d00a2;
   }
 
 .mermaid {

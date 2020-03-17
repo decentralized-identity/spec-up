@@ -55,6 +55,14 @@ In addition to all the normal markdown support (things like headings, lists, etc
   Check this out.
 :::
 
+::: note
+  And here's another.
+:::
+
+::: note
+  And one more!
+:::
+
 <pre>
 ::: issue Issue Notice
   I take issue with that, kind sir.
@@ -76,6 +84,17 @@ In addition to all the normal markdown support (things like headings, lists, etc
 :::
 
 <pre>
+::: todo Really Important
+  Get this done!
+:::
+</pre>
+
+::: todo Really Important
+  Get this done!
+:::
+
+
+<pre>
 ::: example Code Example
   Put your code block here
 :::
@@ -84,7 +103,6 @@ In addition to all the normal markdown support (things like headings, lists, etc
 ::: example Code Example
   Put your code block here
 :::
-
 
 ### Tables
 
