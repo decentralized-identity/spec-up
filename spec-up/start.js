@@ -49,6 +49,7 @@ var noticeTypes = {
   warning: 1,
   todo: 1
 };
+var noticeTitles = {};
 var noticeParser = {
   validate: function(params) {
     let matches = params.match(/(\w+)\s?(.*)?/);
@@ -56,14 +57,13 @@ var noticeParser = {
   },
   render: function (tokens, idx) {
     let matches = tokens[idx].info.match(/(\w+)\s?(.*)?/);
-    let matched = {};
     if (matches && tokens[idx].nesting === 1) {
       let id;
       let type = matches[1];
       if (matches[2]) {
-        let _id = matches[2].trim().replace(/\s+/g , '-').toLowerCase();
-        id += matched[_id] ? matched[_id]++ : '';
-        matched[_id] = 1;
+        id = matches[2].trim().replace(/\s+/g , '-').toLowerCase();
+        if (noticeTitles[id]) id += '-' + noticeTitles[id]++;
+        else noticeTitles[id] = 1;
       }
       else id = type + '-' + noticeTypes[type]++;
       return `<div id="${id}" class="notice ${type}"><a class="notice-link" href="#${id}">${type.toUpperCase()}</a>`;

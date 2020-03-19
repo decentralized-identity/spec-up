@@ -376,6 +376,13 @@ pre,
 code[class*="language-"],
 pre[class*="language-"] {
   font-size: 0.9em;
+  margin: 1em 0 1.5em;
+}
+
+.example pre,
+.example code[class*="language-"],
+.example pre[class*="language-"] {
+  margin: 0;
 }
 
 #svg {

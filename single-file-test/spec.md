@@ -63,6 +63,10 @@ In addition to all the normal markdown support (things like headings, lists, etc
   And one more!
 :::
 
+::: note Basic Note
+  One last note!!!
+:::
+
 <pre>
 ::: issue Issue Notice
   I take issue with that, kind sir.
