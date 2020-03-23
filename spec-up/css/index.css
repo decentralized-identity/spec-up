@@ -340,7 +340,7 @@ slide-panel > *:not(header):not(footer) {
 
 .example {
   color: #cebe00;
-  background: #1d1f21;
+  background: #192027;
   border-left: 0.5em solid;
 }
 
@@ -377,6 +377,7 @@ code[class*="language-"],
 pre[class*="language-"] {
   font-size: 0.9em;
   margin: 1em 0 1.5em;
+  border-radius: 3px;
 }
 
 .example pre,
@@ -398,7 +399,7 @@ pre[class*="language-"] {
   background: rgba(255,255,255,0.9);
   border-bottom: 1px solid rgba(0,0,0,0.15);
   box-shadow: 0px 1px 3px 1px rgba(0,0,0,0.1);
-  z-index: 1;
+  z-index: 2;
 }
 
   #logo {
@@ -566,6 +567,7 @@ pre[class*="language-"] {
 #toc_list {
   flex: 1;
   padding: 1em 0.8em;
+  overflow: auto;
 }
 
 .toc {
