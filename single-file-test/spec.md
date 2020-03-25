@@ -105,7 +105,12 @@ In addition to all the normal markdown support (things like headings, lists, etc
 </pre>
 
 ::: example Code Example
-  Put your code block here
+```json
+{
+  "foo": "bar",
+  "baz": 1
+}
+```
 :::
 
 ### Tables

@@ -1,11 +1,11 @@
 
-module.exports = async () => {
+module.exports = async (nowatch) => {
 
   const fs = require('fs-extra');
   const pkg = require('pkg-dir');
 
   function startModule(path){
-    require('child_process').fork(path + '/start.js');
+    require('child_process').fork(path + '/start.js', nowatch ? ['nowatch'] : []);
   }
 
   async function copyFiles(path){
