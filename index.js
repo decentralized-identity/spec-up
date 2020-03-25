@@ -1,11 +1,11 @@
 
-module.exports = async (nowatch) => {
+module.exports = async (options = {}) => {
 
   const fs = require('fs-extra');
   const pkg = require('pkg-dir');
 
-  function startModule(path){
-    require('child_process').fork(path + '/start.js', nowatch ? ['nowatch'] : []);
+  function startModule(path, nowatch){
+    require('child_process').fork(path + '/start.js', nowatch || options.nowatch ? ['nowatch'] : []);
   }
 
   async function copyFiles(path){
@@ -21,7 +21,10 @@ module.exports = async (nowatch) => {
     let resourcePath = prefix + `./${
       config.resource_path ? config.resource_path.trim().replace(/^\/|^[./]+/, '').replace(/\/$/g, '') + '/' : ''
     }spec-up`;
-    if (postinstall || !(await fs.pathExists(resourcePath))) await copyFiles(resourcePath);
+    if (postinstall || !(await fs.pathExists(resourcePath))) {
+      await copyFiles(resourcePath);
+      if (options.renderOnInstall) startModule(resourcePath, true);
+    }
     if (!postinstall) startModule(resourcePath)
   }
   catch(e) {
