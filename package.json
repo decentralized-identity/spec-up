@@ -1,6 +1,6 @@
 {
   "name": "spec-up",
-  "version": "0.9.64",
+  "version": "0.9.65",
   "description": "Technical specification drafting tool that generates rich specification documents from markdown.",
   "main": "./index",
   "repository": {
@@ -26,6 +26,7 @@
   },
   "homepage": "https://github.com/csuwildcat/spec-up#readme",
   "dependencies": {
+    "d3": "5.15.1",
     "mermaid": "8.4.8",
     "gulp": "4.0.2",
     "globby": "11.0.0",
