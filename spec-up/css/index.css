@@ -53,6 +53,7 @@ h1 {
 strong strong {
   font-size: 0.9em;
   color: #b30032;
+  font-weight: normal;
 }
 
 main article > ol,
