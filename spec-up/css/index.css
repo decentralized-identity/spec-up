@@ -54,6 +54,7 @@ strong strong {
   font-size: 0.9em;
   color: #b30032;
   font-weight: normal;
+  text-transform: uppercase;
 }
 
 main article > ol,
