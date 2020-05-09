@@ -17,7 +17,6 @@ let init = async () => {
     let projectPath = await pkg(__dirname);
     let json = await fs.readJson(projectPath + '/specs.json');
     json.specs.forEach(async config => {
-      config.logo = normalizePath(config.logo);
       config.spec_directory = normalizePath(config.spec_directory);    
       config.destination = normalizePath(config.output_path || config.spec_directory);
       await fs.ensureDir(config.destination).catch(err => {
