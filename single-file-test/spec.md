@@ -275,6 +275,7 @@ sequenceDiagram
 ```
 </pre>
 
+
 ```json
 {
   "@context": "https://www.w3.org/ns/did/v1",
@@ -292,3 +293,33 @@ sequenceDiagram
   }]
 }
 ```
+
+### Tab Panels
+
+<tab-panels selected-index="0">
+  <nav>
+    <button type="button">First Tab</button>
+    <button type="button">Second Tab</button>
+  </nav>
+
+  <section>
+
+```json
+{
+  "foo": "foo",
+  "baz": 1
+}
+```
+
+  </section>
+  <section>
+
+```json
+{
+  "foo": "bar",
+  "baz": 2
+}
+```
+
+  </section>
+</tab-panels>
