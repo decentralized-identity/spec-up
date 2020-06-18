@@ -105,7 +105,6 @@ tab-panels > nav {
 }
 
 tab-panels > nav > * {
-  position: relative;
   padding: 0.5em 1em;
   background: #e0e0e0;
   border: 1px solid #aaa;
@@ -114,7 +113,6 @@ tab-panels > nav > * {
 }
 
 tab-panels > nav > *:focus {
-  z-index: 1;
   outline: none;
   background: #ccc;
 }
