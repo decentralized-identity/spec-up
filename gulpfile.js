@@ -1,6 +1,7 @@
 
 const fs = require('fs-extra');
 const gulp = require('gulp');
+const run = require('gulp-run');
 const bump = require('gulp-bump');
 const concat = require('gulp-concat');
 const terser = require('gulp-terser');
@@ -64,9 +65,13 @@ async function bumpVersion(){
           .pipe(gulp.dest('./'));
 }
 
+async function renderSpecs(){
+  return run('npm run render').exec() 
+}
+
 gulp.task('build', compileAssets);
 
-gulp.task('publish', gulp.parallel(compileAssets, bumpVersion));
+gulp.task('publish', gulp.parallel(compileAssets, bumpVersion, renderSpecs));
 
 gulp.task('watch', () => gulp.watch([
   'spec-up/**/*',
