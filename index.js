@@ -9,6 +9,7 @@ module.exports = async (options = {}) => {
     options.version = package.version;
     if (nowatch) options.nowatch = true;
     var child = require('child_process').fork(path + '/start.js', [JSON.stringify(options)]);
+    child.on('exit', () => process.exit(0));
     process.on('exit', () => child.kill());
   }
 
