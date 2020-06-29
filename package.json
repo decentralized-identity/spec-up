@@ -1,6 +1,6 @@
 {
   "name": "spec-up",
-  "version": "0.9.76",
+  "version": "0.9.77",
   "description": "Technical specification drafting tool that generates rich specification documents from markdown.",
   "main": "./index",
   "repository": {
@@ -10,7 +10,8 @@
   "scripts": {
     "postinstall": "node -e \"require('./index')()\"",
     "edit": "node -e \"require('./index')()\"",
-    "render": "node -e \"require('./index')(true)\""
+    "render": "node -e \"require('./index')({ nowatch: true })\"",
+    "dev": "node -e \"require('./index')({ dev: true })\""
   },
   "keywords": [
     "spec",
@@ -27,6 +28,13 @@
   "homepage": "https://github.com/csuwildcat/spec-up#readme",
   "dependencies": {
     "gulp": "4.0.2",
+    "gulp-bump": "3.2.0",
+    "gulp-concat": "2.6.1",
+    "gulp-terser": "1.2.0",
+    "gulp-connect": "5.7.0",
+    "gulp-clean-css": "4.3.0",
+    "merge-stream": "2.0.0",
+    "axios": "0.19.2",
     "globby": "11.0.0",
     "pkg-dir": "4.2.0",
     "fs-extra": "8.1.0",

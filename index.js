@@ -3,9 +3,13 @@ module.exports = async (options = {}) => {
 
   const fs = require('fs-extra');
   const pkg = require('pkg-dir');
+  package = require('./package.json'); 
 
   function startModule(path, nowatch){
-    require('child_process').fork(path + '/start.js', nowatch || options.nowatch ? ['nowatch'] : []);
+    options.version = package.version;
+    if (nowatch) options.nowatch = true;
+    var child = require('child_process').fork(path + '/start.js', [JSON.stringify(options)]);
+    process.on('exit', () => child.kill());
   }
 
   async function copyFiles(path){
@@ -13,6 +17,10 @@ module.exports = async (options = {}) => {
       console.log('--- Spec-Up files copied ---');
     }).catch(e => console.log(e));
   }
+
+  process.on('SIGINT', () => {
+    process.exit(0);
+  });
 
   try{
     let postinstall = process.env.npm_lifecycle_event === 'postinstall';
