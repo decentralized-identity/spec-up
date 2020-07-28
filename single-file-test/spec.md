@@ -106,6 +106,7 @@ In addition to all the normal markdown support (things like headings, lists, etc
 
 ::: example Code Example
 ```json
+// Some comment in JSON
 {
   "foo": "bar",
   "baz": 1
