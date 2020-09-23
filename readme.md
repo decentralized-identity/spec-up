@@ -36,6 +36,6 @@ Using Spec-Up is easy peasy lemon squeezy:
             "repo": "sidetree"
         }
         ```
-3. In your main node.js file, drop in this bad boy: `require('spec-up')()`
+3. In your main node.js file, or as a package.json script entry, use this invocation call: `require('spec-up')()`
 
 Boom! That's it. Spec-Up will auto-detect modifications to files in your `spec_directory` and auto-generate your spec's updated HTML document every time you save a change.
