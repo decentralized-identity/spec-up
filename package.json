@@ -58,6 +58,7 @@
     "markdown-it-textual-uml": "0.1.3",
     "markdown-it-toc-and-anchor": "4.2.0",
     "merge-stream": "2.0.0",
-    "pkg-dir": "4.2.0"
+    "pkg-dir": "4.2.0",
+    "pdf-puppeteer": "1.1.10"
   }
 }

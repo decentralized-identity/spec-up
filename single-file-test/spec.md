@@ -163,27 +163,53 @@ Citric acid cycle | 2 ATP ||
 |♖|♘|♗|♕|♔|  |  |♖ |
 
 
-### Diagrams
+### Sequence Diagrams
 <pre>
 ```mermaid
 sequenceDiagram
-  participant Alice
-  participant Bob
-  Alice->>Bob: Hey Bob
-  Bob-->>Alice: Great!
-  Alice->>Bob: How about you?
-  Bob-->>Alice: Doing well!
+  Alice ->> Bob: Hello Bob, how are you?
+  Bob-->>John: How about you John?
+  Bob--x Alice: I am good thanks!
+  Bob-x John: I am good thanks!
+  Note right of John: Bob thinks a long<br/>long time, so long<br/>that the text does<br/>not fit on a row.
+
+  Bob-->Alice: Checking with John...
+  Alice->John: Yes... John, how are you?
 ```
 </pre>
 
 ```mermaid
 sequenceDiagram
-  participant Alice
-  participant Bob
-  Alice->>Bob: Hey Bob
-  Bob-->>Alice: Great!
-  Alice->>Bob: How about you?
-  Bob-->>Alice: Doing well!
+  Alice ->> Bob: Hello Bob, how are you?
+  Bob-->>John: How about you John?
+  Bob--x Alice: I am good thanks!
+  Bob-x John: I am good thanks!
+  Note right of John: Bob thinks a long<br/>long time, so long<br/>that the text does<br/>not fit on a row.
+
+  Bob-->Alice: Checking with John...
+  Alice->John: Yes... John, how are you?
+```
+
+### Flows
+
+<pre>
+```mermaid
+graph TD
+  A[Start] --> B{Is it?}
+  B -->|Yes| C[OK]
+  C --> D[Rethink]
+  D --> B
+  B -->|No| E[End]
+```
+</pre>
+
+```mermaid
+graph TD
+  A[Start] --> B{Is it?}
+  B -->|Yes| C[OK]
+  C --> D[Rethink]
+  D --> B
+  B -->|No| E[End]
 ```
 
 ### Charts

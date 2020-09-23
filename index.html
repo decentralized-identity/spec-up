@@ -86,9 +86,9 @@
 </pre>
 <div id="basic-note" class="notice note"><a class="notice-link" href="#basic-note">NOTE</a><p>Check this out.</p>
 </div>
-<div id="note-1" class="notice note"><a class="notice-link" href="#note-1">NOTE</a><p>And here’s another.</p>
+<div id="note-45" class="notice note"><a class="notice-link" href="#note-45">NOTE</a><p>And here’s another.</p>
 </div>
-<div id="note-2" class="notice note"><a class="notice-link" href="#note-2">NOTE</a><p>And one more!</p>
+<div id="note-46" class="notice note"><a class="notice-link" href="#note-46">NOTE</a><p>And one more!</p>
 </div>
 <div id="basic-note-1" class="notice note"><a class="notice-link" href="#basic-note-1">NOTE</a><p>One last note!!!</p>
 </div>
@@ -273,26 +273,49 @@ Citric acid cycle | 2 ATP ||
 </tr>
 </tbody>
 </table>
-<h3 id="diagrams"><a class="toc-anchor" href="#diagrams">§</a> Diagrams</h3>
+<h3 id="sequence-diagrams"><a class="toc-anchor" href="#sequence-diagrams">§</a> Sequence Diagrams</h3>
 <pre>
 ```mermaid
 sequenceDiagram
-  participant Alice
-  participant Bob
-  Alice->>Bob: Hey Bob
-  Bob-->>Alice: Great!
-  Alice->>Bob: How about you?
-  Bob-->>Alice: Doing well!
+  Alice ->> Bob: Hello Bob, how are you?
+  Bob-->>John: How about you John?
+  Bob--x Alice: I am good thanks!
+  Bob-x John: I am good thanks!
+  Note right of John: Bob thinks a long<br/>long time, so long<br/>that the text does<br/>not fit on a row.
+
+  Bob-->Alice: Checking with John...
+  Alice->John: Yes... John, how are you?
 ```
 </pre>
 <div class="mermaid">
 sequenceDiagram
-  participant Alice
-  participant Bob
-  Alice->>Bob: Hey Bob
-  Bob-->>Alice: Great!
-  Alice->>Bob: How about you?
-  Bob-->>Alice: Doing well!
+  Alice ->> Bob: Hello Bob, how are you?
+  Bob-->>John: How about you John?
+  Bob--x Alice: I am good thanks!
+  Bob-x John: I am good thanks!
+  Note right of John: Bob thinks a long<br/>long time, so long<br/>that the text does<br/>not fit on a row.
+
+  Bob-->Alice: Checking with John...
+  Alice->John: Yes... John, how are you?
+</div>
+<h3 id="flows"><a class="toc-anchor" href="#flows">§</a> Flows</h3>
+<pre>
+```mermaid
+graph TD
+  A[Start] --> B{Is it?}
+  B -->|Yes| C[OK]
+  C --> D[Rethink]
+  D --> B
+  B -->|No| E[End]
+```
+</pre>
+<div class="mermaid">
+graph TD
+  A[Start] --> B{Is it?}
+  B -->|Yes| C[OK]
+  C --> D[Rethink]
+  D --> B
+  B -->|No| E[End]
 </div>
 <h3 id="charts"><a class="toc-anchor" href="#charts">§</a> Charts</h3>
 <pre>
@@ -416,7 +439,8 @@ sequenceDiagram
 <li><a href="#table-of-contents">Table of Contents</a></li>
 <li><a href="#notices">Notices</a></li>
 <li><a href="#tables">Tables</a></li>
-<li><a href="#diagrams">Diagrams</a></li>
+<li><a href="#sequence-diagrams">Sequence Diagrams</a></li>
+<li><a href="#flows">Flows</a></li>
 <li><a href="#charts">Charts</a></li>
 <li><a href="#syntax-highlighting">Syntax Highlighting</a></li>
 <li><a href="#tab-panels">Tab Panels</a></li>
