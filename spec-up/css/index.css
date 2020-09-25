@@ -1,21 +1,3 @@
-/* heebo-300 - latin */
-@font-face {
-  font-family: 'Heebo';
-  font-style: normal;
-  font-weight: 300;
-  src: local('Heebo Light'), local('Heebo-Light'),
-       url('../fonts/heebo-v5-latin-300.woff2') format('woff2'), /* Chrome 26+, Opera 23+, Firefox 39+ */
-       url('../fonts/heebo-v5-latin-300.woff') format('woff'); /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
-}
-/* heebo-regular - latin */
-@font-face {
-  font-family: 'Heebo';
-  font-style: normal;
-  font-weight: 400;
-  src: local('Heebo'), local('Heebo-Regular'),
-       url('../fonts/heebo-v5-latin-regular.woff2') format('woff2'), /* Chrome 26+, Opera 23+, Firefox 39+ */
-       url('../fonts/heebo-v5-latin-regular.woff') format('woff'); /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
-}
 
 :root {
   --dif-blue: #1e6fb0;

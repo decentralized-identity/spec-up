@@ -64,16 +64,20 @@ let init = async () => {
         }
       }
       else {
+        let headCSS = await fs.readFile('./spec-up/compiled/head.css', 'utf8');
+        let headJS = await fs.readFile('./spec-up/compiled/head.js', 'utf8');
+        let bodyJS = await fs.readFile('./spec-up/compiled/body.js', 'utf8');
         var assetTags = {
-          head:`<link href="${assetPrefix}spec-up/compiled/head.css" rel="stylesheet"/>
-                <script src="${assetPrefix}spec-up/compiled/head.js"></script>`,
-          body: `<script src="${assetPrefix}spec-up/compiled/body.js" data-manual></script>`
+          head:`<link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400&display=swap" rel="stylesheet">
+                <style>${headCSS}</style>
+                <script>${headJS}</script>`,
+          body: `<script>${bodyJS}</script>`
         }
       }
       if (json.resource_path) {
         config.rootResourcePrefix = normalizePath(json.resource_path);
       }
-      if (!options.nowatch) {
+      else if (!options.nowatch) {
         gulp.watch(
           [config.spec_directory + '**/*', '!' + config.destination + 'index.html'],
           render.bind(null, config, assetTags)
