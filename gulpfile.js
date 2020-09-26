@@ -10,27 +10,27 @@ const cleanCSS = require('gulp-clean-css');
 const axios = require('axios');
 const package = require('./package.json'); 
 
-var assets = {
+let assets = {
   head: {
     css: [
-      'spec-up/css/custom-elements.css',
-      'spec-up/css/prism.css',
-      'spec-up/css/chart.css',
-      'spec-up/css/font-awesome.css',
-      'spec-up/css/index.css'
+      'assets/css/custom-elements.css',
+      'assets/css/prism.css',
+      'assets/css/chart.css',
+      'assets/css/font-awesome.css',
+      'assets/css/index.css'
     ],
     js: [
-      'spec-up/js/utils.js',
-      'spec-up/js/custom-elements.js'
+      'assets/js/utils.js',
+      'assets/js/custom-elements.js'
     ]
   },
   body: {
     js: [
-      'spec-up/js/markdown-it.js',
-      'spec-up/js/prism.js',
-      'spec-up/js/mermaid.js',
-      'spec-up/js/chart.js',
-      'spec-up/js/index.js'
+      'assets/js/markdown-it.js',
+      'assets/js/prism.js',
+      'assets/js/mermaid.js',
+      'assets/js/chart.js',
+      'assets/js/index.js'
     ]
   }
 };
@@ -71,11 +71,11 @@ async function renderSpecs(){
 
 gulp.task('build', compileAssets);
 
-gulp.task('publish', gulp.parallel(compileAssets, bumpVersion, renderSpecs));
+gulp.task('publish', gulp.parallel(compileAssets, renderSpecs, bumpVersion));
 
 gulp.task('watch', () => gulp.watch([
-  'spec-up/**/*',
-  '!spec-up/css/head.css',
-  '!spec-up/js/head.js',
-  '!spec-up/js/body.js'
+  'assets/**/*',
+  '!assets/css/head.css',
+  '!assets/js/head.js',
+  '!assets/js/body.js'
 ], gulp.parallel('build')));

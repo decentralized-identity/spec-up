@@ -1,6 +1,6 @@
 {
   "name": "spec-up",
-  "version": "0.9.83",
+  "version": "0.9.84",
   "description": "Technical specification drafting tool that generates rich specification documents from markdown.",
   "main": "./index",
   "repository": {
@@ -8,11 +8,9 @@
     "url": "git+https://github.com/csuwildcat/spec-up.git"
   },
   "scripts": {
-    "postinstall": "node -e \"require('./index')()\"",
     "edit": "node -e \"require('./index')()\"",
     "render": "node -e \"require('./index')({ nowatch: true })\"",
-    "dev": "node -e \"require('./index')({ dev: true })\"",
-    "pdf": "node -e \"require('./index')({ pdf: true })\""
+    "dev": "node -e \"require('./index')({ dev: true })\""
   },
   "keywords": [
     "spec",
