@@ -35,9 +35,10 @@ let assets = {
   }
 };
 
-let compileLocation = 'spec-up/compiled';
+let compileLocation = 'assets/compiled';
 
 async function compileAssets(){
+  await fs.ensureDir(compileLocation);
   await fs.emptyDir(compileLocation);
   return new Promise(resolve => {
     mergeStreams(
@@ -71,7 +72,7 @@ async function renderSpecs(){
 
 gulp.task('build', compileAssets);
 
-gulp.task('publish', gulp.parallel(compileAssets, renderSpecs, bumpVersion));
+gulp.task('publish', gulp.series(gulp.parallel(compileAssets, bumpVersion), renderSpecs));
 
 gulp.task('watch', () => gulp.watch([
   'assets/**/*',
