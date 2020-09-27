@@ -1,6 +1,6 @@
 {
   "name": "spec-up",
-  "version": "0.9.85",
+  "version": "0.9.86",
   "description": "Technical specification drafting tool that generates rich specification documents from markdown.",
   "main": "./index",
   "repository": {
@@ -42,7 +42,7 @@
     "markdown-it-attrs": "3.0.1",
     "markdown-it-chart": "^0.2.0",
     "markdown-it-container": "^2.0.0",
-    "markdown-it-deflist": "^2.0.3",
+    "markdown-it-deflist": "^2.1.0",
     "markdown-it-footnote": "^3.0.1",
     "markdown-it-icons": "^0.4.1",
     "markdown-it-ins": "^2.0.0",

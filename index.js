@@ -49,12 +49,12 @@ module.exports = async (options = {}) => {
       if (options.dev) {
         var assetTags = {
           head: assets.head.css.map(path => {
-            return `<link href="${modulePath + path}" rel="stylesheet"/>`;
+            return `<link href="${path}" rel="stylesheet"/>`;
           }).join('') + assets.head.js.map(path => {
-            return `<script src="${modulePath + path}"></script>`;
+            return `<script src="${path}"></script>`;
           }).join(''),
           body: assets.body.js.map(path => {
-            return `<script src="${modulePath + path}" data-manual></script>`;
+            return `<script src="${path}" data-manual></script>`;
           }).join('')
         }
       }
@@ -64,8 +64,7 @@ module.exports = async (options = {}) => {
         let bodyJS = await fs.readFile(modulePath + '/assets/compiled/body.js', 'utf8');
         let svg = await fs.readFile(modulePath + '/assets/icons.svg', 'utf8') || '';
         var assetTags = {
-          head:`<link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400&display=swap" rel="stylesheet">
-                <style>${headCSS}</style>
+          head:`<style>${headCSS}</style>
                 <script>${headJS}</script>`,
           body: `<script>${bodyJS}</script>`,
           svg: svg
@@ -134,6 +133,7 @@ module.exports = async (options = {}) => {
       .use(require('markdown-it-ins'))
       .use(require('markdown-it-latex').default)
       .use(require('markdown-it-mark'))
+      .use(require('markdown-it-mermaid-plugin'))
       .use(require('markdown-it-textual-uml'))
       .use(require('markdown-it-multimd-table'), {
         multiline:  true,
@@ -172,6 +172,7 @@ module.exports = async (options = {}) => {
                 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     
                 <title>${spec.title}</title>
+                <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400&display=swap" rel="stylesheet">
                 ${assets.head}
               </head>
               <body features="${Object.keys(features).join(' ')}">
