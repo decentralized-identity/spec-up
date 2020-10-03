@@ -7,7 +7,7 @@ const concat = require('gulp-concat');
 const terser = require('gulp-terser');
 const mergeStreams = require('merge-stream');
 const cleanCSS = require('gulp-clean-css');
-const axios = require('axios');
+const axios = require('axios').default;
 const package = require('./package.json'); 
 
 let assets = {
@@ -35,11 +35,22 @@ let assets = {
   }
 };
 
+
 let compileLocation = 'assets/compiled';
+
+async function fetchSpecRefs(){
+  return Promise.all([
+    axios.get('https://ghcdn.rawgit.org/tobie/specref/master/refs/ietf.json'),
+    axios.get('https://ghcdn.rawgit.org/tobie/specref/master/refs/w3c.json'),
+    axios.get('https://ghcdn.rawgit.org/tobie/specref/master/refs/whatwg.json')
+  ]).then(async results => {
+    let json = Object.assign(results[0].data, results[1].data, results[2].data);
+    return fs.outputFile(compileLocation + '/refs.json', JSON.stringify(json));
+  }).catch(e => console.log(e));
+}
 
 async function compileAssets(){
   await fs.ensureDir(compileLocation);
-  await fs.emptyDir(compileLocation);
   return new Promise(resolve => {
     mergeStreams(
       gulp.src(assets.head.css)
@@ -69,6 +80,8 @@ async function bumpVersion(){
 async function renderSpecs(){
   return run('npm run render').exec() 
 }
+
+gulp.task('refs', fetchSpecRefs);
 
 gulp.task('build', compileAssets);
 

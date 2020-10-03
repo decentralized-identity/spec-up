@@ -143,6 +143,7 @@ ol, ul {
 }
 
 dt {
+  font-weight: bold;
   margin: 1em 0 0;
 }
 
@@ -368,6 +369,21 @@ slide-panel > *:not(header):not(footer) {
   align-items: center;
   justify-content: center;
   margin: 1.5em 0 1.75em;
+}
+
+.reference-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.reference-list dd a,
+.reference-status {
+  font-style: italic;
+}
+
+.reference-status {
+  color: #007b09;
 }
 
 pre,

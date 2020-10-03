@@ -6,10 +6,11 @@ Spec-Up Example
 **Latest Draft:**
   [https://csuwildcat.github.io/spec-up](https://csuwildcat.github.io/spec-up)
 
-**Editors:**
+Editors:
 ~ [Daniel Buchner](https://www.linkedin.com/in/dbuchner/)
-<!-- -->
-**Participate:**
+<br>
+
+Participate:
 ~ [GitHub repo](https://github.com/csuwildcat/spec-up)
 ~ [File a bug](https://github.com/csuwildcat/spec-up/issues)
 ~ [Commit history](https://github.com/csuwildcat/spec-up/commits/master)
@@ -320,7 +321,6 @@ graph TD
   }]
 }
 ```
-
 ### Tab Panels
 
 <tab-panels selected-index="0">
@@ -351,4 +351,39 @@ graph TD
   </section>
 </tab-panels>
 
+### External Spec References
+
+You can reference external specifications from IETF, W3C, and WHATWG as follows: 
+
+1. Anywhere in your document you want to referece an external spec, use the `ref`-[prefixed] custom token format: `[[ref:RFC4122]]`
+2. Wherever in your document you want to print out all your references, use the `ref` custom token format _without any spec name_: `[[ref]]`
+  - If you want to split up your references into groups (e.g. normative vs informative), just make sure to use dash-delimited unique reference grouping string in your custom tokens: `[[ref-norm:RFC4122]]`, `[[ref-inform:RFC4122]]`, `[[ref-foo:RFC4122]]`, etc.
+  - To print out a custom group's references, just include the grouping string for a given set of references in a custom token _without any spec name_: `[[ref-norm]]`, `[[ref-inform]]`, `[[ref-foo]]`.
+
+Here are a set of example references that are distributed among the reference groups `ref`, `ref-norm`, `ref-inform`:
+
+- [[ref:RFC3548]] (`[[ref:RFC3548]]`)
+- [[ref-norm:DID-CORE]] (`[[ref-norm:DID-CORE]]`)
+- [[ref-norm:DID-SPEC-REGISTRIES]] (`[[ref-norm:DID-SPEC-REGISTRIES]]`)
+- [[ref-inform:RFC6901]] (`[[ref-inform:RFC6901]]`)
+- [[ref-inform:RFC7230]] (`[[ref-inform:RFC7230]]`)
+
+#### Default References
+
+This is what is printed out when you include the `[[ref]]` custom token in your Markdown:
+
+[[ref]]
+
+
+#### Normative References
+
+This is what is printed out when you include the `[[ref-norm]]` custom token in your Markdown:
+
+[[ref-norm]]
+
+#### Informative References
+
+This is what is printed out when you include the `[[ref-inform]]` custom token in your Markdown:
+
+[[ref-inform]]
 
