@@ -1,7 +1,7 @@
 'use strict';
 
 const levels = 2;
-const openChar = '[';
+const openString = '['.repeat(levels);
 const closeString = ']'.repeat(levels);
 const contentRegex = /\s*([^\s\[\]:]+):?\s*([^\]\n]+)?/i;
 
@@ -10,8 +10,8 @@ module.exports = function(md, templates = {}) {
    md.inline.ruler.after('emphasis', 'templates', function templates_ruler(state, silent) {   
 
     var start = state.pos;
-    let prefix = state.src.slice(start, start + levels)
-    for (let c of prefix) if (c !== openChar) return false;
+    let prefix = state.src.slice(start, start + levels);
+    if (prefix !== openString) return false;
     var indexOfClosingBrace = state.src.indexOf(closeString, start);
 
     if (indexOfClosingBrace > 0) {

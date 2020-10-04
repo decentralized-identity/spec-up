@@ -8,7 +8,6 @@ Spec-Up Example
 
 Editors:
 ~ [Daniel Buchner](https://www.linkedin.com/in/dbuchner/)
-<br>
 
 Participate:
 ~ [GitHub repo](https://github.com/csuwildcat/spec-up)
@@ -36,15 +35,25 @@ Using Spec-Up is easy peasy lemon squeezy:
 
 Boom! That's it. Spec-Up will auto-detect modifications to files in your `spec_directory` and auto-generate your spec's updated HTML document every time you save a change.
 
-## Feature Flexin
-
-In addition to all the normal markdown support (things like headings, lists, etc.), which you can see in this example document and all over GitHub readme pages, Spec-Up integrates a ton of other useful features that make it easy to articulate your technical content. Let's checkout some of the goodies:
-
-### Table of Contents
+## Table of Contents
 
 <-- You see that beautiful TOC over there to your left? (tap the header link to slide it out on mobile) Yeah, you don't need to do a damn thing, that just magically appears based on your use of `h2`, `h3`, and `h4` headings.
 
-### Notices
+## Terminology
+
+[[def: Term 1, Term One]]:
+~ This is the first term we will define.
+
+[[def: Term 2, Term Two]]:
+~ This is the second term, but not the last.
+
+[[def: Term 3, Term Three]]:
+~ This is the last term, because you know what they say: third term's the charm!
+
+Now let's refer to some of the terms defined above to show how the auto-linking of terms works: [[ref: Term 1]], [[ref: Term Two]], [[ref: Term 3]]. Additionally, as long as you define your terms using Definition Lists (as seen in the markdown above), you will be able to hover any reference to a term to see a tooltip with its definition.
+
+
+## Notices
 
 <pre>
 ::: note Basic Note
@@ -115,7 +124,7 @@ In addition to all the normal markdown support (things like headings, lists, etc
 ```
 :::
 
-### Tables
+## Tables
 
 <pre>
 Stage | Direct Products | ATP Yields
@@ -164,7 +173,7 @@ Citric acid cycle | 2 ATP ||
 |♖|♘|♗|♕|♔|  |  |♖ |
 
 
-### Sequence Diagrams
+## Sequence Diagrams
 <pre>
 ```mermaid
 sequenceDiagram
@@ -191,7 +200,7 @@ sequenceDiagram
   Alice->John: Yes... John, how are you?
 ```
 
-### Flows
+## Flows
 
 <pre>
 ```mermaid
@@ -213,7 +222,7 @@ graph TD
   B -->|No| E[End]
 ```
 
-### Charts
+## Charts
 
 <pre>
 ```chart
@@ -281,7 +290,7 @@ graph TD
 }
 ```
 
-### Syntax Highlighting
+## Syntax Highlighting
 
 <pre>
 ```json
@@ -321,7 +330,7 @@ graph TD
   }]
 }
 ```
-### Tab Panels
+## Tab Panels
 
 <tab-panels selected-index="0">
   <nav>
@@ -351,39 +360,39 @@ graph TD
   </section>
 </tab-panels>
 
-### External Spec References
+## External Spec References
 
 You can reference external specifications from IETF, W3C, and WHATWG as follows: 
 
-1. Anywhere in your document you want to referece an external spec, use the `ref`-[prefixed] custom token format: `[[ref:RFC4122]]`
-2. Wherever in your document you want to print out all your references, use the `ref` custom token format _without any spec name_: `[[ref]]`
-  - If you want to split up your references into groups (e.g. normative vs informative), just make sure to use dash-delimited unique reference grouping string in your custom tokens: `[[ref-norm:RFC4122]]`, `[[ref-inform:RFC4122]]`, `[[ref-foo:RFC4122]]`, etc.
-  - To print out a custom group's references, just include the grouping string for a given set of references in a custom token _without any spec name_: `[[ref-norm]]`, `[[ref-inform]]`, `[[ref-foo]]`.
+1. Anywhere in your document you want to referece an external specification, use the `spec`-prefixed custom token format: `[[spec:RFC4122]]`
+2. Wherever in your document you want to print out all your external specification references, use the `spec` custom token format _without any spec name_: `[[spec]]`
+  - If you want to split up your references into groups (e.g. normative vs informative), just make sure to use dash-delimited unique reference grouping string in your custom tokens: `[[spec-norm:RFC4122]]`, `[[spec-inform:RFC4122]]`, `[[spec-foo:RFC4122]]`, etc.
+  - To print out a custom group's references, just include the grouping string for a given set of references in a custom token _without any spec name_: `[[spec-norm]]`, `[[spec-inform]]`, `[[spec-foo]]`.
 
-Here are a set of example references that are distributed among the reference groups `ref`, `ref-norm`, `ref-inform`:
+Here are a set of example references that are distributed among the reference groups `spec`, `spec-norm`, `spec-inform`:
 
-- [[ref:RFC3548]] (`[[ref:RFC3548]]`)
-- [[ref-norm:DID-CORE]] (`[[ref-norm:DID-CORE]]`)
-- [[ref-norm:DID-SPEC-REGISTRIES]] (`[[ref-norm:DID-SPEC-REGISTRIES]]`)
-- [[ref-inform:RFC6901]] (`[[ref-inform:RFC6901]]`)
-- [[ref-inform:RFC7230]] (`[[ref-inform:RFC7230]]`)
+- [[spec:RFC3548]] (`[[spec:RFC3548]]`)
+- [[spec-norm:DID-CORE]] (`[[spec-norm:DID-CORE]]`)
+- [[spec-norm:DID-SPEC-REGISTRIES]] (`[[spec-norm:DID-SPEC-REGISTRIES]]`)
+- [[spec-inform:RFC6901]] (`[[spec-inform:RFC6901]]`)
+- [[spec-inform:RFC7230]] (`[[spec-inform:RFC7230]]`)
 
-#### Default References
+### Default References
 
-This is what is printed out when you include the `[[ref]]` custom token in your Markdown:
+This is what is printed out when you include the `[[spec]]` custom token in your Markdown:
 
-[[ref]]
+[[spec]]
 
 
-#### Normative References
+### Normative References
 
-This is what is printed out when you include the `[[ref-norm]]` custom token in your Markdown:
+This is what is printed out when you include the `[[spec-norm]]` custom token in your Markdown:
 
-[[ref-norm]]
+[[spec-norm]]
 
-#### Informative References
+### Informative References
 
-This is what is printed out when you include the `[[ref-inform]]` custom token in your Markdown:
+This is what is printed out when you include the `[[spec-inform]]` custom token in your Markdown:
 
-[[ref-inform]]
+[[spec-inform]]
 

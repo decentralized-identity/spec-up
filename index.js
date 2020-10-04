@@ -1,12 +1,11 @@
-const axios = require('axios').default;
 
 module.exports = async (options = {}) => {
 
   const fs = require('fs-extra');
   const pkg = require('pkg-dir');
   const gulp = require('gulp');
+  const axios = require('axios').default;
   const modulePath = await pkg(__dirname);
-  const package = require(modulePath + '/package.json');
   let config = await fs.readJson('./specs.json');
   let assets = {
     head: {
@@ -15,6 +14,7 @@ module.exports = async (options = {}) => {
         '/assets/css/prism.css',
         '/assets/css/chart.css',
         '/assets/css/font-awesome.css',
+        
         '/assets/css/index.css'
       ],
       js: [
@@ -28,6 +28,8 @@ module.exports = async (options = {}) => {
         '/assets/js/prism.js',
         '/assets/js/mermaid.js',
         '/assets/js/chart.js',
+        '/assets/js/popper.js',
+        '/assets/js/tippy.js',
         '/assets/js/index.js'
       ]
     }
@@ -37,37 +39,37 @@ module.exports = async (options = {}) => {
     return path.trim().replace(/\/$/g, '') + '/';
   }
 
+  function renderRefGroup(type){
+    let group = specGroups[type];
+    if (!group) return '';
+    let html = Object.keys(group).sort().reduce((html, name) => {
+      let ref = group[name];
+      return html += `
+        <dt id="ref:${name}">${name}</dt>
+        <dd>
+          <cite><a href="${ref.href}">${ref.title}</a></cite>. 
+          ${ref.authors.join('; ')}; ${ref.rawDate}. <span class="reference-status">Status: ${ref.status}</span>.
+        </dd>
+      `;
+    }, '<dl class="reference-list">')
+    return `\n${html}\n</dl>\n`;
+  }
+
   try {
 
-    options.version = package.version;
-    
-    function renderRefGroup(type){
-      let group = referenceGroups[type];
-      if (!group) return '';
-      let html = Object.keys(group).sort().reduce((html, name) => {
-        let ref = group[name];
-        return html += `
-          <dt id="ref-${name}">${name}</dt>
-          <dd>
-            <a href="${ref.href}">${ref.title}</a>. 
-            ${ref.authors.join('; ')}; ${ref.rawDate}. <span class="reference-status">Status: ${ref.status}</span>.
-          </dd>
-        `;
-      }, '<dl class="reference-list">')
-      return `\n${html}\n</dl>\n`;
-    }
-
     var toc;
-    var referenceGroups = {};
-    var noticeTypes = {
+    var specGroups = {};
+    const noticeTypes = {
       note: 1,
       issue: 1,
       example: 1,
       warning: 1,
       todo: 1
     };
-    const refNameRegex = /^ref$|^ref[-]*\w+$/i;
-    const specRefs = await fs.readJson(modulePath + '/assets/compiled/refs.json');
+    const spaceRegex = /\s+/g;
+    const specNameRegex = /^spec$|^spec[-]*\w+$/i;
+    const terminologyRegex = /^def$|^ref/i;
+    const specCorpus = await fs.readJson(modulePath + '/assets/compiled/refs.json');
     const containers = require('markdown-it-container');
     const md = require('markdown-it')({
         html: true,
@@ -76,24 +78,37 @@ module.exports = async (options = {}) => {
       })
       .use(require('./markdown-it-plugins/templates.js'), [
         {
-          filter: type => type.match(refNameRegex),
+          filter: type => type.match(specNameRegex),
           parse(token, type, name){
             if (name) {
               let _name = name.toUpperCase();
-              let ref = specRefs[name.toLowerCase()] || specRefs[_name] || specRefs[name];
-              if (ref) {
-                ref._name = _name;
-                let group = referenceGroups[type] = referenceGroups[type] || {};
-                token.info.ref = group[_name] = ref;
+              let spec = specCorpus[name.toLowerCase()] || specCorpus[_name] || specCorpus[name];
+              if (spec) {
+                spec._name = _name;
+                let group = specGroups[type] = specGroups[type] || {};
+                token.info.spec = group[_name] = spec;
               }
             }
           },
           render(token, type, name){
             if (name){
-              let ref = token.info.ref;
-              return ref ? `[<a href="#ref-${ref._name}">${ref._name}</a>]` : 'REFERENCE_NOT_FOUND';
+              let spec = token.info.spec;
+              return spec ? `[<a class="spec-reference" href="#ref:${spec._name}">${spec._name}</a>]` : 'REFERENCE_NOT_FOUND';
             }
             else return renderRefGroup(type);
+          }
+        },
+        {
+          filter: type => type.match(terminologyRegex),
+          parse(token, type, primary){
+            if (type === 'def'){
+              token.content = token.info.args.reduce((acc, syn) => {
+                return `<span id="term:${syn.replace(spaceRegex, '-').toLowerCase()}">${acc}</span>`;
+              }, primary);
+            }
+            else {
+              token.content = `<a class="term-reference" href="#term:${primary.replace(spaceRegex, '-').toLowerCase()}">${primary}</a>`;
+            }
           }
         }
       ])
@@ -150,8 +165,7 @@ module.exports = async (options = {}) => {
     async function render(spec, assets) {
       try {
         noticeTitles = {};
-        referenceGroups = { _: {} };
-        currentReferenceGroup = '_';
+        specGroups = { _: {} };
         console.log('Rendering: ' + spec.title);
         return new Promise(async (resolve, reject) => {
           Promise.all((spec.markdown_paths || ['spec.md']).map(path => {
@@ -251,15 +265,9 @@ module.exports = async (options = {}) => {
 
       if (options.dev) {
 
-        assetTags.head = assets.head.css.map(path => {
-            return `<link href="${path}" rel="stylesheet"/>`;
-          }).join('') + assets.head.js.map(path => {
-            return `<script src="${path}"></script>`;
-          }).join('');
-
-        assetTags.body = assets.body.js.map(path => {
-            return `<script src="${path}" data-manual></script>`;
-          }).join('');
+        assetTags.head = assets.head.css.map(path => `<link href="${path}" rel="stylesheet"/>`).join('') + 
+                         assets.head.js.map(path =>  `<script src="${path}"></script>`).join('');
+        assetTags.body = assets.body.js.map(path => `<script src="${path}" data-manual></script>`).join('');
 
       }
       else {

@@ -2,6 +2,43 @@
 :root {
   --dif-blue: #1e6fb0;
   --header-height: 48px;
+  
+  --no-color: 255,255,255;
+  --dim-color: 225,225,225;
+  --low-color: 200,200,200;
+  --mid-color: 100,100,100;
+  --high-color: 50,50,50;
+  --full-color: 0,0,0;
+  --active-color: #3aaaff;
+
+  --page-bk: rgb(var(--no-color));
+  --page-text: rgb(var(--full-color));
+  --page-text-hover: rgb(var(--full-color));
+
+  --element-bk: rgb(var(--no-color));
+  --element-bk-hover: rgba(var(--low-color), 0.5);
+  --element-bk-transparent: rgba(var(--dim-color), 0.92);
+  --element-border: rgba(var(--high-color), 0.4);
+  --element-border-focus: rgb(var(--full-color), 0.75);
+  --element-border-radius: 3px;
+  --element-shadow-low: 0 1px 3px 0px rgba(0,0,0, 0.25);
+  --element-shadow-mid: 0 1px 3px 0px rgba(0,0,0, 0.35);
+  --element-shadow-high: 0 1px 5px 0px rgba(0,0,0, 0.45);
+
+  --input-bk: rgba(var(--dim-color), 0.6);
+  --input-border: rgba(var(--high-color), 0.4);
+
+  /* --header-height: 3.5em; */
+  --header-bk: rgba(var(--low-color), 0.985);
+  --header-text: rgb(var(--full-color));
+  --header-border: rgba(var(--full-color), 0.1);
+  --header-border-inverse: rgba(var(--no-color), 0.3);
+
+  --text-shadow: 0 1px 2px rgba(0,0,0,0.8);
+  
+  --svg-size: 2vw;
+  
+  --font-size: 14px;
 }
 
 *:target {
@@ -30,6 +67,10 @@ h1 {
   font-size: 2em;
   font-weight: bold;
   line-height: 1.2em;
+}
+
+h2 {
+  margin: 1.5em 0 1em;
 }
 
 strong strong {
@@ -255,6 +296,20 @@ slide-panel > *:not(header):not(footer) {
   flex: 1;
 }
 
+/* Functional Elements */
+
+.tooltip {
+  display: block;
+  position: absolute;
+  width: 10em;
+  max-width: 95vw;
+  padding: 0.5em 0.5em 0.6em;
+  background: var(--page-bk);
+  pointer-events: none;
+  z-index: 101;
+}
+
+
 /*******************/
 
 [issue-count]:after {
@@ -371,6 +426,8 @@ slide-panel > *:not(header):not(footer) {
   margin: 1.5em 0 1.75em;
 }
 
+/* Spec References */
+
 .reference-list {
   margin: 0;
   padding: 0;
@@ -384,6 +441,12 @@ slide-panel > *:not(header):not(footer) {
 
 .reference-status {
   color: #007b09;
+}
+
+/* Terminology References */
+
+.term-reference {
+  
 }
 
 pre,

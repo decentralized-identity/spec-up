@@ -54,5 +54,20 @@ document.querySelectorAll('.chartjs').forEach(chart => {
   new Chart(chart, JSON.parse(chart.textContent));
 });
 
+/* Tooltips */
+
+delegateEvent('pointerover', '.term-reference', (e, anchor) => {
+  let term = document.getElementById((anchor.getAttribute('href') || '').replace('#', ''));
+  if (!term) return;
+  let dt = term.closest('dt');
+  let dd = dt && dt.nextElementSibling;
+  if (dd.tagName === 'DD') {
+    anchor._tooltip = anchor._tooltip || tippy(anchor, {
+      content: dd.innerHTML,
+      allowHTML: true,
+      inlinePositioning: true
+    });
+  }
+}, { passive: true });
 
 

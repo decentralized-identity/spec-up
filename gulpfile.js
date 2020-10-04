@@ -30,6 +30,8 @@ let assets = {
       'assets/js/prism.js',
       'assets/js/mermaid.js',
       'assets/js/chart.js',
+      'assets/js/popper.js',
+      'assets/js/tippy.js',
       'assets/js/index.js'
     ]
   }
