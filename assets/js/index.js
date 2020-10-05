@@ -85,8 +85,7 @@ delegateEvent('pointerover', '.term-reference', (e, anchor) => {
               ${headings.map((th, i) => {
                 return `<tr><td>${th.textContent}:</td><td>${tds[i] ? tds[i].innerHTML : ''}</td></tr>`
               }).join('')}
-            </table>
-          `;
+            </table>`;
         }
       }
       break;

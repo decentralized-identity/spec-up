@@ -101,13 +101,14 @@ module.exports = async (options = {}) => {
         {
           filter: type => type.match(terminologyRegex),
           parse(token, type, primary){
+            if (!primary) return;
             if (type === 'def'){
               token.content = token.info.args.reduce((acc, syn) => {
                 return `<span id="term:${syn.replace(spaceRegex, '-').toLowerCase()}">${acc}</span>`;
               }, primary);
             }
             else {
-              token.content = `<a class="term-reference" href="#term:${primary.replace(spaceRegex, '-').toLowerCase()}">${primary}</a>`;
+              return `<a class="term-reference" href="#term:${primary.replace(spaceRegex, '-').toLowerCase()}">${primary}</a>`;
             }
           }
         }

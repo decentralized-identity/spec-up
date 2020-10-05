@@ -403,6 +403,7 @@ You can reference external specifications from IETF, W3C, and WHATWG as follows:
 Here are a set of example references that are distributed among the reference groups `spec`, `spec-norm`, `spec-inform`:
 
 - [[spec:RFC3548]] (`[[spec:RFC3548]]`)
+- [[spec:RFC7518]] (`[[spec:RFC7518]]`)
 - [[spec-norm:DID-CORE]] (`[[spec-norm:DID-CORE]]`)
 - [[spec-norm:DID-SPEC-REGISTRIES]] (`[[spec-norm:DID-SPEC-REGISTRIES]]`)
 - [[spec-inform:RFC6901]] (`[[spec-inform:RFC6901]]`)

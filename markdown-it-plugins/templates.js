@@ -39,7 +39,8 @@ module.exports = function(md, templates = {}) {
   md.renderer.rules.template = function(tokens, idx, options, env, renderer) {
     let token = tokens[idx];
     let template = token.info.template;
-    return template.render ? template.render(token, token.info.type, ...token.info.args) : token.content;
+    let content = template.render && template.render(token, token.info.type, ...token.info.args);
+    return content || openString + token.content + closeString;
   }
 
 };
