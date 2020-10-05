@@ -81,8 +81,11 @@ module.exports = async (options = {}) => {
           filter: type => type.match(specNameRegex),
           parse(token, type, name){
             if (name) {
-              let _name = name.toUpperCase();
-              let spec = specCorpus[name.toLowerCase()] || specCorpus[_name] || specCorpus[name];
+              let _name = name.replace(spaceRegex, '-').toUpperCase();
+              let spec = specCorpus[_name] ||
+                         specCorpus[_name.toLowerCase()] || 
+                         specCorpus[name.toLowerCase()] || 
+                         specCorpus[name];
               if (spec) {
                 spec._name = _name;
                 let group = specGroups[type] = specGroups[type] || {};
