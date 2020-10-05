@@ -98,14 +98,14 @@ customElements.define("slide-panels",class extends HTMLElement{static get observ
 ~ This is the last term, because you know what they say: third term's the charm!
 </pre>
 <dl>
-<dt>[[<span id="term:term-one"><span id="term:term-1">Term 1</span></span>]]:</dt>
+<dt><span id="term:term-one"><span id="term:term-1">Term 1</span></span>:</dt>
 <dd>This is the first term we will define.</dd>
-<dt>[[<span id="term:term-two"><span id="term:term-2">Term 2</span></span>]]:</dt>
+<dt><span id="term:term-two"><span id="term:term-2">Term 2</span></span>:</dt>
 <dd>This is the second term, but not the last.</dd>
-<dt>[[<span id="term:term-three"><span id="term:term-3">Term 3</span></span>]]:</dt>
+<dt><span id="term:term-three"><span id="term:term-3">Term 3</span></span>:</dt>
 <dd>This is the last term, because you know what they say: third term’s the charm!</dd>
 </dl>
-<p>Now let’s refer to some of the terms defined above to show how the auto-linking of terms works: [[ref: Term 1]], [[ref: Term Two]], [[ref: Term 3]]. Additionally, as long as you define your terms using Definition Lists (as seen in the markdown above), you will be able to hover any reference to a term to see a tooltip with its definition.</p>
+<p>Now let’s refer to some of the terms defined above to show how the auto-linking of terms works: <a class="term-reference" href="#term:term-1">Term 1</a>, <a class="term-reference" href="#term:term-two">Term Two</a>, <a class="term-reference" href="#term:term-3">Term 3</a>. Additionally, as long as you define your terms using Definition Lists (as seen in the markdown above), you will be able to hover any reference to a term to see a tooltip with its definition.</p>
 <h3 id="table-defined-terms"><a class="toc-anchor" href="#table-defined-terms">§</a> Table-defined Terms</h3>
 <p>You can also reference table-oriented terms and definitions which are decomposed into heading-titled attributes in distinct cells:</p>
 <pre>
@@ -123,13 +123,13 @@ Variable           | Default Value | Max Value
 </thead>
 <tbody>
 <tr>
-<td>[[<span id="term:variable-1">Variable 1</span>]]</td>
+<td><span id="term:variable-1">Variable 1</span></td>
 <td>123</td>
 <td>9999</td>
 </tr>
 </tbody>
 </table>
-<p>Anytime you add a definition of a term in the first column of a table, like [[ref: Variable 1]], it will link to the cell and display a tooltip with the entire set of row values when you hover the term.</p>
+<p>Anytime you add a definition of a term in the first column of a table, like <a class="term-reference" href="#term:variable-1">Variable 1</a>, it will link to the cell and display a tooltip with the entire set of row values when you hover the term.</p>
 <h2 id="notices"><a class="toc-anchor" href="#notices">§</a> Notices</h2>
 <pre>
 ::: note Basic Note

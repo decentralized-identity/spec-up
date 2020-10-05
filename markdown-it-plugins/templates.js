@@ -27,7 +27,9 @@ module.exports = function(md, templates = {}) {
       let token = state.push('template', '', 0);
       token.content = match[0];
       token.info = { type, template, args };
-      if (template.parse) template.parse(token, type, ...args);
+      if (template.parse) {
+        token.content = template.parse(token, type, ...args) || token.content;
+      }
 
       state.pos = indexOfClosingBrace + levels;
       return true;
@@ -39,8 +41,10 @@ module.exports = function(md, templates = {}) {
   md.renderer.rules.template = function(tokens, idx, options, env, renderer) {
     let token = tokens[idx];
     let template = token.info.template;
-    let content = template.render && template.render(token, token.info.type, ...token.info.args);
-    return content || openString + token.content + closeString;
+    if (template.render) {
+      return template.render(token, token.info.type, ...token.info.args) || (openString + token.content + closeString);
+    }
+    return token.content;
   }
 
 };

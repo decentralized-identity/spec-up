@@ -106,7 +106,7 @@ module.exports = async (options = {}) => {
           parse(token, type, primary){
             if (!primary) return;
             if (type === 'def'){
-              token.content = token.info.args.reduce((acc, syn) => {
+              return token.info.args.reduce((acc, syn) => {
                 return `<span id="term:${syn.replace(spaceRegex, '-').toLowerCase()}">${acc}</span>`;
               }, primary);
             }

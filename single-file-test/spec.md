@@ -427,4 +427,3 @@ This is what is printed out when you include the `[[spec-norm]]` custom token in
 This is what is printed out when you include the `[[spec-inform]]` custom token in your Markdown:
 
 [[spec-inform]]
-
