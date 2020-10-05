@@ -93,7 +93,7 @@ module.exports = async (options = {}) => {
           render(token, type, name){
             if (name){
               let spec = token.info.spec;
-              return spec ? `[<a class="spec-reference" href="#ref:${spec._name}">${spec._name}</a>]` : `[${spec._name}]`;
+              if (spec) return `[<a class="spec-reference" href="#ref:${spec._name}">${spec._name}</a>]`;
             }
             else return renderRefGroup(type);
           }
