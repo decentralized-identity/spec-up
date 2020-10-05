@@ -39,7 +39,11 @@ Boom! That's it. Spec-Up will auto-detect modifications to files in your `spec_d
 
 <-- You see that beautiful TOC over there to your left? (tap the header link to slide it out on mobile) Yeah, you don't need to do a damn thing, that just magically appears based on your use of `h2`, `h3`, and `h4` headings.
 
-## Terminology
+## Term References
+
+### Definition Lists
+
+Many specs may want to include a section for terminology references, and Definition Lists are a great way to do that. Here's how to leverage Spec-Up's automatic term reference features via Definition List markup:
 
 [[def: Term 1, Term One]]:
 ~ This is the first term we will define.
@@ -51,6 +55,23 @@ Boom! That's it. Spec-Up will auto-detect modifications to files in your `spec_d
 ~ This is the last term, because you know what they say: third term's the charm!
 
 Now let's refer to some of the terms defined above to show how the auto-linking of terms works: [[ref: Term 1]], [[ref: Term Two]], [[ref: Term 3]]. Additionally, as long as you define your terms using Definition Lists (as seen in the markdown above), you will be able to hover any reference to a term to see a tooltip with its definition.
+
+### Table-defined Terms
+
+You can also reference table-oriented terms and definitions which are decomposed into heading-titled attributes in distinct cells:
+
+<pre>
+Variable            | Default Value | Max Value
+------------------- | ------------- | ---------
+[[def: Variable 1]] | 123           | 9999
+</pre>
+
+Variable            | Default Value | Max Value
+------------------- | ------------- | ---------
+[[def: Variable 1]] | 123           | 9999
+
+
+Anytime you add a definition of a term in the first column of a table, like [[ref: Variable 1]], it will link to the cell and display a tooltip with the entire set of row values when you hover the term.
 
 
 ## Notices
@@ -171,7 +192,6 @@ Citric acid cycle | 2 ATP ||
 |  |  |  |  |  |♘|  |  |
 |♙|♙|♙|♙|  |♙|♙|♙ |
 |♖|♘|♗|♕|♔|  |  |♖ |
-
 
 ## Sequence Diagrams
 <pre>

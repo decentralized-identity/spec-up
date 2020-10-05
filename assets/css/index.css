@@ -192,7 +192,18 @@ dd {
   margin-left: 1.5em;
 }
 
-table {
+main {
+  box-sizing: border-box;
+  float: right;
+  width: 75%;
+  min-width: calc(100% - 325px);
+  max-width: calc(100% - 275px);
+  padding: 0.5em 2em 1.5em 2em;
+  background: #fff;
+  box-shadow: 0px 0px 5px -1px rgba(0,0,0,0.3);
+}
+
+main table {
   display: block;
   width: -webkit-fill-available;
   width: fit-content;
@@ -206,25 +217,25 @@ table {
   hyphens: manual;
 }
 
-thead tr th {
+main thead tr th {
   color: #fff;
   background: var(--dif-blue);
   border: 1px solid #003f72;
   text-shadow: 0px 1px 1px rgba(0,0,0,0.5);
 }
 
-tr {
+main tr {
   border-top: 1px solid #cccccc;
   background-color: white;
   margin: 0;
   padding: 0;
 }
 
-tr:nth-child(2n) {
+main tr:nth-child(2n) {
   background-color: #f0f0f0;
 }
 
-tr th {
+main tr th {
   font-weight: normal;
   border: 1px solid #cccccc;
   text-align: left;
@@ -232,37 +243,27 @@ tr th {
   padding: 6px 13px;
 }
 
-td, th {
+main td,
+main th {
   padding: 9px 13px;
   border: 1px solid #d8d8d8;
 }
 
-tr td {
+main tr td {
   border: 1px solid #ccc;
   text-align: left;
   margin: 0;
   padding: 0.55em 0.75em 0.55em;
 }
 
-tr th :first-child,
-tr td :first-child {
+main tr th :first-child,
+main tr td :first-child {
   margin-top: 0;
 }
 
-tr th :last-child,
-tr td :last-child {
+main tr th :last-child,
+main tr td :last-child {
   margin-bottom: 0;
-}
-
-main {
-  box-sizing: border-box;
-  float: right;
-  width: 75%;
-  min-width: calc(100% - 325px);
-  max-width: calc(100% - 275px);
-  padding: 0.5em 2em 1.5em 2em;
-  background: #fff;
-  box-shadow: 0px 0px 5px -1px rgba(0,0,0,0.3);
 }
 
 table pre[class*="language-"] {
@@ -296,17 +297,42 @@ slide-panel > *:not(header):not(footer) {
   flex: 1;
 }
 
-/* Functional Elements */
+/* Tooltips */
 
-.tooltip {
-  display: block;
-  position: absolute;
-  width: 10em;
-  max-width: 95vw;
-  padding: 0.5em 0.5em 0.6em;
-  background: var(--page-bk);
-  pointer-events: none;
-  z-index: 101;
+.tippy-content {
+  padding: 0.5em 0.6em 0.4em;
+}
+
+.tippy-content header {
+  margin: 0 0 0.4em;
+  padding: 0.15em 0.3em 0.1em;
+  border-radius: 2px;
+  background: rgba(255,255,255,0.1);
+  text-shadow: 0 1px rgba(0,0,0, 0.9);
+}
+
+.tippy-content table,
+.tippy-content tbody,
+.tippy-content tr
+.tippy-content td {
+  margin: 0;
+  padding: 0;
+  border: none;
+  border-spacing: 0;
+  border-collapse: collapse;
+}
+
+.tippy-content table {
+  margin: 0 0.3em;
+}
+
+.tippy-content td {
+  font-size: 0.9em;
+  /* border-top: 1px solid; */
+}
+
+.tippy-content td:first-child {
+  padding: 0 0.5em 0 0;
 }
 
 

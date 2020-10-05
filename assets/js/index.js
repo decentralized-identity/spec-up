@@ -1,4 +1,6 @@
 
+(function(){
+
 var markdown = window.markdownit();
 
 /* Sidebar Interactions */
@@ -55,19 +57,41 @@ document.querySelectorAll('.chartjs').forEach(chart => {
 });
 
 /* Tooltips */
-
+let tipMap = new WeakMap();
 delegateEvent('pointerover', '.term-reference', (e, anchor) => {
   let term = document.getElementById((anchor.getAttribute('href') || '').replace('#', ''));
-  if (!term) return;
-  let dt = term.closest('dt');
-  let dd = dt && dt.nextElementSibling;
-  if (dd.tagName === 'DD') {
-    anchor._tooltip = anchor._tooltip || tippy(anchor, {
-      content: dd.innerHTML,
-      allowHTML: true,
-      inlinePositioning: true
-    });
+  if (!term || tipMap.has(anchor)) return;
+  let container = term.closest('dt, td:first-child');
+  if (!container) return;
+  let tip = {
+    allowHTML: true,
+    inlinePositioning: true
+  } 
+  switch (container.tagName) {
+    case 'DT':
+      tip.content = container.nextElementSibling.innerHTML;
+      break;
+    case 'TD':
+      let table = container.closest('table');
+      let tds = Array.from(container.closest('tr').children);
+          tds.shift();
+      if (table) {
+        let headings = Array.from(table.querySelectorAll('thead th'));
+            headings.shift();
+        if (headings.length) {
+          tip.content = `
+            <header>${container.textContent}</header>
+            <table>
+              ${headings.map((th, i) => {
+                return `<tr><td>${th.textContent}:</td><td>${tds[i] ? tds[i].innerHTML : ''}</td></tr>`
+              }).join('')}
+            </table>
+          `;
+        }
+      }
+      break;
   }
+  if (tip.content) tipMap.set(anchor, tippy(anchor, tip));
 }, { passive: true });
 
-
+})();
