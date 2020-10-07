@@ -246,9 +246,9 @@ module.exports = async (options = {}) => {
 
       if (options.dev) {
 
-        assetTags.head = assets.head.css.map(path => `<link href="/${path}" rel="stylesheet"/>`).join('') + 
-                         assets.head.js.map(path =>  `<script src="/${path}"></script>`).join('');
-        assetTags.body = assets.body.js.map(path => `<script src="/${path}" data-manual></script>`).join('');
+        assetTags.head = assets.head.css.map(path => `<link href="${path}" rel="stylesheet"/>`).join('') + 
+                         assets.head.js.map(path =>  `<script src="${path}"></script>`).join('');
+        assetTags.body = assets.body.js.map(path => `<script src="${path}" data-manual></script>`).join('');
 
       }
       else {
