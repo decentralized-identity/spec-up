@@ -10,6 +10,10 @@
   --high-color: 50,50,50;
   --full-color: 0,0,0;
   --active-color: #3aaaff;
+  --visited-color: rgb(188, 129, 255);
+  --green-status: rgb(0, 123, 9);
+  --light-green-status: rgb(0, 194, 13);
+
 
   --page-bk: rgb(var(--no-color));
   --page-text: rgb(var(--full-color));
@@ -24,6 +28,8 @@
   --element-shadow-low: 0 1px 3px 0px rgba(0,0,0, 0.25);
   --element-shadow-mid: 0 1px 3px 0px rgba(0,0,0, 0.35);
   --element-shadow-high: 0 1px 5px 0px rgba(0,0,0, 0.45);
+
+  --code-bk: #1a1e23;
 
   --input-bk: rgba(var(--dim-color), 0.6);
   --input-border: rgba(var(--high-color), 0.4);
@@ -297,10 +303,30 @@ slide-panel > *:not(header):not(footer) {
   flex: 1;
 }
 
+/* Code Examples */
+
+:not(pre) > code[class*="language-"],
+pre[class*="language-"] {
+  padding: 0.65em 0.8em 0.8em;
+  background: var(--code-bk);
+}
+
 /* Tooltips */
 
+.tippy-box {
+  box-shadow: var(--element-shadow-mid);
+}
+
+.tippy-box a {
+  color: var(--active-color);
+}
+
+.tippy-box a:visited {
+  color: var(--visited-color);
+}
+
 .tippy-content {
-  padding: 0.65em 0.6em 0.4em;
+  padding: 0.55em 0.55em 0.5em;
 }
 
 .tippy-content header {
@@ -313,13 +339,15 @@ slide-panel > *:not(header):not(footer) {
 
 .tippy-content table,
 .tippy-content tbody,
-.tippy-content tr
+.tippy-content tr,
 .tippy-content td {
   margin: 0;
   padding: 0;
   border: none;
   border-spacing: 0;
   border-collapse: collapse;
+  background: none !important;
+  background-color: transparent !important;
 }
 
 .tippy-content table {
@@ -328,15 +356,55 @@ slide-panel > *:not(header):not(footer) {
 
 .tippy-content td {
   font-size: 0.9em;
-  /* border-top: 1px solid; */
+  padding: 0.2em 0 0;
 }
 
 .tippy-content td:first-child {
-  padding: 0 0.5em 0 0;
+  padding-right: 0.5em;
 }
 
 
 /*******************/
+
+a[path-0$="github.com"]:before {
+  content: "\f09b";
+  color: var(--page-text);
+  margin: 0 0.25em 0 0;
+  font-family: 'FontAwesome';
+  text-decoration: none;
+  display: inline-block;
+  vertical-align: bottom;
+}
+
+a[path-0$="github.com"][path-3="issues"][path-4],
+a[path-0$="github.com"][path-3="projects"],
+a[path-0$="github.com"][path-3="releases"],
+a[path-0$="github.com"][path-3="pull"] {
+  text-decoration: none;
+}
+
+a[path-0$="github.com"][path-3="issues"][path-4] span,
+a[path-0$="github.com"][path-3="projects"] span,
+a[path-0$="github.com"][path-3="releases"] span,
+a[path-0$="github.com"][path-3="pull"] span {
+  display: none;
+}
+
+a[path-0$="github.com"][path-3="issues"][path-4]:after {
+  content: "Issue #" attr(path-4);
+}
+
+a[path-0$="github.com"][path-3="pull"]:after {
+  content: "Pull Request #" attr(path-4);
+}
+
+a[path-0$="github.com"][path-3="releases"]:after {
+  content: "Release " attr(path-5);
+}
+
+a[path-0$="github.com"][path-3="projects"]:after {
+  content: "Project #" attr(path-4);
+}
 
 [issue-count]:after {
   content: "Issues (" attr(issue-count) ")";
@@ -383,7 +451,7 @@ slide-panel > *:not(header):not(footer) {
 
 .notice {
   margin: 1em 0;
-  padding: 0.5em 0.9em 0.55em 0.6em;
+  padding: 0.5em 0.9em 0.55em 0.65em;
   border-left: .5em solid;
 }
 
@@ -466,14 +534,14 @@ slide-panel > *:not(header):not(footer) {
 }
 
 .reference-status {
-  color: #007b09;
+  color: var(--green-status);
+}
+
+.tippy-box .reference-status {
+  color: var(--light-green-status);
 }
 
 /* Terminology References */
-
-.term-reference {
-  
-}
 
 pre,
 code[class*="language-"],

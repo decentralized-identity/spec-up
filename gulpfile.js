@@ -8,34 +8,7 @@ const terser = require('gulp-terser');
 const mergeStreams = require('merge-stream');
 const cleanCSS = require('gulp-clean-css');
 const axios = require('axios').default;
-const package = require('./package.json'); 
-
-let assets = {
-  head: {
-    css: [
-      'assets/css/custom-elements.css',
-      'assets/css/prism.css',
-      'assets/css/chart.css',
-      'assets/css/font-awesome.css',
-      'assets/css/index.css'
-    ],
-    js: [
-      'assets/js/utils.js',
-      'assets/js/custom-elements.js'
-    ]
-  },
-  body: {
-    js: [
-      'assets/js/markdown-it.js',
-      'assets/js/prism.js',
-      'assets/js/mermaid.js',
-      'assets/js/chart.js',
-      'assets/js/popper.js',
-      'assets/js/tippy.js',
-      'assets/js/index.js'
-    ]
-  }
-};
+const assets = fs.readJsonSync('./src/asset-map.json');
 
 
 let compileLocation = 'assets/compiled';
@@ -85,7 +58,7 @@ async function renderSpecs(){
 
 gulp.task('refs', fetchSpecRefs);
 
-gulp.task('build', compileAssets);
+gulp.task('compile', compileAssets);
 
 gulp.task('publish', gulp.series(gulp.parallel(compileAssets, bumpVersion), renderSpecs));
 

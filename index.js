@@ -7,33 +7,7 @@ module.exports = async (options = {}) => {
   const axios = require('axios').default;
   const modulePath = await pkg(__dirname);
   let config = await fs.readJson('./specs.json');
-  let assets = {
-    head: {
-      css: [
-        '/assets/css/custom-elements.css',
-        '/assets/css/prism.css',
-        '/assets/css/chart.css',
-        '/assets/css/font-awesome.css',
-        
-        '/assets/css/index.css'
-      ],
-      js: [
-        '/assets/js/utils.js',
-        '/assets/js/custom-elements.js'
-      ]
-    },
-    body: {
-      js: [
-        '/assets/js/markdown-it.js',
-        '/assets/js/prism.js',
-        '/assets/js/mermaid.js',
-        '/assets/js/chart.js',
-        '/assets/js/popper.js',
-        '/assets/js/tippy.js',
-        '/assets/js/index.js'
-      ]
-    }
-  };
+  let assets = await fs.readJson('./src/asset-map.json');
 
   function normalizePath(path){
     return path.trim().replace(/\/$/g, '') + '/';
@@ -67,6 +41,7 @@ module.exports = async (options = {}) => {
       todo: 1
     };
     const spaceRegex = /\s+/g;
+    const domainRegex = /^(?:http|https):\/\/(\w+)[.]*([\w.]+)/;
     const specNameRegex = /^spec$|^spec[-]*\w+$/i;
     const terminologyRegex = /^def$|^ref/i;
     const specCorpus = await fs.readJson(modulePath + '/assets/compiled/refs.json');
@@ -76,7 +51,7 @@ module.exports = async (options = {}) => {
         linkify: true,
         typographer: true
       })
-      .use(require('./markdown-it-plugins/templates.js'), [
+      .use(require('./src/markdown-it-extensions.js'), [
         {
           filter: type => type.match(specNameRegex),
           parse(token, type, name){
@@ -121,10 +96,10 @@ module.exports = async (options = {}) => {
       .use(require('markdown-it-chart').default)
       .use(require('markdown-it-deflist'))
       .use(require('markdown-it-references'))
-      //.use(require('markdown-it-footnote'))
       .use(require('markdown-it-icons').default, 'font-awesome')
       .use(require('markdown-it-ins'))
-      .use(require('markdown-it-latex').default)
+      //<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css" integrity="sha384-AfEj0r4/OFrOo5t7NnNe46zW/tFgW6x/bCJG8FqQCEo3+Aro6EYUG4+cU+KJWu/X" crossorigin="anonymous">
+      //.use(require('@traptitech/markdown-it-katex'))
       .use(require('markdown-it-mark'))
       .use(require('markdown-it-textual-uml'))
       .use(require('markdown-it-sub'))
@@ -169,7 +144,7 @@ module.exports = async (options = {}) => {
     async function render(spec, assets) {
       try {
         noticeTitles = {};
-        specGroups = { _: {} };
+        specGroups = {};
         console.log('Rendering: ' + spec.title);
         return new Promise(async (resolve, reject) => {
           Promise.all((spec.markdown_paths || ['spec.md']).map(path => {
@@ -186,7 +161,9 @@ module.exports = async (options = {}) => {
                   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
       
                   <title>${spec.title}</title>
+
                   <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400&display=swap" rel="stylesheet">
+
                   ${assets.head}
                 </head>
                 <body features="${Object.keys(features).join(' ')}">
@@ -197,13 +174,13 @@ module.exports = async (options = {}) => {
       
                     <header id="header" class="panel-header">
                       <span id="toc_toggle" panel-toggle="toc">
-                        <svg icon><use xlink:href="#nested_list"></use></svg>
+                        <svg icon><use xlink:href="#svg-nested-list"></use></svg>
                       </span>
                       <a id="logo" href="${spec.logo_link ? spec.logo_link : '#_'}">
                         <img src="${spec.logo}" />
                       </a>
                       <span issue-count animate panel-toggle="repo_issues">
-                        <svg icon><use xlink:href="#github"></use></svg>
+                        <svg icon><use xlink:href="#svg-github"></use></svg>
                       </span>
                     </header>
       
@@ -217,7 +194,7 @@ module.exports = async (options = {}) => {
                     <slide-panel id="repo_issues" options="right">
                       <header class="panel-header">
                         <span>
-                          <svg icon><use xlink:href="#github"></use></svg>
+                          <svg icon><use xlink:href="#svg-github"></use></svg>
                           <span issue-count></span>
                         </span>
                         <span class="repo-issue-toggle" panel-toggle="repo_issues">✕</span>
@@ -269,9 +246,9 @@ module.exports = async (options = {}) => {
 
       if (options.dev) {
 
-        assetTags.head = assets.head.css.map(path => `<link href="${path}" rel="stylesheet"/>`).join('') + 
-                         assets.head.js.map(path =>  `<script src="${path}"></script>`).join('');
-        assetTags.body = assets.body.js.map(path => `<script src="${path}" data-manual></script>`).join('');
+        assetTags.head = assets.head.css.map(path => `<link href="/${path}" rel="stylesheet"/>`).join('') + 
+                         assets.head.js.map(path =>  `<script src="/${path}"></script>`).join('');
+        assetTags.body = assets.body.js.map(path => `<script src="/${path}" data-manual></script>`).join('');
 
       }
       else {

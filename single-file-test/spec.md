@@ -361,6 +361,28 @@ graph TD
   }]
 }
 ```
+
+<!-- ## TeX Math Equations
+
+The KaTeX math engine is used for TeX rendering. You can find a list of supported features and examples here: https://katex.org/docs/supported.html.
+
+
+$$\begin{pmatrix}x_2 \\ y_2 \end{pmatrix} = 
+\begin{pmatrix} A & B \\ C & D \end{pmatrix}\cdot
+\begin{pmatrix} x_1 \\ y_1 \end{pmatrix}$$
+
+$$\def\arraystretch{1.5}
+   \begin{array}{c:c:c}
+   a & b & c \\ \hline
+   d & e & f \\
+   \hdashline
+   g & h & i
+\end{array}$$
+
+$$
+\underbrace{a+b+c}_{\text{Note: such math, much wow.}}
+$$ -->
+
 ## Tab Panels
 
 <tab-panels selected-index="0">
@@ -390,6 +412,25 @@ graph TD
 
   </section>
 </tab-panels>
+
+## Fancy Links
+
+Spec-Up automatically upgrades the links of certain sites, like GitHub. GitHub is the only supported site with Fancy Links right now, but we'll be adding more as we go.
+
+### GitHub
+
+- **Issues**
+  - Source: `https://github.com/decentralized-identity/presentation-exchange/issues/119`
+  - Render: https://github.com/decentralized-identity/presentation-exchange/issues/119
+- **Pull Requests**
+  - Source: `https://github.com/decentralized-identity/sidetree/pull/863`
+  - Render: https://github.com/decentralized-identity/sidetree/pull/863
+- **Releases**
+  - Source: `https://github.com/decentralized-identity/sidetree/releases/tag/v0.9.1`
+  - Render: https://github.com/decentralized-identity/sidetree/releases/tag/v0.9.1
+- **Projects**
+  - Source: `https://github.com/decentralized-identity/sidetree/projects/1`
+  - Render: https://github.com/decentralized-identity/sidetree/projects/1
 
 ## External Spec References
 

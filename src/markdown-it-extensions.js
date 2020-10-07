@@ -47,4 +47,26 @@ module.exports = function(md, templates = {}) {
     return token.content;
   }
 
+  let pathSegmentRegex = /(?:http[s]*:\/\/([^\/]*)|(?:\/([^\/?]*)))/g;
+  md.renderer.rules.link_open = function(tokens, idx, options, env, renderer) {
+    let token = tokens[idx];
+    let attrs = token.attrs.reduce((str, attr) => {
+      let name = attr[0];
+      let value = attr[1];
+      if (name === 'href') {
+        let index = 0;
+        value.replace(pathSegmentRegex, (m, domain, seg) => {
+          str += `path-${index++}="${domain || seg}"`;
+        });
+      }
+      return str += name + '="' + value + '" ';
+    }, '');
+    let anchor = `<a ${attrs}>`;
+    return token.markup === 'linkify' ? anchor + '<span>' : anchor;
+  }
+
+  md.renderer.rules.link_close = function(tokens, idx, options, env, renderer) {
+    return tokens[idx].markup === 'linkify' ? '</span></a>' : '</a>';
+  }
+
 };
