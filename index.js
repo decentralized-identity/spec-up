@@ -7,7 +7,7 @@ module.exports = async (options = {}) => {
   const axios = require('axios').default;
   const modulePath = await pkg(__dirname);
   let config = await fs.readJson('./specs.json');
-  let assets = await fs.readJson('src/asset-map.json');
+  let assets = await fs.readJson(modulePath + '/src/asset-map.json');
 
   function normalizePath(path){
     return path.trim().replace(/\/$/g, '') + '/';

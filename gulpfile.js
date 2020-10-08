@@ -8,7 +8,7 @@ const terser = require('gulp-terser');
 const mergeStreams = require('merge-stream');
 const cleanCSS = require('gulp-clean-css');
 const axios = require('axios').default;
-const assets = fs.readJsonSync('src/asset-map.json');
+const assets = fs.readJsonSync('./src/asset-map.json');
 
 let compileLocation = 'assets/compiled';
 
