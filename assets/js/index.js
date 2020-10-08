@@ -70,7 +70,7 @@ delegateEvent('pointerover', '.term-reference, .spec-reference', (e, anchor) => 
   } 
   switch (container.tagName) {
     case 'DT':
-      tip.content = container.nextElementSibling.innerHTML;
+      tip.content = container.nextElementSibling.textContent;
       break;
     case 'TD':
       let table = container.closest('table');
@@ -84,7 +84,7 @@ delegateEvent('pointerover', '.term-reference, .spec-reference', (e, anchor) => 
             <header>${container.textContent}</header>
             <table>
               ${headings.map((th, i) => {
-                return `<tr><td>${th.textContent}:</td><td>${tds[i] ? tds[i].innerHTML : ''}</td></tr>`
+                return `<tr><td>${th.textContent}:</td><td>${tds[i] ? tds[i].textContent : ''}</td></tr>`
               }).join('')}
             </table>`;
         }
