@@ -6,8 +6,14 @@ module.exports = async (options = {}) => {
   const gulp = require('gulp');
   const axios = require('axios').default;
   const modulePath = await pkg(__dirname);
-  let config = await fs.readJson('./specs.json');
-  let assets = await fs.readJson(modulePath + '/src/asset-map.json');
+  let config = fs.readJsonSync('./specs.json');
+  let assets = fs.readJsonSync(modulePath + '/src/asset-map.json');
+
+  const findPkgDir = require('find-pkg-dir');
+
+  const mp = findPkgDir(__dirname);
+
+  console.log(modulePath, mp);
 
   function normalizePath(path){
     return path.trim().replace(/\/$/g, '') + '/';
@@ -44,7 +50,7 @@ module.exports = async (options = {}) => {
     const domainRegex = /^(?:http|https):\/\/(\w+)[.]*([\w.]+)/;
     const specNameRegex = /^spec$|^spec[-]*\w+$/i;
     const terminologyRegex = /^def$|^ref/i;
-    const specCorpus = await fs.readJson(modulePath + '/assets/compiled/refs.json');
+    const specCorpus = fs.readJsonSync(modulePath + '/assets/compiled/refs.json');
     const containers = require('markdown-it-container');
     const md = require('markdown-it')({
         html: true,
@@ -234,14 +240,14 @@ module.exports = async (options = {}) => {
       }
     }
 
-    config.specs.forEach(async spec => {
+    config.specs.forEach(spec => {
       spec.spec_directory = normalizePath(spec.spec_directory);    
       spec.destination = normalizePath(spec.output_path || spec.spec_directory);
 
-      await fs.ensureDir(spec.destination).catch(err => console.error(err));
+      fs.ensureDirSync(spec.destination);
 
       var assetTags = {
-        svg: await fs.readFile(modulePath + '/assets/icons.svg', 'utf8') || ''
+        svg: fs.readFileSync(modulePath + '/assets/icons.svg', 'utf8') || ''
       };
 
       if (options.dev) {
@@ -253,10 +259,10 @@ module.exports = async (options = {}) => {
       }
       else {
         assetTags.head = `
-          <style>${await fs.readFile(modulePath + '/assets/compiled/head.css', 'utf8')}</style>
-          <script>${await fs.readFile(modulePath + '/assets/compiled/head.js', 'utf8')}</script>
+          <style>${fs.readFileSync(modulePath + '/assets/compiled/head.css', 'utf8')}</style>
+          <script>${fs.readFileSync(modulePath + '/assets/compiled/head.js', 'utf8')}</script>
         `;
-        assetTags.body = `<script>${await fs.readFile(modulePath + '/assets/compiled/body.js', 'utf8')}</script>`;
+        assetTags.body = `<script>${fs.readFileSync(modulePath + '/assets/compiled/body.js', 'utf8')}</script>`;
       }
 
       if (!options.nowatch) {
