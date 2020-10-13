@@ -98,7 +98,7 @@ Anytime you add a definition of a term in the first column of a table, like [[re
 :::
 
 ::: note
-  And here's another.
+  Here's another.
 :::
 
 ::: note
