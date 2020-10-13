@@ -20,7 +20,7 @@ jobs:
           npm install
           node -e "require('./index')({ nowatch: true })"
       - name: Deploy 🚀
-        uses: JamesIves/github-pages-deploy-action@releases/v3.6.2
+        uses: JamesIves/github-pages-deploy-action@3.6.2
         with:
           ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
           BRANCH: master
