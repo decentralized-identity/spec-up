@@ -4,7 +4,7 @@ Spec-Up Multi-File Example
 **Specification Status:** Strawman
 
 **Latest Draft:**
-  [https://csuwildcat.github.io/spec-up](https://csuwildcat.github.io/spec-up)
+  [https://github.com/decentralized-identity/spec-up](https://github.com/decentralized-identity/spec-up)
 
 **Editors:**
 ~ [Daniel Buchner](https://www.linkedin.com/in/dbuchner/)
