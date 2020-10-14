@@ -25,4 +25,5 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./
+          exclude_assets: 'node_modules/'
           force_orphan: true
