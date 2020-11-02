@@ -297,6 +297,13 @@ article li {
   margin-top: 0.4em;
 }
 
+blockquote {
+  padding: 0 0.5em;
+  color: rgb(var(--mid-color));
+  border-left: .25em solid rgb(var(--low-color));
+  margin-left: 0;
+}
+
 /* Custom Elements */
 
 slide-panel > *:not(header):not(footer) {
