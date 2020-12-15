@@ -244,19 +244,37 @@ module.exports = function(options = {}) {
         svg: fs.readFileSync(modulePath + '/assets/icons.svg', 'utf8') || ''
       };
 
+      let customAssets = (spec.assets || []).reduce((assets, asset) => {
+        let ext = asset.path.split('.').pop();
+        if (ext === 'css') {
+          assets.css += `<link href="${asset.path}" rel="stylesheet"/>`;
+        }
+        if (ext === 'js') {
+          assets.js[asset.inject || 'body'] += `<script src="${asset.path}"></script>`;
+        }
+        return assets;
+      }, {
+        css: '',
+        js: { head: '', body: '' }
+      });  
+
       if (options.dev) {
-
         assetTags.head = assets.head.css.map(path => `<link href="${path}" rel="stylesheet"/>`).join('') + 
-                         assets.head.js.map(path =>  `<script src="${path}"></script>`).join('');
-        assetTags.body = assets.body.js.map(path => `<script src="${path}" data-manual></script>`).join('');
-
+                         customAssets.css +
+                         assets.head.js.map(path =>  `<script src="${path}"></script>`).join('') +
+                         customAssets.js.head;
+        assetTags.body = assets.body.js.map(path => `<script src="${path}" data-manual></script>`).join('') + 
+                         customAssets.js.body;
       }
       else {
         assetTags.head = `
           <style>${fs.readFileSync(modulePath + '/assets/compiled/head.css', 'utf8')}</style>
+          ${ customAssets.css }
           <script>${fs.readFileSync(modulePath + '/assets/compiled/head.js', 'utf8')}</script>
+          ${ customAssets.js.head }
         `;
-        assetTags.body = `<script>${fs.readFileSync(modulePath + '/assets/compiled/body.js', 'utf8')}</script>`;
+        assetTags.body = `<script>${fs.readFileSync(modulePath + '/assets/compiled/body.js', 'utf8')}</script>
+                          ${ customAssets.js.body }`;
       }
 
       if (!options.nowatch) {

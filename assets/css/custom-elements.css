@@ -99,16 +99,16 @@ detail-box[open] > section {
 
 /* TAB-PANELS */
 
-
 tab-panels > nav {
   display: flex;
 }
 
 tab-panels > nav > * {
+  margin-left: -2px;
   padding: 0.5em 1em;
   background: #e0e0e0;
   border: 1px solid #aaa;
-  margin-left: -2px;
+  border-radius: 0;
   cursor: pointer;
 }
 
@@ -128,9 +128,9 @@ tab-panels > nav > *:last-child {
 }
 
 tab-panels > nav > *[selected] {
-  color: #fff;
-  background: var(--dif-blue);
-  border-color: #004c8a;
+  color: var(--themed-element-text);
+  background: var(--themed-element-bk);
+  border: var(--themed-element-border);
   opacity: 0.9999;
 }
 

@@ -65,7 +65,6 @@ delegateEvent('pointerover', '.term-reference, .spec-reference', (e, anchor) => 
   if (!container) return;
   let tip = {
     allowHTML: true,
-    interactive: true,
     inlinePositioning: true
   } 
   switch (container.tagName) {
