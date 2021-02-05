@@ -8,6 +8,7 @@
   --themed-heading-text: hsl(var(--base-theme-color), 30%);
   
   --no-color: 255,255,255;
+  --faint-color: 245,245,245;
   --dim-color: 225,225,225;
   --low-color: 200,200,200;
   --mid-color: 100,100,100;
@@ -82,6 +83,40 @@ h1 {
 
 h2 {
   margin: 1.5em 0 1em;
+}
+
+blockquote {
+  position: relative;
+  padding: 0;
+  margin: 1.75em 0.75em;
+  color: rgb(var(--mid-color));
+  background: rgb(var(--faint-color));
+}
+
+blockquote:before, blockquote:after {
+  content: "“";
+  position: absolute;
+  top: -0.10em;
+  left: -0.10em;
+  font-size: 5em;
+  height: 0.34em;
+  line-height: 100%;
+  color: rgb(var(--no-color));
+  background: rgb(var(--dim-color));
+  width: 0.38em;
+}
+
+blockquote:after {
+  content: "”";
+  top: auto;
+  left: auto;
+  bottom: -0.10em;
+  right: -0.10em;
+  text-align: center;
+}
+
+blockquote > p {
+  padding: 0.6em 1.8em 0.5em 1.8em;
 }
 
 strong strong {

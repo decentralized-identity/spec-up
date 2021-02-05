@@ -84,6 +84,14 @@ Variable            | Default Value | Max Value
 
 Anytime you add a definition of a term in the first column of a table, like [[ref: Variable 1]], it will link to the cell and display a tooltip with the entire set of row values when you hover the term.
 
+## Blockquote
+
+> To be, or not to be, that is the question: 
+Whether 'tis nobler in the mind to suffer
+The slings and arrows of outrageous fortune,
+Or to take arms against a sea of troubles
+And by opposing end them. To die—to sleep,
+No more;
 
 ## Notices
 
