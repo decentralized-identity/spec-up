@@ -438,7 +438,7 @@ a[path-0$="github.com"][path-3="pull"]:after {
   content: "Pull Request #" attr(path-4);
 }
 
-a[path-0$="github.com"][path-3="releases"]:after {
+a[path-0$="github.com"][path-3="releases"][path-5]:after {
   content: "Release " attr(path-5);
 }
 
