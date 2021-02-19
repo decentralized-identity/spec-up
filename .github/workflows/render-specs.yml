@@ -22,9 +22,8 @@ jobs:
           rm -rf node_modules
 
       - name: Deploy
-        uses: peaceiris/actions-gh-pages@d38d8b34e3c4631f1ebfec2a11dafd7761e48e98
+        uses: peaceiris/actions-gh-pages@v3.7.3
         with:
-          persist-credentials: false
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./
           allow_empty_commit: true
