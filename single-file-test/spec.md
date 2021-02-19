@@ -159,10 +159,36 @@ No more;
 // Some comment in JSON
 {
   "foo": "bar",
-  "baz": 1
+  "baz": 2
 }
 ```
 :::
+
+## Content Insertion
+
+Use the following format to pull in content from other files in your project:
+
+<pre>
+This text has been inserted here from another file: &#91;&#91;insert: ./single-file-test/assets/test.text&#93;&#93;
+</pre>
+
+This text has been inserted here from another file: [[insert: ./single-file-test/assets/test.text]]
+
+You can even insert content within more complex blocks, like the JSON object below which is being pulled in and rendered in a syntax-highlighted example block:
+<pre>
+::: example Code Example
+```json
+&#91;&#91;insert: ./single-file-test/assets/test.json&#93;&#93;
+```
+:::
+</pre>
+
+::: example Code Example
+```json
+[[insert: ./single-file-test/assets/test.json]]
+```
+:::
+
 
 ## Tables
 

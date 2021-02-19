@@ -1,4 +1,8 @@
 
+const yargs = require('yargs/yargs')
+const { hideBin } = require('yargs/helpers')
+const argv = yargs(hideBin(process.argv)).argv;
+
 const fs = require('fs-extra');
 const gulp = require('gulp');
 const run = require('gulp-run');
@@ -47,7 +51,7 @@ async function compileAssets(){
 
 async function bumpVersion(){
   return gulp.src('./package.json')
-          .pipe(bump())
+          .pipe(bump({ type: argv.v || 'patch' }))
           .pipe(gulp.dest('./'));
 }
 

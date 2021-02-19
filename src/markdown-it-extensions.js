@@ -23,7 +23,7 @@ module.exports = function(md, templates = {}) {
       let template = templates.find(t => t.filter(type) && t);
       if (!template) return false;
 
-      let args = match[2] ? match[2].trim().split(/\s*,\s*/) : [];
+      let args = match[2] ? match[2].trim().split(/\s*,+\s*/) : [];
       let token = state.push('template', '', 0);
       token.content = match[0];
       token.info = { type, template, args };

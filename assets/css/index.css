@@ -96,22 +96,20 @@ blockquote {
 blockquote:before, blockquote:after {
   content: "“";
   position: absolute;
-  top: -0.10em;
-  left: -0.10em;
-  font-size: 5em;
+  top: 0.065em;
+  left: 0.065em;
+  font-size: 3em;
   height: 0.34em;
   line-height: 100%;
-  color: rgb(var(--no-color));
-  background: rgb(var(--dim-color));
-  width: 0.38em;
+  color: rgb(var(--low-color));
 }
 
 blockquote:after {
   content: "”";
   top: auto;
   left: auto;
-  bottom: -0.10em;
-  right: -0.10em;
+  bottom: 0.065em;
+  right: 0.065em;
   text-align: center;
 }
 

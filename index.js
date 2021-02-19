@@ -9,6 +9,37 @@ module.exports = function(options = {}) {
   let config = fs.readJsonSync('./specs.json');
   let assets = fs.readJsonSync(modulePath + '/src/asset-map.json');
 
+  const replacerRegex = /\[\[\s*([^\s\[\]:]+):?\s*([^\]\n]+)?\]\]/img;
+  const replacerArgsRegex = /\s*,+\s*/;
+  const replacers = [
+    {
+      test: 'insert',
+      transform: async function(path){
+        if (!path) return '';
+        return await fs.readFile(path, 'utf8');
+      }
+    }
+  ];
+
+  async function applyAsyncReplacers(doc){
+    let promises = [];
+    doc.replace(replacerRegex, function(match, type, args){
+      type = type.trim();
+      let replacer = replacers.find(r => type.match(r.test))
+      if (replacer) {
+        let result = replacer.transform(...args.trim().split(replacerArgsRegex));
+        if (replacer.transform.constructor.name === 'AsyncFunction') promises.push(result)
+        else return result;
+      }
+      return match;
+    })
+    return await Promise.all(promises).then(outputs => {
+      return doc.replace(replacerRegex, (match, type) => {
+        return replacers.find(r => type.match(r.test)) ? outputs.shift() : match;
+      })
+    }).catch(e => console.log(e));
+  }
+
   function normalizePath(path){
     return path.trim().replace(/\/$/g, '') + '/';
   }
@@ -151,7 +182,8 @@ module.exports = function(options = {}) {
             return fs.readFile(spec.spec_directory + path, 'utf8').catch(e => reject(e))
           })).then(async docs => {
             var features = (({ source, logo }) => ({ source, logo }))(spec);
-            let doc = docs.join("\n");
+            var doc = docs.join("\n");
+            doc = await applyAsyncReplacers(doc);
             fs.writeFile(spec.destination + 'index.html', `
               <!DOCTYPE html>
               <html lang="en">
