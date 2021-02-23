@@ -14,30 +14,18 @@ module.exports = function(options = {}) {
   const replacers = [
     {
       test: 'insert',
-      transform: async function(path){
+      transform: function(path){
         if (!path) return '';
-        return await fs.readFile(path, 'utf8');
+        return fs.readFileSync(path, 'utf8');
       }
     }
   ];
 
-  async function applyAsyncReplacers(doc){
-    let promises = [];
-    doc.replace(replacerRegex, function(match, type, args){
-      type = type.trim();
-      let replacer = replacers.find(r => type.match(r.test))
-      if (replacer) {
-        let result = replacer.transform(...args.trim().split(replacerArgsRegex));
-        if (replacer.transform.constructor.name === 'AsyncFunction') promises.push(result)
-        else return result;
-      }
-      return match;
-    })
-    return await Promise.all(promises).then(outputs => {
-      return doc.replace(replacerRegex, (match, type) => {
-        return replacers.find(r => type.match(r.test)) ? outputs.shift() : match;
-      })
-    }).catch(e => console.log(e));
+  function applyReplacers(doc){
+    return doc.replace(replacerRegex, function(match, type, args){
+      let replacer = replacers.find(r => type.trim().match(r.test));
+      return replacer ? replacer.transform(...args.trim().split(replacerArgsRegex)) : match;
+    });
   }
 
   function normalizePath(path){
@@ -183,7 +171,7 @@ module.exports = function(options = {}) {
           })).then(async docs => {
             var features = (({ source, logo }) => ({ source, logo }))(spec);
             var doc = docs.join("\n");
-            doc = await applyAsyncReplacers(doc);
+            doc = applyReplacers(doc);
             fs.writeFile(spec.destination + 'index.html', `
               <!DOCTYPE html>
               <html lang="en">
