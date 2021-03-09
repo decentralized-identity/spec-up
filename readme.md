@@ -12,9 +12,11 @@
 
 Spec-Up is a technical specification development tool that enables you to create rich specification documents for standards bodies and engineering projects by writing in an extended version of markdown that features all the bells and whistles - for example: advanced syntax highlighting, notice blocks, complex tables, charts, UML diagrams, and more.
 
-Using Spec-Up is easy peasy lemon squeezy:
+## Setup
 
-1. `npm install spec-up`
+Installing Spec-Up is easy peasy lemon squeezy:
+
+1. Run `npm install spec-up` in the root directory of the repo to install all dependencies.
 2. Create a `specs.json` file at the root of your project to specify configuration values used in the generation of your spec documents. The values in your `specs.json` file include things like where your spec's markdown files are located, where to output the generated spec document, and various metadata values used in rendering, such as the title, logo, and repo links for each of your specs. The following are the required/optional fields supported in the `specs.json` config file:
 
     - **`public_root`** _(PATH STRING, optional)_ - For some platforms and services where you may want to output your rendered spec, the pathing may differ from the directory structure of your local project. To account for this, you can use the `public_root` property to specify the insertion of a path segment to account for the different in pathing between your local renders and wherever you publish your spec to.
@@ -36,4 +38,14 @@ Using Spec-Up is easy peasy lemon squeezy:
             ```
 3. In your main node.js file, or as a package.json script entry, use this invocation call: `require('spec-up')()`
 
-Boom! That's it. Spec-Up will auto-detect modifications to files in your `spec_directory` and auto-generate your spec's updated HTML document every time you save a change.
+Boom! That's it. You're ready to start rendering specs as HTML sites locally and/or pushing them to github pages however you see fit to automate.
+
+## Usage
+
+If your `spec.json` and `package.json` and `package-lock.json` files are in working order, Spec-up can be called from the root of your repo in three different modes:
+
+|command|behavior|
+|---|---|
+|`npm run edit`|after rendering, this will stay running and the `gulp` library will watch the source files in your spec directory/ies for changes and re-render any time you save a file. Opening these rendered files in a browser and refreshing them will keep you up to date.|
+|`npm run render`|this renders the site once and does not keep a gulpy watch on the underlying files.|
+|`npm run dev`|this enables debugging features.|
