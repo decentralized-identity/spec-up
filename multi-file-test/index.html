@@ -78,6 +78,30 @@ customElements.define("slide-panels",class extends HTMLElement{static get observ
 <li>In your main node.js file, drop in this bad boy: <code>require('spec-up')()</code></li>
 </ol>
 <p>Boom! That’s it. Spec-Up will auto-detect the location of your spec files and auto-generate your spec’s HTML version every time you hit save after editing your <code>spec.md</code> files. Did I mention you can have multiple specs located at any depth in your project and Spec-Up will crawl up in there and render all those specs like a damn boss? Well it does, because why the hell not.</p>
+<p><strong>Usage</strong></p>
+<p>If your <code>spec.json</code> and <code>package.json</code> and <code>package-lock.json</code> files are in working order, Spec-up can be called from the root of your repo in three different modes:</p>
+<table>
+<thead>
+<tr>
+<th>command</th>
+<th>behavior</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>npm run edit</code></td>
+<td>after rendering, this will stay running and the <code>gulp</code> library will watch the source files in your spec directory/ies for changes and re-render any time you save a file. Opening these rendered files in a browser and refreshing them will keep you up to date.</td>
+</tr>
+<tr>
+<td><code>npm run render</code></td>
+<td>this renders the site once and does not keep a gulpy watch on the underlying files.</td>
+</tr>
+<tr>
+<td><code>npm run dev</code></td>
+<td>this enables debugging features.</td>
+</tr>
+</tbody>
+</table>
 <h2 id="features"><a class="toc-anchor" href="#features" >§</a> Features</h2>
 <h3 id="diagrams"><a class="toc-anchor" href="#diagrams" >§</a> Diagrams</h3>
 <pre>

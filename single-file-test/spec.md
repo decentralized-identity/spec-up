@@ -35,6 +35,17 @@ Using Spec-Up is easy peasy lemon squeezy:
 
 Boom! That's it. Spec-Up will auto-detect modifications to files in your `spec_directory` and auto-generate your spec's updated HTML document every time you save a change.
 
+
+**Usage**
+
+If your `spec.json` and `package.json` and `package-lock.json` files are in working order, Spec-up can be called from the root of your repo in three different modes:
+
+|command|behavior|
+|---|---|
+|`npm run edit`|after rendering, this will stay running and the `gulp` library will watch the source files in your spec directory/ies for changes and re-render any time you save a file. Opening these rendered files in a browser and refreshing them will keep you up to date.|
+|`npm run render`|this renders the site once and does not keep a gulpy watch on the underlying files.|
+|`npm run dev`|this enables debugging features.|
+
 ## Table of Contents
 
 <-- You see that beautiful TOC over there to your left? (tap the header link to slide it out on mobile) Yeah, you don't need to do a damn thing, that just magically appears based on your use of `h2`, `h3`, and `h4` headings.

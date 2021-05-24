@@ -82,6 +82,30 @@ customElements.define("slide-panels",class extends HTMLElement{static get observ
 </li>
 </ol>
 <p>Boom! That’s it. Spec-Up will auto-detect modifications to files in your <code>spec_directory</code> and auto-generate your spec’s updated HTML document every time you save a change.</p>
+<p><strong>Usage</strong></p>
+<p>If your <code>spec.json</code> and <code>package.json</code> and <code>package-lock.json</code> files are in working order, Spec-up can be called from the root of your repo in three different modes:</p>
+<table>
+<thead>
+<tr>
+<th>command</th>
+<th>behavior</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>npm run edit</code></td>
+<td>after rendering, this will stay running and the <code>gulp</code> library will watch the source files in your spec directory/ies for changes and re-render any time you save a file. Opening these rendered files in a browser and refreshing them will keep you up to date.</td>
+</tr>
+<tr>
+<td><code>npm run render</code></td>
+<td>this renders the site once and does not keep a gulpy watch on the underlying files.</td>
+</tr>
+<tr>
+<td><code>npm run dev</code></td>
+<td>this enables debugging features.</td>
+</tr>
+</tbody>
+</table>
 <h2 id="table-of-contents"><a class="toc-anchor" href="#table-of-contents" >§</a> Table of Contents</h2>
 <p>&lt;-- You see that beautiful TOC over there to your left? (tap the header link to slide it out on mobile) Yeah, you don’t need to do a damn thing, that just magically appears based on your use of <code>h2</code>, <code>h3</code>, and <code>h4</code> headings.</p>
 <h2 id="term-references"><a class="toc-anchor" href="#term-references" >§</a> Term References</h2>
@@ -147,9 +171,9 @@ No more;</p>
 </pre>
 <div id="basic-note" class="notice note"><a class="notice-link" href="#basic-note">NOTE</a><p>Check this out.</p>
 </div>
-<div id="note-1" class="notice note"><a class="notice-link" href="#note-1">NOTE</a><p>Here’s another.</p>
+<div id="note-3" class="notice note"><a class="notice-link" href="#note-3">NOTE</a><p>Here’s another.</p>
 </div>
-<div id="note-2" class="notice note"><a class="notice-link" href="#note-2">NOTE</a><p>And one more!</p>
+<div id="note-4" class="notice note"><a class="notice-link" href="#note-4">NOTE</a><p>And one more!</p>
 </div>
 <div id="basic-note-1" class="notice note"><a class="notice-link" href="#basic-note-1">NOTE</a><p>One last note!!!</p>
 </div>
