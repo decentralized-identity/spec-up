@@ -6,10 +6,10 @@
       "spec_directory": "./single-file-test",
       "output_path": "./",
       "logo": "logo.svg",
-      "logo_link": "https://github.com/csuwildcat/spec-up",
+      "logo_link": "https://github.com/decentralized-identity/spec-up",
       "source": {
         "host": "github",
-        "account": "csuwildcat",
+        "account": "decentralized-identity",
         "repo": "spec-up"
       },
       "assets": [
@@ -28,10 +28,10 @@
         "features.md"
       ],
       "logo": "../logo.svg",
-      "logo_link": "https://github.com/csuwildcat/spec-up",
+      "logo_link": "https://github.com/decentralized-identity/spec-up",
       "source": {
         "host": "github",
-        "account": "csuwildcat",
+        "account": "decentralized-identity",
         "repo": "spec-up"
       }
     }
