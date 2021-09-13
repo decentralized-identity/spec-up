@@ -30,6 +30,7 @@
     "axios": "0.21.1",
     "find-pkg-dir": "2.0.0",
     "fs-extra": "8.1.0",
+    "glob-parent": ">=5.1.2",
     "globby": "11.0.0",
     "gulp": "4.0.2",
     "gulp-bump": "3.2.0",
@@ -50,7 +51,7 @@
     "markdown-it-mark": "^2.0.0",
     "markdown-it-modify-token": "1.0.2",
     "markdown-it-multimd-table": "4.0.0",
-    "markdown-it-prism": "2.1.6",
+    "markdown-it-prism": "^2.2.0",
     "markdown-it-references": "1.0.0-alpha.10",
     "markdown-it-sub": "^1.0.0",
     "markdown-it-sup": "^1.0.0",
@@ -59,6 +60,9 @@
     "markdown-it-toc-and-anchor": "4.2.0",
     "merge-stream": "2.0.0",
     "pkg-dir": "4.2.0",
+    "prismjs": ">=1.24.0",
+    "set-value": ">=4.0.1",
+    "trim-newlines": ">=3.0.1",
     "yargs": "16.2.0",
     "yargs-parser": "^20.2.7"
   }
