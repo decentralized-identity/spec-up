@@ -5,7 +5,7 @@
   "main": "./index",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/csuwildcat/spec-up.git"
+    "url": "git+https://github.com/decentralized-identity/spec-up.git"
   },
   "scripts": {
     "edit": "node -e \"require('./index')()\"",
@@ -20,11 +20,11 @@
     "standards"
   ],
   "author": "Daniel Buchner",
-  "license": "MIT",
+  "license": "Apache 2.0",
   "bugs": {
-    "url": "https://github.com/csuwildcat/spec-up/issues"
+    "url": "https://github.com/decentralized-identity/spec-up/issues"
   },
-  "homepage": "https://github.com/csuwildcat/spec-up#readme",
+  "homepage": "https://github.com/decentralized-identity/spec-up#readme",
   "dependencies": {
     "@traptitech/markdown-it-katex": "3.3.0",
     "axios": "0.21.1",

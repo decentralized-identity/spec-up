@@ -60,9 +60,9 @@
 <p><code>npm install spec-up</code></p>
 </li>
 <li>
-<p>Create a <code>specs.json</code> file at the root of your project to specify configuration values used in the generation of your spec documents. The values in your <code>specs.json</code> file include things like where your spec’s markdown files are located, where to output the generated spec document, and various metadata values used in rendering, such as the title, logo, and repo links for each of your specs. The following are the required/optional fields supported in the <code>specs.json</code> config file:</p>
+<p>Create a <code>specs.json</code> file <strong>in the root folder of your repository</strong> to specify configuration values used in the generation of your spec documents. The values in your <code>specs.json</code> file include things like where your spec’s markdown files are located, where to output the generated spec document, and various metadata values used in rendering, such as the title, logo, and repo links for each of your specs. The following are the required/optional fields supported in the <code>specs.json</code> config file:</p>
 <ul>
-<li><strong><code>spec_directory</code></strong> <em>(STRING, required)</em> - You must specify the project root relative location of your spec’s markdown file directory. You <strong><strong>MUST</strong></strong> name your spec’s markdown file <code>spec.md</code> and locate it in your <code>spec_directory</code> for the tool to automatically find and use it for rendering. If you want to use a different name for the markdown file, or you have multiple markdown files you would like the tool to assemble into one document, you must specify them using the optional<code>markdown_paths</code> field described below.</li>
+<li><strong><code>spec_directory</code></strong> <em>(STRING, required)</em> - You must specify the <strong>repo-root-relative</strong> location of your spec’s markdown file directory. You <strong><strong>MUST</strong></strong> name your spec’s markdown file <code>spec.md</code> and locate it in your <code>spec_directory</code> for the tool to automatically find and use it for rendering. If you want to use a different name for the markdown file, or you have multiple markdown files you would like the tool to assemble into one document, you must specify them using the optional<code>markdown_paths</code> field described below. See the “multi-file” example in the spec-up repo.</li>
 <li><strong><code>title</code></strong> <em>(STRING, required)</em> - You must add a title for your spec, which will be rendered in the generated document’s H1 text and page title.</li>
 <li><strong><code>markdown_paths</code></strong> <em>(ARRAY, optional)</em> - If you want to name your spec’s markdown file something other than <code>spec.md</code>, or you have multiple files you would like assembled into a single output document, you must specify their paths as array entries in the order you would like them assembled. The paths in this array are assumed to be based on the <code>spec_directory</code> you specified, so <em>DO NOT</em> repeat the full root relative path.</li>
 <li><strong><code>output_path</code></strong> <em>(STRING, optional)</em> - If you want the generated spec document to be output to a different location than the <code>spec_directory</code> you specified (e.g. the project root for GitHub Pages publishing) you can specify another root relative path (use <code>./</code> for root), and the tool will write the document file there instead.</li>
@@ -74,7 +74,7 @@
 </ol>
 <p>Boom! That’s it. Spec-Up will auto-detect modifications to files in your <code>spec_directory</code> and auto-generate your spec’s updated HTML document every time you save a change.</p>
 <p><strong>Usage</strong></p>
-<p>If your <code>spec.json</code> and <code>package.json</code> and <code>package-lock.json</code> files are in working order, Spec-up can be called from the root of your repo in three different modes:</p>
+<p>If your <code>spec.json</code> and <code>package.json</code> and <code>package-lock.json</code> files are in working order and in the root folder of the repo from which it will be deployed, Spec-up can be called by command line (from the root of your repo) in three different modes:</p>
 <table>
 <thead>
 <tr>
@@ -162,9 +162,9 @@ No more;</p>
 </pre>
 <div id="basic-note" class="notice note"><a class="notice-link" href="#basic-note">NOTE</a><p>Check this out.</p>
 </div>
-<div id="note-1" class="notice note"><a class="notice-link" href="#note-1">NOTE</a><p>Here’s another.</p>
+<div id="note-3" class="notice note"><a class="notice-link" href="#note-3">NOTE</a><p>Here’s another.</p>
 </div>
-<div id="note-2" class="notice note"><a class="notice-link" href="#note-2">NOTE</a><p>And one more!</p>
+<div id="note-4" class="notice note"><a class="notice-link" href="#note-4">NOTE</a><p>And one more!</p>
 </div>
 <div id="basic-note-1" class="notice note"><a class="notice-link" href="#basic-note-1">NOTE</a><p>One last note!!!</p>
 </div>
