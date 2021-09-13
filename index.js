@@ -150,7 +150,7 @@ module.exports = function(options = {}) {
           else return '</div>\n';
         }
       })
-      .use(require('markdown-it-prism'), { plugins: ['copy-to-clipboard'] })
+      .use(require('markdown-it-prism'), { plugins: ['copy-to-clipboard', 'line-numbers'] })
       .use(require('markdown-it-toc-and-anchor').default, {
         tocClassName: 'toc',
         tocFirstLevel: 2,

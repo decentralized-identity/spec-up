@@ -1,5 +1,5 @@
-/* PrismJS 1.21.0
-https://prismjs.com/download.html#themes=prism-tomorrow&languages=markup+css+clike+javascript+abnf+diff+git+http+js-extras+json+json5+js-templates+regex&plugins=highlight-keywords */
+/* PrismJS 1.23.0
+https://prismjs.com/download.html#themes=prism-tomorrow&languages=markup+css+clike+javascript+abnf+diff+git+http+js-extras+json+json5+js-templates+regex&plugins=line-numbers+highlight-keywords */
 /**
  * prism.js tomorrow night eighties for JavaScript, CoffeeScript, CSS and HTML
  * Based on https://github.com/chriskempson/tomorrow-theme
@@ -123,4 +123,44 @@ https://prismjs.com/download.html#themes=prism-tomorrow&languages=markup+css+cli
    color: green;
  }
  
+ pre[class*="language-"].line-numbers {
+   position: relative;
+   padding-left: 3.8em;
+   counter-reset: linenumber;
+ }
+ 
+ pre[class*="language-"].line-numbers > code {
+   position: relative;
+   white-space: inherit;
+ }
+ 
+ .line-numbers .line-numbers-rows {
+   position: absolute;
+   pointer-events: none;
+   top: 0;
+   font-size: 100%;
+   left: -3.8em;
+   width: 3em; /* works for line-numbers below 1000 lines */
+   letter-spacing: -1px;
+   border-right: 1px solid #999;
+ 
+   -webkit-user-select: none;
+   -moz-user-select: none;
+   -ms-user-select: none;
+   user-select: none;
+ 
+ }
+ 
+   .line-numbers-rows > span {
+     display: block;
+     counter-increment: linenumber;
+   }
+ 
+     .line-numbers-rows > span:before {
+       content: counter(linenumber);
+       color: #999;
+       display: block;
+       padding-right: 0.8em;
+       text-align: right;
+     }
  

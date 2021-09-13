@@ -67,7 +67,5 @@ gulp.task('publish', gulp.series(gulp.parallel(compileAssets, bumpVersion), rend
 
 gulp.task('watch', () => gulp.watch([
   'assets/**/*',
-  '!assets/css/head.css',
-  '!assets/js/head.js',
-  '!assets/js/body.js'
-], gulp.parallel('build')));
+  '!assets/compiled/*'
+], gulp.parallel('compile')));

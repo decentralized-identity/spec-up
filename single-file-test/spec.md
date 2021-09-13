@@ -35,7 +35,6 @@ Using Spec-Up is easy peasy lemon squeezy:
 
 Boom! That's it. Spec-Up will auto-detect modifications to files in your `spec_directory` and auto-generate your spec's updated HTML document every time you save a change.
 
-
 **Usage**
 
 If your `spec.json` and `package.json` and `package-lock.json` files are in working order, Spec-up can be called from the root of your repo in three different modes:

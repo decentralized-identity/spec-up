@@ -93,5 +93,4 @@ delegateEvent('pointerover', '.term-reference, .spec-reference', (e, anchor) => 
   if (tip.content) tipMap.set(anchor, tippy(anchor, tip));
 }, { passive: true });
 
-
 })();
