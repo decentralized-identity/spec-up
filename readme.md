@@ -40,7 +40,7 @@ Installing Spec-Up is easy peasy lemon squeezy:
 
 Boom! That's it. You're ready to start rendering specs as HTML sites locally and/or pushing them to github pages however you see fit to automate.
 
-## Usage
+## Running the scripts locally
 
 If your `spec.json` and `package.json` and `package-lock.json` files are in working order and in the root folder of the repo from which it will be deployed, Spec-up can be called by command line (from the root of your repo) in three different modes:
 
@@ -49,3 +49,85 @@ If your `spec.json` and `package.json` and `package-lock.json` files are in work
 |`npm run edit`|after rendering, this will stay running and the `gulp` library will watch the source files in your spec directory/ies for changes and re-render any time you save a file. Opening these rendered files in a browser and refreshing them will keep you up to date.|
 |`npm run render`|this renders the site once and does not keep a gulpy watch on the underlying files.|
 |`npm run dev`|this enables debugging features.|
+
+## Automation
+
+The above scripts can easily be triggered by github actions.  See [this repo's example](https://github.com/decentralized-identity/spec-up/blob/master/.github/workflows/render-specs.yml)
+
+## Versioning
+
+The recommended method for hosting multiple historical versions of a given specification at the same URL is simply to duplicate the source file(s) in a subdirectory and to host each version in a fixed subdirectory of the output target (i.e., the GitHub-Pages site). These multiple set-up and output directories can be set by multiple `spec` objects in the `specs` array of the `spec.json` file. For example:
+
+```json
+{
+  "specs": [
+    {
+      "title": "Wallet And Credential Interactions",
+      "spec_directory": "./",
+      "output_path": "./build",
+      "logo": "https://rawcdn.githack.com/decentralized-identity/decentralized-identity.github.io/a3ca39717e440302d1fd99a796e7f00e1c42eb2d/images/logo-flat.svg",
+      "logo_link": "https://identity.foundation",
+      "source": {
+        "host": "github",
+        "account": "decentralized-identity",
+        "repo": "waci-presentation-exchange"
+      }
+    },
+    {
+      "title": "Wallet And Credential Interactions",
+      "spec_directory": "./v0.1.0",
+      "output_path": "./build/v0.1.0",
+      "logo": "https://rawcdn.githack.com/decentralized-identity/decentralized-identity.github.io/a3ca39717e440302d1fd99a796e7f00e1c42eb2d/images/logo-flat.svg",
+      "logo_link": "https://identity.foundation",
+      "source": {
+        "host": "github",
+        "account": "decentralized-identity",
+        "repo": "waci-presentation-exchange"
+      }
+    }   
+  ]
+}
+```
+
+In the above example, the files in `./v0.1.0` will not be rendered by the build process that searches "./" for markdown files and vice versa-- changing either will not trigger a new build of the other in each PR.
+
+### 
+
+Manually adding links from the currently/nightly/unstable spec to stable/archival versions is done manually by adding information above the "Editors" section.  See:
+
+<details><summary>Examples</summary>
+
+Unstable version:
+```
+Presentation Exchange 2.0.0
+==================
+
+**Specification Status:** Working Group Draft
+
+**Latest Draft:**
+  [identity.foundation/presentation-exchange](https://identity.foundation/presentation-exchange)
+
+**Ratified Versions:**
+~ **v1.0.0** - [https://identity.foundation/presentation-exchange/spec/v1.0.0](https://identity.foundation/presentation-exchange/spec/v1.0.0)
+
+```
+
+Stable Version:
+```
+Presentation Exchange v1.0.0
+==================
+
+**Specification Status:** DIF Ratified Specification
+
+**Latest Draft:**
+  [identity.foundation/presentation-exchange](https://identity.foundation/presentation-exchange)
+```
+</details>
+
+### Archiving stable versions beyond github
+
+Additionally, some editors may prefer to keep an immutable archive in a system like web.archive.org.  For example:
+
+```
+**Specification Status:** Draft V0.1 (snapshotted and archived on [web.archive.org](https://web.archive.org/web/20211206215823/https://identity.foundation/waci-presentation-exchange/))
+```
