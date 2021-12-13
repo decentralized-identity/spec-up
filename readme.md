@@ -91,7 +91,11 @@ The recommended method for hosting multiple historical versions of a given speci
 
 In the above example, the files in `./v0.1.0` will not be rendered by the build process that searches "./" for markdown files and vice versa-- changing either will not trigger a new build of the other in each PR.
 
-### 
+### Version numbering
+
+DIF Recommends 3-decimal versions à la SemVer (i.e., v0.1.0 instead of v0.1).
+
+### Cross-linking across versions
 
 Manually adding links from the currently/nightly/unstable spec to stable/archival versions is done manually by adding information above the "Editors" section.  See:
 
