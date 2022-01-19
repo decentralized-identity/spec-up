@@ -88,6 +88,7 @@ The recommended method for hosting multiple historical versions of a given speci
   ]
 }
 ```
+*Note: when copying a version into a subdirectory, relative references, including image links or [[include]] blocks that copy in example files or test vectors, may break; a quick CTRL-F "../" is recommended*
 
 In the above example, the files in `./v0.1.0` will not be rendered by the build process that searches "./" for markdown files and vice versa-- changing either will not trigger a new build of the other in each PR.
 
