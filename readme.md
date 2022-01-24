@@ -16,7 +16,7 @@ Spec-Up is a technical specification development tool that enables you to create
 
 Installing Spec-Up is easy peasy lemon squeezy:
 
-0. Node, nvm, and npm should be installed. WSL2 users should look [here](https://docs.microsoft.com/en-us/windows/dev-environment/javascript/nodejs-on-wsl#install-nvm-nodejs-and-npm) for specific instructions.  It may be preferrable to pin to an older stable version; some user report success with the following configuration after installing nvm:
+0. Node.JS, i.e. `nvm` and its package manager `npm`, are required to run spec-up. WSL2 users should look [here](https://docs.microsoft.com/en-us/windows/dev-environment/javascript/nodejs-on-wsl#install-nvm-nodejs-and-npm) for specific instructions.  It may be preferrable to pin to an older stable version; some user report success with the following configuration after installing nvm:
 ```
 nvm install 14
 nvm use 14
