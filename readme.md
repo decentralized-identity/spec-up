@@ -53,7 +53,7 @@ If your `spec.json` and `package.json` and `package-lock.json` files are in work
 
 ## Troubleshooting
 
-- WSL2 users are recommended to use bash rather than PowerShell in the Terminal of Visual Studio Code.
+- WSL2 users are recommended to use the `bash` option rather than `PowerShell` in the terminal of Visual Studio Code.
 - Some users have reported problems using spec-up with node versions 15+; to pin to an older version, simple run:
 ```
 nvm install 14
