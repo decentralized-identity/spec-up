@@ -16,13 +16,7 @@ Spec-Up is a technical specification development tool that enables you to create
 
 Installing Spec-Up is easy peasy lemon squeezy:
 
-0. Node.JS, i.e. `nvm` and its package manager `npm`, are required to run spec-up. WSL2 users should look [here](https://docs.microsoft.com/en-us/windows/dev-environment/javascript/nodejs-on-wsl#install-nvm-nodejs-and-npm) for specific instructions.  It may be preferrable to pin to an older stable version; some user report success with the following configuration after installing nvm:
-```
-nvm install 14
-nvm use 14
-npm i npm@6.14.16 -g
-```
-
+0. Node.JS, i.e. `nvm` and its package manager `npm`, are required to run spec-up. WSL2 users should look [here](https://docs.microsoft.com/en-us/windows/dev-environment/javascript/nodejs-on-wsl#install-nvm-nodejs-and-npm) for specific instructions. 
 1. Run `npm install spec-up` in the root directory of the repo to install all dependencies.
 2. Create a `specs.json` file **in the root folder of your repository** to specify configuration values used in the generation of your spec documents. The values in your `specs.json` file include things like where your spec's markdown files are located, where to output the generated spec document, and various metadata values used in rendering, such as the title, logo, and repo links for each of your specs. The following are the required/optional fields supported in the `specs.json` config file:
 
@@ -56,3 +50,13 @@ If your `spec.json` and `package.json` and `package-lock.json` files are in work
 |`npm run edit`|after rendering, this will stay running and the `gulp` library will watch the source files in your spec directory/ies for changes and re-render any time you save a file. Opening these rendered files in a browser and refreshing them will keep you up to date.|
 |`npm run render`|this renders the site once and does not keep a gulpy watch on the underlying files.|
 |`npm run dev`|this enables debugging features.|
+
+## Troubleshooting
+
+- WSL2 users are recommended to use bash rather than PowerShell in the Terminal of Visual Studio Code.
+- Some users have reported problems using spec-up with node versions 15+; to pin to an older version, simple run:
+```
+nvm install 14
+nvm use 14
+npm i npm@6.14.16 -g
+```
