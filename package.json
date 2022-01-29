@@ -39,7 +39,7 @@
     "gulp-connect": "5.7.0",
     "gulp-run": "1.7.1",
     "gulp-terser": "1.2.0",
-    "markdown-it": "12.0.6",
+    "markdown-it": "12.3.2",
     "markdown-it-abbr": "^1.0.4",
     "markdown-it-anchor": "5.2.5",
     "markdown-it-attrs": "3.0.1",
