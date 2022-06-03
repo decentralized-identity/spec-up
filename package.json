@@ -33,7 +33,6 @@
     "glob-parent": ">=5.1.2",
     "globby": "11.0.0",
     "gulp": "4.0.2",
-    "gulp-bump": "3.2.0",
     "gulp-clean-css": "4.3.0",
     "gulp-concat": "2.6.1",
     "gulp-connect": "5.7.0",
