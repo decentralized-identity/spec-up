@@ -110,7 +110,6 @@ module.exports = function(options = {}) {
           }
         }
       ])
-      .use(require('markdown-it-abbr'))
       .use(require('markdown-it-attrs'))
       .use(require('markdown-it-chart').default)
       .use(require('markdown-it-deflist'))
