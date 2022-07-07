@@ -115,8 +115,6 @@ module.exports = function(options = {}) {
       .use(require('markdown-it-references'))
       .use(require('markdown-it-icons').default, 'font-awesome')
       .use(require('markdown-it-ins'))
-      //<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css" integrity="sha384-AfEj0r4/OFrOo5t7NnNe46zW/tFgW6x/bCJG8FqQCEo3+Aro6EYUG4+cU+KJWu/X" crossorigin="anonymous">
-      //.use(require('@traptitech/markdown-it-katex'))
       .use(require('markdown-it-mark'))
       .use(require('markdown-it-textual-uml'))
       .use(require('markdown-it-sub'))
@@ -157,6 +155,10 @@ module.exports = function(options = {}) {
         anchorLinkSymbol: '§',
         anchorClassName: 'toc-anchor'
       })
+
+    if (options.katex) {
+      md.use(require('@traptitech/markdown-it-katex'))
+    }
 
     async function render(spec, assets) {
       try {
@@ -293,6 +295,12 @@ module.exports = function(options = {}) {
         `;
         assetTags.body = `<script>${fs.readFileSync(modulePath + '/assets/compiled/body.js', 'utf8')}</script>
                           ${ customAssets.js.body }`;
+      }
+
+      if (options.katex) {
+        assetTags.head += `
+          <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.11.1/katex.min.css">
+        `;
       }
 
       if (!options.nowatch) {
