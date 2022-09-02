@@ -24,7 +24,8 @@
           "inject": "body",
           "module": true
         }
-      ]
+      ],
+      "katex": true
     },
     {
       "title": "Spec-Up Multi-File Example",
