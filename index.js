@@ -3,7 +3,6 @@ module.exports = function(options = {}) {
 
   const fs = require('fs-extra');
   const gulp = require('gulp');
-  const axios = require('axios').default;
   const findPkgDir = require('find-pkg-dir');
   const modulePath = findPkgDir(__dirname);
   let config = fs.readJsonSync('./specs.json');
@@ -269,7 +268,7 @@ module.exports = function(options = {}) {
           assets.css += `<link href="${asset.path}" rel="stylesheet"/>`;
         }
         if (ext === 'js') {
-          assets.js[asset.inject || 'body'] += `<script src="${asset.path}"></script>`;
+          assets.js[asset.inject || 'body'] += `<script src="${asset.path}" ${ asset.module ? 'type="module"' : '' } ></script>`;
         }
         return assets;
       }, {

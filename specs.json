@@ -1,4 +1,3 @@
-
 {
   "specs": [
     {
@@ -13,9 +12,18 @@
         "repo": "spec-up"
       },
       "assets": [
-        { "path": "/custom-assets/custom.css" },
-        { "path": "/custom-assets/custom-head.js", "inject": "head" },
-        { "path": "/custom-assets/custom-body.js", "inject": "body" }
+        {
+          "path": "/custom-assets/custom.css"
+        },
+        {
+          "path": "/custom-assets/custom-head.js",
+          "inject": "head"
+        },
+        {
+          "path": "/custom-assets/custom-body.js",
+          "inject": "body",
+          "module": true
+        }
       ]
     },
     {

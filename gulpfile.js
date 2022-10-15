@@ -2,11 +2,10 @@
 const yargs = require('yargs/yargs')
 const { hideBin } = require('yargs/helpers')
 const argv = yargs(hideBin(process.argv)).argv;
+const { exec } = require('child_process');
 
 const fs = require('fs-extra');
 const gulp = require('gulp');
-const run = require('gulp-run');
-const bump = require('gulp-bump');
 const concat = require('gulp-concat');
 const terser = require('gulp-terser');
 const mergeStreams = require('merge-stream');
@@ -49,19 +48,27 @@ async function compileAssets(){
   });
 }
 
+function runCommand(cmd){
+  return new Promise((resolve, reject) => {
+    exec(cmd, {}, error => error ? reject() : resolve());
+  });
+}
+
 async function bumpVersion(){
-  return gulp.src('./package.json')
-          .pipe(bump({ type: argv.v || 'patch' }))
-          .pipe(gulp.dest('./'));
+  return runCommand(`npm version --no-git-tag-version ${ argv.v || 'patch' }`);
 }
 
 async function renderSpecs(){
-  return run('npm run render').exec() 
+  return runCommand('npm run render');
 }
+
+gulp.task('render', renderSpecs);
 
 gulp.task('refs', fetchSpecRefs);
 
 gulp.task('compile', compileAssets);
+
+gulp.task('bump', bumpVersion);
 
 gulp.task('publish', gulp.series(gulp.parallel(compileAssets, bumpVersion), renderSpecs));
 

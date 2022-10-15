@@ -13,7 +13,7 @@
   },
   "body": {
     "js": [
-      "assets/js/markdown-it.js",
+      "node_modules/markdown-it/dist/markdown-it.min.js",
       "assets/js/prism.js",
       "assets/js/mermaid.js",
       "assets/js/chart.js",
