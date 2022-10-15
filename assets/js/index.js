@@ -24,7 +24,6 @@ window.addEventListener('hashchange', (e) => slidepanels.close());
             node.setAttribute('issue-count', count)
           });
           repo_issue_list.innerHTML = issues.map(issue => {
-            console.log(issue);
             return `<li class="repo-issue">
               <detail-box>
                 <section>${markdown.render(issue.body || '')}</section>
