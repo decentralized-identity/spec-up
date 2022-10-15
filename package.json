@@ -1,6 +1,6 @@
 {
   "name": "spec-up",
-  "version": "0.10.4",
+  "version": "0.10.5",
   "description": "Technical specification drafting tool that generates rich specification documents from markdown.",
   "main": "./index",
   "repository": {
@@ -10,8 +10,7 @@
   "scripts": {
     "edit": "node -e \"require('./index')()\"",
     "render": "node -e \"require('./index')({ nowatch: true })\"",
-    "dev": "node -e \"require('./index')({ dev: true })\"",
-    "preinstall": "npx npm-force-resolutions"
+    "dev": "node -e \"require('./index')({ dev: true })\""
   },
   "keywords": [
     "spec",
@@ -31,11 +30,9 @@
     "axios": "0.21.2",
     "find-pkg-dir": "2.0.0",
     "fs-extra": "8.1.0",
-    "gulp": "^4.0.2",
-    "gulp-bump": "3.2.0",
+    "gulp": "4.0.2",
     "gulp-clean-css": "4.3.0",
     "gulp-concat": "2.6.1",
-    "gulp-run": "^1.7.0",
     "gulp-terser": "1.2.0",
     "markdown-it": "13.0.1",
     "markdown-it-anchor": "5.2.5",
@@ -59,10 +56,5 @@
     "pkg-dir": "4.2.0",
     "prismjs": ">=1.24.0",
     "yargs": "16.2.0"
-  },
-  "resolutions": {
-    "glob-parent": "^6.0.1",
-    "lodash.template": "4.5.0",
-    "lodash": "4.17.21"
   }
 }
