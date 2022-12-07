@@ -48,19 +48,18 @@ module.exports = function(options = {}) {
     return `\n${html}\n</dl>\n`;
   }
 
-  function copyKatexFonts(dest){
-    const relpath = "node_modules/katex/dist/fonts";
+  function findKatexDist(){
+    const relpath = "node_modules/katex/dist";
     const paths = [
       path.join(process.cwd(), relpath),
       path.join(__dirname, relpath),
     ];
     for(const abspath of paths) {
       if(fs.existsSync(abspath)) {
-        fs.copySync(abspath, path.join(dest, 'fonts'));
-        return;
+        return abspath
       }
     }
-    throw Error("katex fonts could not be located");
+    throw Error("katex distribution could not be located");
   }
 
   try {
@@ -311,11 +310,13 @@ module.exports = function(options = {}) {
       }
 
       if (spec.katex) {
-        assetTags.body += `<script>/* katex */${fs.readFileSync(modulePath + '/node_modules/katex/dist/katex.min.js',
+        const katexDist = findKatexDist();
+        assetTags.body += `<script>/* katex */${fs.readFileSync(path.join(katexDist, 'katex.min.js'),
                           'utf8')}</script>`;
-        assetTags.body += `<style>/* katex */${fs.readFileSync(modulePath + '/node_modules/katex/dist/katex.min.css',
+        assetTags.body += `<style>/* katex */${fs.readFileSync(path.join(katexDist, 'katex.min.css'),
                           'utf8')}</style>`;
-        copyKatexFonts(spec.destination);
+        
+        fs.copySync(path.join(katexDist, 'fonts'), path.join(spec.destination, 'fonts'));
       }
 
       if (!options.nowatch) {
