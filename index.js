@@ -3,12 +3,12 @@ module.exports = function(options = {}) {
 
   const fs = require('fs-extra');
   const gulp = require('gulp');
-  const axios = require('axios').default;
   const findPkgDir = require('find-pkg-dir');
   const modulePath = findPkgDir(__dirname);
   let config = fs.readJsonSync('./specs.json');
   let assets = fs.readJsonSync(modulePath + '/src/asset-map.json');
 
+  const katexRules = ['math_block', 'math_inline']
   const replacerRegex = /\[\[\s*([^\s\[\]:]+):?\s*([^\]\n]+)?\]\]/img;
   const replacerArgsRegex = /\s*,+\s*/;
   const replacers = [
@@ -48,6 +48,20 @@ module.exports = function(options = {}) {
     return `\n${html}\n</dl>\n`;
   }
 
+  function findKatexDist(){
+    const relpath = "node_modules/katex/dist";
+    const paths = [
+      path.join(process.cwd(), relpath),
+      path.join(__dirname, relpath),
+    ];
+    for(const abspath of paths) {
+      if(fs.existsSync(abspath)) {
+        return abspath
+      }
+    }
+    throw Error("katex distribution could not be located");
+  }
+
   try {
 
     var toc;
@@ -60,7 +74,6 @@ module.exports = function(options = {}) {
       todo: 1
     };
     const spaceRegex = /\s+/g;
-    const domainRegex = /^(?:http|https):\/\/(\w+)[.]*([\w.]+)/;
     const specNameRegex = /^spec$|^spec[-]*\w+$/i;
     const terminologyRegex = /^def$|^ref/i;
     const specCorpus = fs.readJsonSync(modulePath + '/assets/compiled/refs.json');
@@ -110,15 +123,12 @@ module.exports = function(options = {}) {
           }
         }
       ])
-      .use(require('markdown-it-abbr'))
       .use(require('markdown-it-attrs'))
       .use(require('markdown-it-chart').default)
       .use(require('markdown-it-deflist'))
       .use(require('markdown-it-references'))
       .use(require('markdown-it-icons').default, 'font-awesome')
       .use(require('markdown-it-ins'))
-      //<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css" integrity="sha384-AfEj0r4/OFrOo5t7NnNe46zW/tFgW6x/bCJG8FqQCEo3+Aro6EYUG4+cU+KJWu/X" crossorigin="anonymous">
-      //.use(require('@traptitech/markdown-it-katex'))
       .use(require('markdown-it-mark'))
       .use(require('markdown-it-textual-uml'))
       .use(require('markdown-it-sub'))
@@ -155,10 +165,11 @@ module.exports = function(options = {}) {
         tocClassName: 'toc',
         tocFirstLevel: 2,
         tocLastLevel: 4,
-        tocCallback: (md, tokens, html) => toc = html,
+        tocCallback: (_md, _tokens, html) => toc = html,
         anchorLinkSymbol: '§',
         anchorClassName: 'toc-anchor'
       })
+      .use(require('@traptitech/markdown-it-katex'))
 
     async function render(spec, assets) {
       try {
@@ -169,10 +180,11 @@ module.exports = function(options = {}) {
           Promise.all((spec.markdown_paths || ['spec.md']).map(path => {
             return fs.readFile(spec.spec_directory + path, 'utf8').catch(e => reject(e))
           })).then(async docs => {
-            var features = (({ source, logo }) => ({ source, logo }))(spec);
-            var doc = docs.join("\n");
+            const features = (({ source, logo }) => ({ source, logo }))(spec);
+            let doc = docs.join("\n");
             doc = applyReplacers(doc);
-            fs.writeFile(spec.destination + 'index.html', `
+            md[spec.katex ? "enable" : "disable"](katexRules);
+            fs.writeFile(path.join(spec.destination, 'index.html'), `
               <!DOCTYPE html>
               <html lang="en">
                 <head>
@@ -250,7 +262,7 @@ module.exports = function(options = {}) {
         });
       }
       catch(e) {
-        console.log(e);
+        console.error(e);
       }
     }
 
@@ -260,7 +272,7 @@ module.exports = function(options = {}) {
 
       fs.ensureDirSync(spec.destination);
 
-      var assetTags = {
+      let assetTags = {
         svg: fs.readFileSync(modulePath + '/assets/icons.svg', 'utf8') || ''
       };
 
@@ -270,7 +282,7 @@ module.exports = function(options = {}) {
           assets.css += `<link href="${asset.path}" rel="stylesheet"/>`;
         }
         if (ext === 'js') {
-          assets.js[asset.inject || 'body'] += `<script src="${asset.path}"></script>`;
+          assets.js[asset.inject || 'body'] += `<script src="${asset.path}" ${ asset.module ? 'type="module"' : '' } ></script>`;
         }
         return assets;
       }, {
@@ -297,14 +309,24 @@ module.exports = function(options = {}) {
                           ${ customAssets.js.body }`;
       }
 
+      if (spec.katex) {
+        const katexDist = findKatexDist();
+        assetTags.body += `<script>/* katex */${fs.readFileSync(path.join(katexDist, 'katex.min.js'),
+                          'utf8')}</script>`;
+        assetTags.body += `<style>/* katex */${fs.readFileSync(path.join(katexDist, 'katex.min.css'),
+                          'utf8')}</style>`;
+        
+        fs.copySync(path.join(katexDist, 'fonts'), path.join(spec.destination, 'fonts'));
+      }
+
       if (!options.nowatch) {
         gulp.watch(
-          [spec.spec_directory + '**/*', '!' + spec.destination + 'index.html'],
+          [spec.spec_directory + '**/*', '!' + path.join(spec.destination, 'index.html')],
           render.bind(null, spec, assetTags)
         )
       }
 
-      render.call(null, spec, assetTags).then(() => {
+      render(spec, assetTags).then(() => {
         if (options.nowatch) process.exit(0)
       }).catch(() => process.exit(1));
 
@@ -312,7 +334,7 @@ module.exports = function(options = {}) {
 
   }
   catch(e) {
-    console.log(e);
+    console.error(e);
   }
 
 }

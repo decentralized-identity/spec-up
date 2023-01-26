@@ -26,7 +26,7 @@ window.addEventListener('hashchange', (e) => slidepanels.close());
           repo_issue_list.innerHTML = issues.map(issue => {
             return `<li class="repo-issue">
               <detail-box>
-                <section>${markdown.render(issue.body)}</section>
+                <section>${markdown.render(issue.body || '')}</section>
                 <header class="repo-issue-title">
                   <span class="repo-issue-number">${issue.number}</span>
                   <span class="repo-issue-link">
