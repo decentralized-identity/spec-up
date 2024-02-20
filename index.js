@@ -7,6 +7,8 @@ module.exports = function(options = {}) {
   const modulePath = findPkgDir(__dirname);
   let config = fs.readJsonSync('./specs.json');
   let assets = fs.readJsonSync(modulePath + '/src/asset-map.json');
+  let references = [];
+  let definitions = [];
 
   const katexRules = ['math_block', 'math_inline']
   const replacerRegex = /\[\[\s*([^\s\[\]:]+):?\s*([^\]\n]+)?\]\]/img;
@@ -113,11 +115,13 @@ module.exports = function(options = {}) {
           parse(token, type, primary){
             if (!primary) return;
             if (type === 'def'){
+              definitions.push(token.info.args);
               return token.info.args.reduce((acc, syn) => {
                 return `<span id="term:${syn.replace(spaceRegex, '-').toLowerCase()}">${acc}</span>`;
               }, primary);
             }
             else {
+              references.push(primary);
               return `<a class="term-reference" href="#term:${primary.replace(spaceRegex, '-').toLowerCase()}">${primary}</a>`;
             }
           }
@@ -184,6 +188,7 @@ module.exports = function(options = {}) {
             let doc = docs.join("\n");
             doc = applyReplacers(doc);
             md[spec.katex ? "enable" : "disable"](katexRules);
+            const render = md.render(doc);
             fs.writeFile(path.join(spec.destination, 'index.html'), `
               <!DOCTYPE html>
               <html lang="en">
@@ -217,7 +222,7 @@ module.exports = function(options = {}) {
                     </header>
       
                     <article id="content">
-                      ${md.render(doc)}
+                      ${render}
                     </article>    
       
                   </main>
@@ -257,12 +262,41 @@ module.exports = function(options = {}) {
               else {
                 resolve();
               }
-            }); 
+            });
+            diagnoseReferences(render);
           });
         });
       }
       catch(e) {
         console.error(e);
+      }
+    }
+
+    function diagnoseReferences(render) {
+      const resolvedRefs = [];
+      const unresolvedRefs = [];
+      [...new Set(references)].forEach(
+        ref => {
+          if(render.includes(`id="term:${ref.replace(spaceRegex, '-').toLowerCase()}"`)) {
+            resolvedRefs.push(ref);
+          } else {
+            unresolvedRefs.push(ref);
+          }
+        }
+      );
+      if (unresolvedRefs.length > 0 ) {
+        console.log('Unresolved References: ', unresolvedRefs)
+      }
+      
+      const danglingDefs = [];
+      definitions.forEach(defs => {
+        let found = defs.some(def => render.includes(`href="#term:${def.replace(spaceRegex, '-').toLowerCase()}"`)) 
+        if (!found) {
+          danglingDefs.push(defs[0]);
+        }
+      })
+      if(danglingDefs.length > 0) {
+        console.log('Dangling Definitions: ', danglingDefs)
       }
     }
 
