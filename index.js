@@ -263,7 +263,7 @@ module.exports = function(options = {}) {
                 resolve();
               }
             });
-            diagnoseReferences(render);
+            validateReferences(render);
           });
         });
       }
@@ -272,7 +272,7 @@ module.exports = function(options = {}) {
       }
     }
 
-    function diagnoseReferences(render) {
+    function validateReferences(render) {
       const resolvedRefs = [];
       const unresolvedRefs = [];
       [...new Set(references)].forEach(
@@ -298,6 +298,9 @@ module.exports = function(options = {}) {
       if(danglingDefs.length > 0) {
         console.log('Dangling Definitions: ', danglingDefs)
       }
+
+      references = [];
+      definitions = []
     }
 
     config.specs.forEach(spec => {
