@@ -3,6 +3,7 @@ module.exports = function(options = {}) {
 
   const fs = require('fs-extra');
   const gulp = require('gulp');
+  const path = require('path');
   const findPkgDir = require('find-pkg-dir');
   const modulePath = findPkgDir(__dirname);
   let config = fs.readJsonSync('./specs.json');
@@ -181,8 +182,8 @@ module.exports = function(options = {}) {
         specGroups = {};
         console.log('Rendering: ' + spec.title);
         return new Promise(async (resolve, reject) => {
-          Promise.all((spec.markdown_paths || ['spec.md']).map(path => {
-            return fs.readFile(spec.spec_directory + path, 'utf8').catch(e => reject(e))
+          Promise.all((spec.markdown_paths || ['spec.md']).map(_path => {
+            return fs.readFile(spec.spec_directory + _path, 'utf8').catch(e => reject(e))
           })).then(async docs => {
             const features = (({ source, logo }) => ({ source, logo }))(spec);
             let doc = docs.join("\n");
@@ -328,11 +329,11 @@ module.exports = function(options = {}) {
       });  
 
       if (options.dev) {
-        assetTags.head = assets.head.css.map(path => `<link href="${path}" rel="stylesheet"/>`).join('') + 
+        assetTags.head = assets.head.css.map(_path => `<link href="${_path}" rel="stylesheet"/>`).join('') + 
                          customAssets.css +
-                         assets.head.js.map(path =>  `<script src="${path}"></script>`).join('') +
+                         assets.head.js.map(_path =>  `<script src="${_path}"></script>`).join('') +
                          customAssets.js.head;
-        assetTags.body = assets.body.js.map(path => `<script src="${path}" data-manual></script>`).join('') + 
+        assetTags.body = assets.body.js.map(_path => `<script src="${_path}" data-manual></script>`).join('') + 
                          customAssets.js.body;
       }
       else {
