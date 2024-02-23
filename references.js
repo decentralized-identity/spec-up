@@ -66,7 +66,7 @@ function createNewDLWithTerms(title, html) {
   const newDl = document.createElement('dl');
   newDl.setAttribute('id', title);
 
-  const terms = document.querySelectorAll('dt > span[id^="term:"]');
+  const terms = document.querySelectorAll('dt span[id^="term:"]');
 
   terms.forEach(term => {
     const modifiedId = `term:${title}:${term.id.split(':')[1]}`;

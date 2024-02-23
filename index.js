@@ -13,7 +13,6 @@ module.exports = function(options = {}) {
   const modulePath = findPkgDir(__dirname);
   let config = fs.readJsonSync('./specs.json');
   let assets = fs.readJsonSync(modulePath + '/src/asset-map.json');
-  let externalReferenceSpecs = [];
   let references = [];
   let definitions = [];
 
