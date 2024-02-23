@@ -1,13 +1,19 @@
 
 module.exports = function(options = {}) {
 
-  const fs = require('fs-extra');
+  const {
+    fetchExternalSpecs,
+    validateReferences,
+    findExternalSpecByKey
+  } = require('./references.js');
   const gulp = require('gulp');
+  const fs = require('fs-extra');
   const path = require('path');
   const findPkgDir = require('find-pkg-dir');
   const modulePath = findPkgDir(__dirname);
   let config = fs.readJsonSync('./specs.json');
   let assets = fs.readJsonSync(modulePath + '/src/asset-map.json');
+  let externalReferenceSpecs = [];
   let references = [];
   let definitions = [];
 
@@ -78,7 +84,7 @@ module.exports = function(options = {}) {
     };
     const spaceRegex = /\s+/g;
     const specNameRegex = /^spec$|^spec[-]*\w+$/i;
-    const terminologyRegex = /^def$|^ref/i;
+    const terminologyRegex = /^def$|^ref$|^x-ref/i;
     const specCorpus = fs.readJsonSync(modulePath + '/assets/compiled/refs.json');
     const containers = require('markdown-it-container');
     const md = require('markdown-it')({
@@ -87,6 +93,28 @@ module.exports = function(options = {}) {
         typographer: true
       })
       .use(require('./src/markdown-it-extensions.js'), [
+        {
+          filter: type => type.match(terminologyRegex),
+          parse(token, type, primary){
+            if (!primary) return;
+            if (type === 'def'){
+              definitions.push(token.info.args);
+              return token.info.args.reduce((acc, syn) => {
+                return `<span id="term:${syn.replace(spaceRegex, '-').toLowerCase()}">${acc}</span>`;
+              }, primary);
+            }
+            else if (type === 'x-ref') {
+              const url = findExternalSpecByKey(config, token.info.args[0]);
+              const term = token.info.args[1].replace(spaceRegex, '-').toLowerCase();
+              return `<a class="term-reference" data-local-href="#term:${token.info.args[0]}:${term}"
+                href="${url}#term:${term}">${token.info.args[1]}</a>`;
+            }
+            else {
+              references.push(primary);
+              return `<a class="term-reference" href="#term:${primary.replace(spaceRegex, '-').toLowerCase()}">${primary}</a>`;
+            }
+          }
+        },
         {
           filter: type => type.match(specNameRegex),
           parse(token, type, name){
@@ -109,22 +137,6 @@ module.exports = function(options = {}) {
               if (spec) return `[<a class="spec-reference" href="#ref:${spec._name}">${spec._name}</a>]`;
             }
             else return renderRefGroup(type);
-          }
-        },
-        {
-          filter: type => type.match(terminologyRegex),
-          parse(token, type, primary){
-            if (!primary) return;
-            if (type === 'def'){
-              definitions.push(token.info.args);
-              return token.info.args.reduce((acc, syn) => {
-                return `<span id="term:${syn.replace(spaceRegex, '-').toLowerCase()}">${acc}</span>`;
-              }, primary);
-            }
-            else {
-              references.push(primary);
-              return `<a class="term-reference" href="#term:${primary.replace(spaceRegex, '-').toLowerCase()}">${primary}</a>`;
-            }
           }
         }
       ])
@@ -186,6 +198,10 @@ module.exports = function(options = {}) {
             return fs.readFile(spec.spec_directory + _path, 'utf8').catch(e => reject(e))
           })).then(async docs => {
             const features = (({ source, logo }) => ({ source, logo }))(spec);
+            let externalReferences;
+            if (spec.external_specs) {
+              externalReferences = await fetchExternalSpecs(spec);
+            }
             let doc = docs.join("\n");
             doc = applyReplacers(doc);
             md[spec.katex ? "enable" : "disable"](katexRules);
@@ -251,7 +267,9 @@ module.exports = function(options = {}) {
                     </slide-panel>
                     
                   </slide-panels>
-      
+                  <div style="display: none;">
+                    ${externalReferences}
+                  </div>
                 </body>
                 <script>window.specConfig = ${JSON.stringify(spec)}</script>
                 ${assets.body}
@@ -264,44 +282,15 @@ module.exports = function(options = {}) {
                 resolve();
               }
             });
-            validateReferences(render);
+            validateReferences(references, definitions, render);
+            references = [];
+            definitions = [];
           });
         });
       }
       catch(e) {
         console.error(e);
       }
-    }
-
-    function validateReferences(render) {
-      const resolvedRefs = [];
-      const unresolvedRefs = [];
-      [...new Set(references)].forEach(
-        ref => {
-          if(render.includes(`id="term:${ref.replace(spaceRegex, '-').toLowerCase()}"`)) {
-            resolvedRefs.push(ref);
-          } else {
-            unresolvedRefs.push(ref);
-          }
-        }
-      );
-      if (unresolvedRefs.length > 0 ) {
-        console.log('Unresolved References: ', unresolvedRefs)
-      }
-      
-      const danglingDefs = [];
-      definitions.forEach(defs => {
-        let found = defs.some(def => render.includes(`href="#term:${def.replace(spaceRegex, '-').toLowerCase()}"`)) 
-        if (!found) {
-          danglingDefs.push(defs[0]);
-        }
-      })
-      if(danglingDefs.length > 0) {
-        console.log('Dangling Definitions: ', danglingDefs)
-      }
-
-      references = [];
-      definitions = []
     }
 
     config.specs.forEach(spec => {
