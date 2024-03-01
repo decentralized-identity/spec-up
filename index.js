@@ -83,7 +83,7 @@ module.exports = function(options = {}) {
     };
     const spaceRegex = /\s+/g;
     const specNameRegex = /^spec$|^spec[-]*\w+$/i;
-    const terminologyRegex = /^def$|^ref$|^x-ref/i;
+    const terminologyRegex = /^def$|^ref$|^xref/i;
     const specCorpus = fs.readJsonSync(modulePath + '/assets/compiled/refs.json');
     const containers = require('markdown-it-container');
     const md = require('markdown-it')({
@@ -102,7 +102,7 @@ module.exports = function(options = {}) {
                 return `<span id="term:${syn.replace(spaceRegex, '-').toLowerCase()}">${acc}</span>`;
               }, primary);
             }
-            else if (type === 'x-ref') {
+            else if (type === 'xref') {
               const url = findExternalSpecByKey(config, token.info.args[0]);
               const term = token.info.args[1].replace(spaceRegex, '-').toLowerCase();
               return `<a class="term-reference" data-local-href="#term:${token.info.args[0]}:${term}"
