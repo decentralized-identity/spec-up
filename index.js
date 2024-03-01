@@ -13,6 +13,7 @@ module.exports = function(options = {}) {
   const modulePath = findPkgDir(__dirname);
   let config = fs.readJsonSync('./specs.json');
   let assets = fs.readJsonSync(modulePath + '/src/asset-map.json');
+  let externalReferences;
   let references = [];
   let definitions = [];
 
@@ -197,8 +198,7 @@ module.exports = function(options = {}) {
             return fs.readFile(spec.spec_directory + _path, 'utf8').catch(e => reject(e))
           })).then(async docs => {
             const features = (({ source, logo }) => ({ source, logo }))(spec);
-            let externalReferences;
-            if (spec.external_specs) {
+            if (spec.external_specs && !externalReferences) {
               externalReferences = await fetchExternalSpecs(spec);
             }
             let doc = docs.join("\n");
