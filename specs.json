@@ -11,6 +11,11 @@
         "account": "decentralized-identity",
         "repo": "spec-up"
       },
+      "external_specs": [
+        {
+          "PE": "https://identity.foundation/presentation-exchange"
+        }
+      ],
       "assets": [
         {
           "path": "/custom-assets/custom.css"

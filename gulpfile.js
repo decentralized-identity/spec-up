@@ -17,9 +17,9 @@ let compileLocation = 'assets/compiled';
 
 async function fetchSpecRefs(){
   return Promise.all([
-    axios.get('https://ghcdn.rawgit.org/tobie/specref/master/refs/ietf.json'),
-    axios.get('https://ghcdn.rawgit.org/tobie/specref/master/refs/w3c.json'),
-    axios.get('https://ghcdn.rawgit.org/tobie/specref/master/refs/whatwg.json')
+    axios.get('https://raw.githubusercontent.com/tobie/specref/master/refs/ietf.json'),
+    axios.get('https://raw.githubusercontent.com/tobie/specref/master/refs/w3c.json'),
+    axios.get('https://raw.githubusercontent.com/tobie/specref/master/refs/whatwg.json')
   ]).then(async results => {
     let json = Object.assign(results[0].data, results[1].data, results[2].data);
     return fs.outputFile(compileLocation + '/refs.json', JSON.stringify(json));

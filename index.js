@@ -1,12 +1,21 @@
 
 module.exports = function(options = {}) {
 
-  const fs = require('fs-extra');
+  const {
+    fetchExternalSpecs,
+    validateReferences,
+    findExternalSpecByKey
+  } = require('./references.js');
   const gulp = require('gulp');
+  const fs = require('fs-extra');
+  const path = require('path');
   const findPkgDir = require('find-pkg-dir');
   const modulePath = findPkgDir(__dirname);
   let config = fs.readJsonSync('./specs.json');
   let assets = fs.readJsonSync(modulePath + '/src/asset-map.json');
+  let externalReferences;
+  let references = [];
+  let definitions = [];
 
   const katexRules = ['math_block', 'math_inline']
   const replacerRegex = /\[\[\s*([^\s\[\]:]+):?\s*([^\]\n]+)?\]\]/img;
@@ -75,7 +84,7 @@ module.exports = function(options = {}) {
     };
     const spaceRegex = /\s+/g;
     const specNameRegex = /^spec$|^spec[-]*\w+$/i;
-    const terminologyRegex = /^def$|^ref/i;
+    const terminologyRegex = /^def$|^ref$|^xref/i;
     const specCorpus = fs.readJsonSync(modulePath + '/assets/compiled/refs.json');
     const containers = require('markdown-it-container');
     const md = require('markdown-it')({
@@ -84,6 +93,28 @@ module.exports = function(options = {}) {
         typographer: true
       })
       .use(require('./src/markdown-it-extensions.js'), [
+        {
+          filter: type => type.match(terminologyRegex),
+          parse(token, type, primary){
+            if (!primary) return;
+            if (type === 'def'){
+              definitions.push(token.info.args);
+              return token.info.args.reduce((acc, syn) => {
+                return `<span id="term:${syn.replace(spaceRegex, '-').toLowerCase()}">${acc}</span>`;
+              }, primary);
+            }
+            else if (type === 'xref') {
+              const url = findExternalSpecByKey(config, token.info.args[0]);
+              const term = token.info.args[1].replace(spaceRegex, '-').toLowerCase();
+              return `<a class="term-reference" data-local-href="#term:${token.info.args[0]}:${term}"
+                href="${url}#term:${term}">${token.info.args[1]}</a>`;
+            }
+            else {
+              references.push(primary);
+              return `<a class="term-reference" href="#term:${primary.replace(spaceRegex, '-').toLowerCase()}">${primary}</a>`;
+            }
+          }
+        },
         {
           filter: type => type.match(specNameRegex),
           parse(token, type, name){
@@ -106,20 +137,6 @@ module.exports = function(options = {}) {
               if (spec) return `[<a class="spec-reference" href="#ref:${spec._name}">${spec._name}</a>]`;
             }
             else return renderRefGroup(type);
-          }
-        },
-        {
-          filter: type => type.match(terminologyRegex),
-          parse(token, type, primary){
-            if (!primary) return;
-            if (type === 'def'){
-              return token.info.args.reduce((acc, syn) => {
-                return `<span id="term:${syn.replace(spaceRegex, '-').toLowerCase()}">${acc}</span>`;
-              }, primary);
-            }
-            else {
-              return `<a class="term-reference" href="#term:${primary.replace(spaceRegex, '-').toLowerCase()}">${primary}</a>`;
-            }
           }
         }
       ])
@@ -177,13 +194,17 @@ module.exports = function(options = {}) {
         specGroups = {};
         console.log('Rendering: ' + spec.title);
         return new Promise(async (resolve, reject) => {
-          Promise.all((spec.markdown_paths || ['spec.md']).map(path => {
-            return fs.readFile(spec.spec_directory + path, 'utf8').catch(e => reject(e))
+          Promise.all((spec.markdown_paths || ['spec.md']).map(_path => {
+            return fs.readFile(spec.spec_directory + _path, 'utf8').catch(e => reject(e))
           })).then(async docs => {
             const features = (({ source, logo }) => ({ source, logo }))(spec);
+            if (spec.external_specs && !externalReferences) {
+              externalReferences = await fetchExternalSpecs(spec);
+            }
             let doc = docs.join("\n");
             doc = applyReplacers(doc);
             md[spec.katex ? "enable" : "disable"](katexRules);
+            const render = md.render(doc);
             fs.writeFile(path.join(spec.destination, 'index.html'), `
               <!DOCTYPE html>
               <html lang="en">
@@ -217,7 +238,7 @@ module.exports = function(options = {}) {
                     </header>
       
                     <article id="content">
-                      ${md.render(doc)}
+                      ${render}
                     </article>    
       
                   </main>
@@ -245,7 +266,9 @@ module.exports = function(options = {}) {
                     </slide-panel>
                     
                   </slide-panels>
-      
+                  <div style="display: none;">
+                    ${externalReferences}
+                  </div>
                 </body>
                 <script>window.specConfig = ${JSON.stringify(spec)}</script>
                 ${assets.body}
@@ -257,7 +280,10 @@ module.exports = function(options = {}) {
               else {
                 resolve();
               }
-            }); 
+            });
+            validateReferences(references, definitions, render);
+            references = [];
+            definitions = [];
           });
         });
       }
@@ -291,11 +317,11 @@ module.exports = function(options = {}) {
       });  
 
       if (options.dev) {
-        assetTags.head = assets.head.css.map(path => `<link href="${path}" rel="stylesheet"/>`).join('') + 
+        assetTags.head = assets.head.css.map(_path => `<link href="${_path}" rel="stylesheet"/>`).join('') + 
                          customAssets.css +
-                         assets.head.js.map(path =>  `<script src="${path}"></script>`).join('') +
+                         assets.head.js.map(_path =>  `<script src="${_path}"></script>`).join('') +
                          customAssets.js.head;
-        assetTags.body = assets.body.js.map(path => `<script src="${path}" data-manual></script>`).join('') + 
+        assetTags.body = assets.body.js.map(_path => `<script src="${_path}" data-manual></script>`).join('') + 
                          customAssets.js.body;
       }
       else {

@@ -34,6 +34,7 @@
     "gulp-clean-css": "4.3.0",
     "gulp-concat": "2.6.1",
     "gulp-terser": "1.2.0",
+    "jsdom": "^24.0.0",
     "markdown-it": "13.0.1",
     "markdown-it-anchor": "5.2.5",
     "markdown-it-attrs": "4.1.4",

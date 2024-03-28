@@ -59,7 +59,8 @@ document.querySelectorAll('.chartjs').forEach(chart => {
 /* Tooltips */
 let tipMap = new WeakMap();
 delegateEvent('pointerover', '.term-reference, .spec-reference', (e, anchor) => {
-  let term = document.getElementById((anchor.getAttribute('href') || '').replace('#', ''));
+  const id = anchor.getAttribute('data-local-href') || anchor.getAttribute('href') || '';
+  let term = document.getElementById(id.replace('#', ''));
   if (!term || tipMap.has(anchor)) return;
   let container = term.closest('dt, td:first-child');
   if (!container) return;
