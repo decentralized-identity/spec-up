@@ -1,0 +1,18 @@
+/*
+  Author: Kor Dwarshuis, kor@dwarshuis.com
+  Created: 2024-03-29
+  Description: In–page search functionality. JavaScript in /assets/js/search.js
+*/
+
+#search {
+  margin: 0.1em 0.5em;
+  height: 1.5em;
+}
+
+.highlight {
+  background-color: yellow;
+  border-bottom: 5px solid #1D6DAE;
+  padding: 0.2em 0.5em;
+  margin-left: 0.2em;
+  margin-right: 0.2em;
+}
