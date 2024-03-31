@@ -25,7 +25,8 @@
           "module": true
         }
       ],
-      "katex": true
+      "katex": true,
+      "searchHighlightStyle": "ssi"
     },
     {
       "title": "Spec-Up Multi-File Example",
