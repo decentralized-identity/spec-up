@@ -4,15 +4,59 @@
   Description: In–page search functionality. JavaScript in /assets/js/search.js
 */
 
-#search {
+
+/* Basic styles */
+#search-h7vc6omi2hr2880 {
   margin: 0.1em 0.5em;
   height: 1.5em;
 }
 
-.highlight {
-  background-color: yellow;
-  border-bottom: 5px solid #1D6DAE;
-  padding: 0.2em 0.5em;
+/* Specific styles */
+.highlight-hits-DIF-h7vc6omi2hr2880 {
+  padding: 0 0.5em;
   margin-left: 0.2em;
   margin-right: 0.2em;
+
+  background-color: #1d6dae11;
+}
+
+.highlight-hits-ToIP-h7vc6omi2hr2880 {
+  padding: 0 0.5em;
+  margin-left: 0.2em;
+  margin-right: 0.2em;
+
+  background-color: #a9dde0b0;
+}
+
+.highlight-hits-BTC-h7vc6omi2hr2880 {
+  padding: 0 0.5em;
+  margin-left: 0.2em;
+  margin-right: 0.2em;
+
+  background-color: #f19019a1;
+}
+
+.highlight-hits-KERI-h7vc6omi2hr2880 {
+  padding: 0 0.5em;
+  margin-left: 0.2em;
+  margin-right: 0.2em;
+
+  background-color: #b5d070d5;
+}
+
+.highlight-hits-SSI-h7vc6omi2hr2880 {
+  padding: 0 0.5em;
+  margin-left: 0.2em;
+  margin-right: 0.2em;
+
+  background-color: yellow;
+  border-bottom: 3px solid #1D6DAE;
+}
+
+.highlight-hits-GLEIF-h7vc6omi2hr2880 {
+  padding: 0 0.5em;
+  margin-left: 0.2em;
+  margin-right: 0.2em;
+
+  background-color: #52dac6a6;
 }
