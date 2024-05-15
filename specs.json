@@ -1,0 +1,53 @@
+{
+  "specs": [
+    {
+      "title": "Spec-Up Example",
+      "spec_directory": "./single-file-test",
+      "output_path": "./",
+      "logo": "logo.svg",
+      "logo_link": "https://github.com/decentralized-identity/spec-up",
+      "source": {
+        "host": "github",
+        "account": "decentralized-identity",
+        "repo": "spec-up"
+      },
+      "external_specs": [
+        {
+          "PE": "https://identity.foundation/presentation-exchange"
+        }
+      ],
+      "assets": [
+        {
+          "path": "/custom-assets/custom.css"
+        },
+        {
+          "path": "/custom-assets/custom-head.js",
+          "inject": "head"
+        },
+        {
+          "path": "/custom-assets/custom-body.js",
+          "inject": "body",
+          "module": true
+        }
+      ],
+      "katex": true
+    },
+    {
+      "title": "Spec-Up Multi-File Example",
+      "spec_directory": "./multi-file-test",
+      "markdown_paths": [
+        "header.md",
+        "abstract.md",
+        "getting-started.md",
+        "features.md"
+      ],
+      "logo": "../logo.svg",
+      "logo_link": "https://github.com/decentralized-identity/spec-up",
+      "source": {
+        "host": "github",
+        "account": "decentralized-identity",
+        "repo": "spec-up"
+      }
+    }
+  ]
+}
