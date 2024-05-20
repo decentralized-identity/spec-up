@@ -1,62 +1,106 @@
 /*
-  Author: Kor Dwarshuis, kor@dwarshuis.com
-  Created: 2024-03-29
-  Description: In–page search functionality. JavaScript in /assets/js/search.js
-*/
+ * Search bar, input, nav, nr of results
+ */
 
 
-/* Basic styles */
 #search-h7vc6omi2hr2880 {
   margin: 0.1em 0.5em;
+  padding: 0.2em;
   height: 1.5em;
 }
 
-/* Specific styles */
-.highlight-hits-DIF-h7vc6omi2hr2880 {
-  padding: 0 0.5em;
-  margin-left: 0.2em;
-  margin-right: 0.2em;
+#search-h7vc6omi2hr2880:active {
+  font-size: 16px;
+}
 
+#back-and-forth-buttons-container-search-h7vc6omi2hr2880 {
+  padding: 0;
+}
+
+#back-and-forth-buttons-container-search-h7vc6omi2hr2880 button {
+  margin-right: 0.5em;
+}
+
+#total-matches-search-h7vc6omi2hr2880 {
+  font-size: 0.8em;
+}
+
+
+.panel-header#header {
+  flex-wrap: wrap;
+  height: auto;
+}
+
+#container-search-h7vc6omi2hr2880 {
+  flex-basis: 100%;
+  padding: 0.3em;
+  background: #eceff1;
+}
+
+#logo img {
+  width: 100px;
+  /* border: 3px solid pink; */
+}
+
+/* Small devices (landscape phones, 576px and up) */
+@media (min-width: 576px) {
+  #container-search-h7vc6omi2hr2880 {
+    flex-basis: auto;
+    margin-bottom: 0;
+  }
+
+  .panel-header#header {
+    flex-wrap: nowrap;
+    height: var(--header-height);
+  }
+
+  #logo {
+    width: auto;
+  }
+}
+
+
+/*
+ * Search results, matches, and highlighting
+ */
+
+/* Basic styles */
+.highlight-matches-search-h7vc6omi2hr2880 {
+  outline: 3px solid #1d6dae39;
+  outline-offset: 5px;
+
+  /* Works in tandem with the setTimeout in JS: */
+  transition: outline 0.3s ease-in-out;
+}
+
+.highlight-matches-search-h7vc6omi2hr2880.active {
+  outline: 3px solid #1d6dae;
+  /* outline-offset: 5px; */
+  /* Works in tandem with the setTimeout in JS: */
+  transition: outline 0.3s ease-in-out;
+}
+
+/* Specific styles */
+.highlight-matches-DIF-search-h7vc6omi2hr2880 {
   background-color: #1d6dae11;
 }
 
-.highlight-hits-ToIP-h7vc6omi2hr2880 {
-  padding: 0 0.5em;
-  margin-left: 0.2em;
-  margin-right: 0.2em;
-
+.highlight-matches-ToIP-search-h7vc6omi2hr2880 {
   background-color: #a9dde0b0;
 }
 
-.highlight-hits-BTC-h7vc6omi2hr2880 {
-  padding: 0 0.5em;
-  margin-left: 0.2em;
-  margin-right: 0.2em;
-
+.highlight-matches-BTC-search-h7vc6omi2hr2880 {
   background-color: #f19019a1;
 }
 
-.highlight-hits-KERI-h7vc6omi2hr2880 {
-  padding: 0 0.5em;
-  margin-left: 0.2em;
-  margin-right: 0.2em;
-
+.highlight-matches-KERI-search-h7vc6omi2hr2880 {
   background-color: #b5d070d5;
 }
 
-.highlight-hits-SSI-h7vc6omi2hr2880 {
-  padding: 0 0.5em;
-  margin-left: 0.2em;
-  margin-right: 0.2em;
-
+.highlight-matches-SSI-search-h7vc6omi2hr2880 {
   background-color: yellow;
-  border-bottom: 3px solid #1D6DAE;
 }
 
-.highlight-hits-GLEIF-h7vc6omi2hr2880 {
-  padding: 0 0.5em;
-  margin-left: 0.2em;
-  margin-right: 0.2em;
-
+.highlight-matches-GLEIF-search-h7vc6omi2hr2880 {
   background-color: #52dac6a6;
 }
