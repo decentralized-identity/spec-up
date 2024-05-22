@@ -4,6 +4,7 @@
       "assets/css/custom-elements.css",
       "assets/css/prism.css",
       "assets/css/chart.css",
+      "assets/css/search.css",
       "assets/css/index.css"
     ],
     "js": [
@@ -20,6 +21,7 @@
       "assets/js/font-awesome.js",
       "assets/js/popper.js",
       "assets/js/tippy.js",
+      "assets/js/search.js",
       "assets/js/index.js"
     ]
   }
