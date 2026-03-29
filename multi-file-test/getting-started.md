@@ -3,19 +3,21 @@
 Using Spec-Up is easy peasy lemon squeezy:
 
 1. `npm install spec-up`
-2. Create a subdirectory in your project with two files:
-    - `spec.json` - add some basic config values, like your desired HTML page title, etc.
-    - `spec.md` - write the markdown version of your spec here (duh)
-3. In your main node.js file, drop in this bad boy: `require('spec-up')()`
+2. Create a root-level `specs.json` file that points at the markdown files you want assembled into a spec:
+    - `spec_directory` points at the directory that contains your spec source files
+    - `markdown_paths` lists the files to assemble, in order
+    - `output_path`, `assets`, `plugins`, and `katex` are available when you need them
+3. Render programmatically with `require('spec-up')({ nowatch: true })`, or use the Vite-based workflow shown below.
 
-Boom! That's it. Spec-Up will auto-detect the location of your spec files and auto-generate your spec's HTML version every time you hit save after editing your `spec.md` files. Did I mention you can have multiple specs located at any depth in your project and Spec-Up will crawl up in there and render all those specs like a damn boss? Well it does, because why the hell not.
+Boom! That's it. For local authoring, `npm run edit` and `npm run dev` will watch your spec sources and re-render automatically when files change.
 
 **Usage**
 
-If your `spec.json` and `package.json` and `package-lock.json` files are in working order, Spec-up can be called from the root of your repo in three different modes:
+If your `specs.json`, `package.json`, and `vite.config.mjs` files are in working order, Spec-Up can be called from the root of your repo in four common modes:
 
 |command|behavior|
 |---|---|
-|`npm run edit`|after rendering, this will stay running and the `gulp` library will watch the source files in your spec directory/ies for changes and re-render any time you save a file. Opening these rendered files in a browser and refreshing them will keep you up to date.|
-|`npm run render`|this renders the site once and does not keep a gulpy watch on the underlying files.|
-|`npm run dev`|this enables debugging features.|
+|`npm run build`|runs `vite build`, rebuilds compiled frontend assets when needed, and renders the configured specs once.|
+|`npm run edit`|runs `vite build --watch` so spec markdown, injected assets, plugin files, and frontend source are watched together.|
+|`npm run render`|alias for `vite build` if you prefer the old command name.|
+|`npm run dev`|runs the Vite dev server and reloads the rendered spec when watched sources change.|

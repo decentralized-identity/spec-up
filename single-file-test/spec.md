@@ -25,26 +25,36 @@ Let's face it, other tools and generators for writing technical specifications a
 Using Spec-Up is easy peasy lemon squeezy:
 
 1. `npm install spec-up`
-2. Create a `specs.json` file **in the root folder of your repository** to specify configuration values used in the generation of your spec documents. The values in your `specs.json` file include things like where your spec's markdown files are located, where to output the generated spec document, and various metadata values used in rendering, such as the title, logo, and repo links for each of your specs. The following are the required/optional fields supported in the `specs.json` config file:
+2. Create a `specs.json` file **in the root folder of your repository** to configure one or more specs. Common fields include:
 
-    - **`spec_directory`** _(STRING, required)_ - You must specify the **repo-root-relative** location of your spec's markdown file directory. You ****MUST**** name your spec's markdown file `spec.md` and locate it in your `spec_directory` for the tool to automatically find and use it for rendering. If you want to use a different name for the markdown file, or you have multiple markdown files you would like the tool to assemble into one document, you must specify them using the optional`markdown_paths` field described below. See the "multi-file" example in the spec-up repo.
-    - **`title`** _(STRING, required)_ - You must add a title for your spec, which will be rendered in the generated document's H1 text and page title.
-    - **`markdown_paths`** _(ARRAY, optional)_ - If you want to name your spec's markdown file something other than `spec.md`, or you have multiple files you would like assembled into a single output document, you must specify their paths as array entries in the order you would like them assembled. The paths in this array are assumed to be based on the `spec_directory` you specified, so _DO NOT_ repeat the full root relative path. 
-    - **`katex`** _(BOOLEAN, optional)_ - To enable TeX support via KaTeX, set this property to `true`. After rendering, be sure to copy the `fonts/` subdirectory, containing the necessary web fonts.
-    - **`output_path`** _(STRING, optional)_ - If you want the generated spec document to be output to a different location than the `spec_directory` you specified (e.g. the project root for GitHub Pages publishing) you can specify another root relative path (use `./` for root), and the tool will write the document file there instead.
-3. In your main node.js file, drop in this bad boy: `require('spec-up')()`
+    - **`spec_directory`** _(STRING, required)_ - The **repo-root-relative** location of your spec markdown directory. If you do not provide `markdown_paths`, Spec-Up reads `spec.md` from this directory by default.
+    - **`title`** _(STRING, required)_ - The title rendered in the generated document's H1 text and page title.
+    - **`logo`** / **`logo_link`** _(optional)_ - Add a logo and optional target link for the rendered header.
+    - **`markdown_paths`** _(ARRAY, optional)_ - If you want to assemble multiple files into a single output document, list them here in order. Paths are resolved relative to `spec_directory`.
+    - **`katex`** _(BOOLEAN, optional)_ - Enables TeX support via KaTeX.
+    - **`output_path`** _(STRING, optional)_ - Writes the generated output somewhere other than `spec_directory`.
+    - **`source`** _(OBJECT, optional)_ - Adds repo metadata used by repo-aware UI features such as the GitHub links shown in this example.
+    - **`external_specs`** _(ARRAY, optional)_ - Enables `[[xref: ...]]` references into other Spec-Up-rendered specs.
+    - **`assets`** _(ARRAY, optional)_ - Injects extra CSS or JS files into the rendered page.
+    - **`plugins`** _(ARRAY, optional)_ - Adds plugins for this spec, or at the top level of `specs.json` for every spec in the project.
+3. Render either programmatically or through the Vite workflow:
 
-Boom! That's it. Spec-Up will auto-detect modifications to files in your `spec_directory` and auto-generate your spec's updated HTML document every time you save a change.
+    - `require('spec-up')({ nowatch: true })` renders once.
+    - `require('spec-up')()` renders and keeps file watchers running.
+    - The default local workflow in this repo uses Vite, as shown below.
+
+Boom! That's it. Use `npm run build` for a one-shot render, `npm run edit` for a watch build, or `npm run dev` for a live-reloading dev server.
 
 **Usage**
 
-If your `spec.json` and `package.json` and `package-lock.json` files are in working order and in the root folder of the repo from which it will be deployed, Spec-up can be called by command line (from the root of your repo) in three different modes:
+If your `specs.json`, `package.json`, and `vite.config.mjs` files are in the project root, Spec-Up can be run from the repo root in four common modes:
 
 |command|behavior|
 |---|---|
-|`npm run edit`|after rendering, this will stay running and the `gulp` library will watch the source files in your spec directory/ies for changes and re-render any time you save a file. Opening these rendered files in a browser and refreshing them will keep you up to date.|
-|`npm run render`|this renders the site once and does not keep a gulpy watch on the underlying files.|
-|`npm run dev`|this enables debugging features.|
+|`npm run build`|runs `vite build`, rebuilds compiled frontend assets when needed, and renders the configured specs once.|
+|`npm run edit`|runs `vite build --watch` so spec markdown, injected assets, plugin files, and frontend source are watched together.|
+|`npm run render`|alias for `vite build` if you prefer the old command name.|
+|`npm run dev`|runs the Vite dev server and reloads the rendered spec when watched sources change.|
 
 ## Table of Contents
 

@@ -16,20 +16,20 @@ Spec-Up is a technical specification development tool that enables you to create
 
 Installing Spec-Up is easy peasy lemon squeezy:
 
-0. Node.JS, i.e. `nvm` and its package manager `npm`, are required to run spec-up. WSL2 users should look [here](https://docs.microsoft.com/en-us/windows/dev-environment/javascript/nodejs-on-wsl#install-nvm-nodejs-and-npm) for specific instructions. 
+0. Node.js 18+ and `npm` are required to run spec-up. WSL2 users should look [here](https://docs.microsoft.com/en-us/windows/dev-environment/javascript/nodejs-on-wsl#install-nvm-nodejs-and-npm) for specific instructions. 
 1. Run `npm install spec-up` in the root directory of the repo to install all dependencies.
-2. Create a `specs.json` file **in the root folder of your repository** to specify configuration values used in the generation of your spec documents. The values in your `specs.json` file include things like where your spec's markdown files are located, where to output the generated spec document, and various metadata values used in rendering, such as the title, logo, and repo links for each of your specs. The following are the required/optional fields supported in the `specs.json` config file:
+2. Create a `specs.json` file **in the root folder of your repository** to specify configuration values used to render your spec documents. The following fields are currently supported:
 
-    - **`public_root`** _(PATH STRING, optional)_ - For some platforms and services where you may want to output your rendered spec, the pathing may differ from the directory structure of your local project. To account for this, you can use the `public_root` property to specify the insertion of a path segment to account for the different in pathing between your local renders and wherever you publish your spec to.
-    - **`specs`** _(ARRAY, required)_ - the `specs` array contains descriptor objects for each of the specs you are generating in your project, and are composed of the following required and optional properties:
-        - **`spec_directory`** _(STRING, required)_ - You must specify the **repo-root-relative** location of your spec's markdown file directory. You ****MUST**** name your spec's markdown file `spec.md` and locate it in your `spec_directory` for the tool to automatically find and use it for rendering. If you want to use a different name for the markdown file, or you have multiple markdown files you would like the tool to assemble into one document, you must specify them using the optional`markdown_paths` field described below. See the "multi-file" example in the spec-up repo.
-        - **`title`** _(STRING, required)_ - You must add a title for your spec, which will be rendered in the generated document's H1 text and page title.
-        - **`logo`** _(PATH/URI STRING, optional)_ - You may add a reference to a logo asset, either via a path to the asset or a URI
+    - **`plugins`** _(ARRAY, optional)_ - Plugins that should run for every spec in the project. These use the same plugin entry formats described below in the Plugins section.
+    - **`specs`** _(ARRAY, required)_ - The `specs` array contains descriptor objects for each spec you are generating in your project:
+        - **`spec_directory`** _(STRING, required)_ - The **repo-root-relative** location of your spec's markdown file directory. If you do not provide `markdown_paths`, Spec-Up reads `spec.md` from this directory by default.
+        - **`title`** _(STRING, required)_ - The title rendered in the generated document's H1 text and page title.
+        - **`logo`** _(PATH/URI STRING, optional)_ - A logo asset path or URI.
         - **`logo_link`** _(URI STRING, optional)_ - The URI you want your logo to point to in the rendered page.
-        - **`markdown_paths`** _(ARRAY, optional)_ - If you want to name your spec's markdown file something other than `spec.md`, or you have multiple files you would like assembled into a single output document, you must specify their paths as array entries in the order you would like them assembled. The paths in this array are assumed to be based on the `spec_directory` you specified, so _DO NOT_ repeat the full root relative path.
-        - **`katex`** _(BOOLEAN, optional)_ - To enable TeX support via KaTeX, set this property to `true`. After rendering, be sure to copy the `fonts/` subdirectory, containing the necessary web fonts.
-        - **`output_path`** _(STRING, optional)_ - If you want the generated spec document to be output to a different location than the `spec_directory` you specified (e.g. the project root for GitHub Pages publishing) you can specify another root relative path (use `./` for root), and the tool will write the document file there instead.
-        - **`source`** _(OBJECT, optional)_ - this object allows you to configure where repo-specific data is pulled from to power some of the more advanced repo-related features. To do this, specify the code hosting service by adding a service ID string to `host` (currently Spec-Up only supports `"github"`, but this is extensible), add the account/org the repo is located within via the `account` property, and add the repo name under the `repo` property. Here is an example configuration:
+        - **`markdown_paths`** _(ARRAY, optional)_ - If you want to use files other than `spec.md`, list them here in the order you want them assembled. Paths are resolved relative to `spec_directory`.
+        - **`katex`** _(BOOLEAN, optional)_ - Enables TeX support via KaTeX. KaTeX assets are bundled automatically from the installed dependency.
+        - **`output_path`** _(STRING, optional)_ - If you want the generated spec document written somewhere other than `spec_directory` (for example the project root for GitHub Pages publishing), specify another repo-root-relative path here.
+        - **`source`** _(OBJECT, optional)_ - Configures repo-specific data used by repo-aware UI features. Today this supports GitHub repositories via `host`, `account`, and `repo`:
 
             ```
             {
@@ -38,19 +38,48 @@ Installing Spec-Up is easy peasy lemon squeezy:
                 "repo": "sidetree"
             }
             ```
-3. In your main node.js file, or as a package.json script entry, use this invocation call: `require('spec-up')()`
+        - **`external_specs`** _(ARRAY, optional)_ - Enables `[[xref: ...]]` references to terms from other Spec-Up outputs. Each entry is a single-key object mapping a short handle to the external spec URL.
+        - **`assets`** _(ARRAY, optional)_ - Injects extra CSS or JS assets into the rendered page. Asset objects support `path`, optional `inject` (`"head"` or `"body"` for JS), and optional `module` for JS modules.
+        - **`plugins`** _(ARRAY, optional)_ - Plugins that should run only for this spec.
+3. Render either programmatically or through the Vite-based workflow used by this repo:
+
+    - Programmatic: `require('spec-up')({ nowatch: true })` renders once, while `require('spec-up')()` renders and keeps file watchers running.
+    - Vite workflow: use the `vite.config.mjs` pattern in this repo and the package scripts shown below.
 
 Boom! That's it. You're ready to start rendering specs as HTML sites locally and/or pushing them to github pages however you see fit to automate.
 
 ## Running the scripts locally
 
-If your `spec.json` and `package.json` and `package-lock.json` files are in working order and in the root folder of the repo from which it will be deployed, Spec-up can be called by command line (from the root of your repo) in three different modes:
+If your `specs.json`, `package.json`, and `vite.config.mjs` files are in the project root, Spec-Up can be run from the root of your repo in four common modes:
 
 |command|behavior|
 |---|---|
-|`npm run edit`|after rendering, this will stay running and the `gulp` library will watch the source files in your spec directory/ies for changes and re-render any time you save a file. Opening these rendered files in a browser and refreshing them will keep you up to date.|
-|`npm run render`|this renders the site once and does not keep a gulpy watch on the underlying files.|
-|`npm run dev`|this enables debugging features.|
+|`npm run build`|runs `vite build`, rebuilds compiled frontend assets when needed, and renders the configured specs once.|
+|`npm run edit`|runs `vite build --watch` so spec markdown, injected assets, plugin files, and frontend source are watched in one Vite-hosted loop.|
+|`npm run render`|alias for `vite build` if you prefer the old command name.|
+|`npm run dev`|runs the Vite dev server; Spec-Up renders through a Vite plugin and triggers reloads when your spec sources change.|
+
+## Plugins
+
+Spec-Up now supports plugins at the top level of `specs.json`, per-spec via `plugins`, or programmatically via `require('spec-up')({ plugins: [...] })`.
+
+Plugin entries can be either:
+
+- a relative module path string such as `"./plugins/my-plugin.js"`
+- an object with `resolve` and `options`
+- a plugin object or factory passed through `options.plugins`
+
+Plugins can hook into the render lifecycle with methods like:
+
+- `beforeRender`
+- `transformMarkdown`
+- `markdownTemplates`
+- `configureMarkdownIt`
+- `transformRenderedHtml`
+- `afterRender`
+- `transformPageHtml`
+- `extendAssetTags`
+- `afterWrite`
 
 ## Automation
 
@@ -58,7 +87,7 @@ The above scripts can easily be triggered by github actions.  See [this repo's e
 
 ## Versioning
 
-The recommended method for hosting multiple historical versions of a given specification at the same URL is simply to duplicate the source file(s) in a subdirectory and to host each version in a fixed subdirectory of the output target (i.e., the GitHub-Pages site). These multiple set-up and output directories can be set by multiple `spec` objects in the `specs` array of the `spec.json` file. For example:
+The recommended method for hosting multiple historical versions of a given specification at the same URL is simply to duplicate the source file(s) in a subdirectory and to host each version in a fixed subdirectory of the output target (i.e., the GitHub-Pages site). These multiple set-up and output directories can be set by multiple `spec` objects in the `specs` array of the `specs.json` file. For example:
 
 ```json
 {
@@ -142,9 +171,4 @@ Additionally, some editors may prefer to keep an immutable archive in a system l
 ## Troubleshooting
 
 - WSL2 users are recommended to use the `bash` option rather than `PowerShell` in the terminal of Visual Studio Code.
-- Some users have reported problems using spec-up with node versions 15+; to pin to an older version, simple run:
-```
-nvm install 14
-nvm use 14
-npm i npm@6.14.16 -g
-```
+- Spec-Up now targets Node.js 18 and newer.

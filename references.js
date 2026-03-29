@@ -1,91 +1,114 @@
-const {JSDOM} = require("jsdom");
-const axios = require('axios').default;
-  
-const spaceRegex = /\s+/g;
+'use strict';
 
-function validateReferences(references, definitions, render) {
-  const resolvedRefs = [];
+const { JSDOM } = require('jsdom');
+const { slugifyTerm } = require('./src/utils');
+
+function validateReferences(references, definitions, html) {
   const unresolvedRefs = [];
-  [...new Set(references)].forEach(
-    ref => {
-      if(render.includes(`id="term:${ref.replace(spaceRegex, '-').toLowerCase()}"`)) {
-        resolvedRefs.push(ref);
-      } else {
-        unresolvedRefs.push(ref);
-      }
+
+  for (const ref of new Set(references)) {
+    if (!html.includes(`id="term:${slugifyTerm(ref)}"`)) {
+      unresolvedRefs.push(ref);
     }
-  );
-  if (unresolvedRefs.length > 0 ) {
-    console.log('Unresolved References: ', unresolvedRefs)
   }
-  
+
   const danglingDefs = [];
-  definitions.forEach(defs => {
-    let found = defs.some(def => render.includes(`href="#term:${def.replace(spaceRegex, '-').toLowerCase()}"`)) 
-    if (!found) {
-      danglingDefs.push(defs[0]);
+
+  for (const synonyms of definitions) {
+    const isReferenced = synonyms.some(definition => {
+      return html.includes(`href="#term:${slugifyTerm(definition)}"`);
+    });
+
+    if (!isReferenced && synonyms[0]) {
+      danglingDefs.push(synonyms[0]);
     }
-  })
-  if(danglingDefs.length > 0) {
-    console.log('Dangling Definitions: ', danglingDefs)
+  }
+
+  return {
+    danglingDefs,
+    unresolvedRefs
+  };
+}
+
+function logReferenceWarnings(results, logger = console) {
+  if (results.unresolvedRefs.length > 0) {
+    logger.log('Unresolved References:', results.unresolvedRefs);
+  }
+
+  if (results.danglingDefs.length > 0) {
+    logger.log('Dangling Definitions:', results.danglingDefs);
   }
 }
 
-function findExternalSpecByKey(config, key) {
-  for (const spec of config.specs) {
-    if (spec.external_specs) {
-      for (const externalSpec of spec.external_specs) {
-        if (externalSpec[key]) {
-          return externalSpec[key];
-        }
-      }
+function findExternalSpecByKey(externalSpecs = [], key) {
+  for (const entry of externalSpecs) {
+    if (entry && typeof entry === 'object' && Object.prototype.hasOwnProperty.call(entry, key)) {
+      return entry[key];
     }
   }
+
   return null;
 }
 
-async function fetchExternalSpecs(spec){
-  try {
-    let results = await Promise.all(
-      spec.external_specs.map(s => {
-        const url = Object.values(s)[0];
-        return axios.get(url);
-      })
-    );
-    results = results.map((r, index) => (r.status === 200 ? { [Object.keys(spec.external_specs[index])[0]]: r.data } : null)).filter(r_1 => r_1);
-    return results.map(r_2 => createNewDLWithTerms(Object.keys(r_2)[0], Object.values(r_2)[0]));
-  } catch (e) {
-    return console.log(e);
+async function fetchExternalSpecs(externalSpecs = [], options = {}) {
+  const fetchImpl = options.fetchImpl || globalThis.fetch;
+
+  if (typeof fetchImpl !== 'function') {
+    throw new Error('A fetch implementation is required to resolve external specs.');
   }
+
+  const results = await Promise.all(externalSpecs.map(async entry => {
+    const [title, url] = Object.entries(entry || {})[0] || [];
+
+    if (!title || !url) {
+      return '';
+    }
+
+    const response = await fetchImpl(url);
+
+    if (!response.ok) {
+      throw new Error(`Failed to fetch external spec "${title}" from ${url}: ${response.status}`);
+    }
+
+    return createNewDLWithTerms(title, await response.text());
+  }));
+
+  return results.filter(Boolean).join('\n');
 }
 
 function createNewDLWithTerms(title, html) {
   const dom = new JSDOM(html);
   const document = dom.window.document;
-
   const newDl = document.createElement('dl');
+
   newDl.setAttribute('id', title);
 
   const terms = document.querySelectorAll('dt span[id^="term:"]');
 
-  terms.forEach(term => {
-    const modifiedId = `term:${title}:${term.id.split(':')[1]}`;
-    term.id = modifiedId;
+  for (const term of terms) {
+    const [, localId] = term.id.split(':');
     const dt = term.closest('dt');
-    const dd = dt.nextElementSibling;
+    const dd = dt ? dt.nextElementSibling : null;
 
-    newDl.appendChild(dt.cloneNode(true));
+    term.id = `term:${title}:${localId}`;
+
+    if (dt) {
+      newDl.appendChild(dt.cloneNode(true));
+    }
+
     if (dd && dd.tagName === 'DD') {
       newDl.appendChild(dd.cloneNode(true));
     }
-  });
+  }
 
   return newDl.outerHTML;
 }
 
 module.exports = {
-  findExternalSpecByKey,
-  validateReferences,
+  createNewDLWithTerms,
   fetchExternalSpecs,
-  createNewDLWithTerms
-}
+  findExternalSpecByKey,
+  logReferenceWarnings,
+  slugifyTerm,
+  validateReferences
+};
