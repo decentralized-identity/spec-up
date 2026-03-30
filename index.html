@@ -5,11 +5,41 @@
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <meta name="color-scheme" content="light dark">
 
         <title>Spec-Up Example</title>
 
         <link rel="icon" href="logo.svg">
 
+        
+    <script>
+      (() => {
+        const storageKey = 'spec-up-color-scheme';
+        const root = document.documentElement;
+        const media = window.matchMedia ? window.matchMedia('(prefers-color-scheme: dark)') : null;
+        let themePreference = 'auto';
+
+        try {
+          const storedThemePreference = window.localStorage.getItem(storageKey);
+
+          if (storedThemePreference === 'light' || storedThemePreference === 'dark' || storedThemePreference === 'auto') {
+            themePreference = storedThemePreference;
+          }
+        }
+        catch {}
+
+        const theme = themePreference === 'auto'
+          ? (media && media.matches ? 'dark' : 'light')
+          : themePreference;
+
+        root.classList.remove('wa-light', 'wa-dark');
+        root.classList.add(theme === 'dark' ? 'wa-dark' : 'wa-light');
+        root.dataset.theme = theme;
+        root.dataset.themePreference = themePreference;
+        root.style.colorScheme = theme;
+      })();
+    </script>
+  
         <script src="assets/compiled/head.js"></script><link href="/custom-assets/custom.css" rel="stylesheet"/><script src="/custom-assets/custom-head.js"></script><script src="assets/compiled/katex.js"></script>
       </head>
       <body features="logo source">
@@ -37,12 +67,42 @@
             </div>
             
       <div class="spec-up-header-actions">
+        <wa-dropdown id="spec_up_theme_selector" class="spec-up-theme-selector color-scheme-selector" size="small" placement="bottom-start">
+          <wa-button
+            slot="trigger"
+            id="color-scheme-selector-trigger"
+            class="spec-up-theme-selector__trigger"
+            appearance="plain"
+            aria-label="Color theme"
+            variant="neutral"
+            size="small"
+          >
+            <wa-icon family="classic" name="sun" class="icon-embiggen only-light" aria-hidden="true"></wa-icon>
+            <wa-icon family="classic" name="moon" class="icon-embiggen only-dark" aria-hidden="true"></wa-icon>
+          </wa-button>
+          <wa-dropdown-item value="light">
+            <wa-icon slot="icon" family="classic" name="sun" class="icon-embiggen" aria-hidden="true"></wa-icon>
+            Light
+          </wa-dropdown-item>
+          <wa-dropdown-item value="dark">
+            <wa-icon slot="icon" family="classic" name="moon" class="icon-embiggen" aria-hidden="true"></wa-icon>
+            Dark
+          </wa-dropdown-item>
+          <wa-divider></wa-divider>
+          <wa-dropdown-item value="auto">
+            <wa-icon slot="icon" family="classic" name="sun" class="only-light icon-embiggen" aria-hidden="true"></wa-icon>
+            <wa-icon slot="icon" family="classic" name="moon" class="only-dark icon-embiggen" aria-hidden="true"></wa-icon>
+            System
+          </wa-dropdown-item>
+        </wa-dropdown>
+        
         <wa-button class="spec-up-issues-trigger" size="small" appearance="outlined" variant="neutral" data-drawer="open repo_issues_drawer">
           <wa-icon family="brands" name="github"></wa-icon>
           Issues
         </wa-button>
-      </div>
     
+      </div>
+  
           </header>
 
           <div slot="navigation-header" class="spec-up-navigation-title">
@@ -55,7 +115,7 @@
 
           <main class="spec-up-main">
             <article id="content">
-              <h1 id="spec-up-example">Spec-Up Example<a class="toc-anchor" href="#spec-up-example">§</a></h1>
+              <h1 id="spec-up-example"><span class="spec-up-heading-text">Spec-Up Example</span><a class="toc-anchor" href="#spec-up-example">§</a></h1>
 <p><strong>Specification Status:</strong> Draft</p>
 <p><strong>Latest Draft:</strong>
 <a path-0="identity.foundation" path-1="spec-up" href="https://identity.foundation/spec-up">https://identity.foundation/spec-up</a></p>
@@ -68,9 +128,9 @@
 <dd><a path-0="github.com" path-1="decentralized-identity" path-2="spec-up" path-3="commits" path-4="master" href="https://github.com/decentralized-identity/spec-up/commits/master">Commit history</a></dd>
 </dl>
 <hr>
-<h2 id="abstract">Abstract<a class="toc-anchor" href="#abstract">§</a></h2>
+<h2 id="abstract"><span class="spec-up-heading-text">Abstract</span><a class="toc-anchor" href="#abstract">§</a></h2>
 <p>Let’s face it, other tools and generators for writing technical specifications aimed at standards bodies or industry groups are cumbersome, underwhelming, and lack the features you might want in a technical specification document. Spec-Up’s goal is to deliver you a better spec-writing experience with far less effort and tedium than other tools in the ecosystem. Spec-Up is a simple tool that auto-generates great specs from markdown. The version of markdown Spec-up uses contains all the same features you might expect from common implementations, like GitHub, but adds much more, including notice blocks, complex tables, charts, advanced syntax highlighting, UML diagrams, etc.</p>
-<h2 id="getting-started">Getting Started<a class="toc-anchor" href="#getting-started">§</a></h2>
+<h2 id="getting-started"><span class="spec-up-heading-text">Getting Started</span><a class="toc-anchor" href="#getting-started">§</a></h2>
 <p>Using Spec-Up is easy peasy lemon squeezy:</p>
 <ol>
 <li>
@@ -129,10 +189,10 @@
 </tr>
 </tbody>
 </table>
-<h2 id="table-of-contents">Table of Contents<a class="toc-anchor" href="#table-of-contents">§</a></h2>
+<h2 id="table-of-contents"><span class="spec-up-heading-text">Table of Contents</span><a class="toc-anchor" href="#table-of-contents">§</a></h2>
 <p>&lt;-- You see that beautiful TOC over there to your left? (tap the header link to slide it out on mobile) Yeah, you don’t need to do a damn thing, that just magically appears based on your use of <code>h2</code>, <code>h3</code>, and <code>h4</code> headings.</p>
-<h2 id="term-references">Term References<a class="toc-anchor" href="#term-references">§</a></h2>
-<h3 id="definition-lists">Definition Lists<a class="toc-anchor" href="#definition-lists">§</a></h3>
+<h2 id="term-references"><span class="spec-up-heading-text">Term References</span><a class="toc-anchor" href="#term-references">§</a></h2>
+<h3 id="definition-lists"><span class="spec-up-heading-text">Definition Lists</span><a class="toc-anchor" href="#definition-lists">§</a></h3>
 <p>Many specs may want to include a section for terminology references, and Definition Lists are a great way to do that. Here’s how to leverage Spec-Up’s automatic term reference features via Definition List markup:</p>
 <pre>[[def: Term 1, Term One]]:
 ~ This is the first term we will define.
@@ -152,7 +212,7 @@
 <dd>This is the last term, because you know what they say: third term’s the charm!</dd>
 </dl>
 <p>Now let’s refer to some of the terms defined above to show how the auto-linking of terms works: <a class="term-reference" href="#term:term-1">Term 1</a>, <a class="term-reference" href="#term:term-two">Term Two</a>, <a class="term-reference" href="#term:term-3">Term 3</a>. Additionally, as long as you define your terms using Definition Lists (as seen in the markdown above), you will be able to hover any reference to a term to see a tooltip with its definition.</p>
-<h3 id="table-defined-terms">Table-defined Terms<a class="toc-anchor" href="#table-defined-terms">§</a></h3>
+<h3 id="table-defined-terms"><span class="spec-up-heading-text">Table-defined Terms</span><a class="toc-anchor" href="#table-defined-terms">§</a></h3>
 <p>You can also reference table-oriented terms and definitions which are decomposed into heading-titled attributes in distinct cells:</p>
 <pre>Variable           | Default Value | Max Value
 ------------------- | -------------- | ---------
@@ -175,7 +235,7 @@
 </tbody>
 </table>
 <p>Anytime you add a definition of a term in the first column of a table, like <a class="term-reference" href="#term:variable-1">Variable 1</a>, it will link to the cell and display a tooltip with the entire set of row values when you hover the term.</p>
-<h3 id="external-term-references">External Term References<a class="toc-anchor" href="#external-term-references">§</a></h3>
+<h3 id="external-term-references"><span class="spec-up-heading-text">External Term References</span><a class="toc-anchor" href="#external-term-references">§</a></h3>
 <p>It is possible to include references to terms from external spec-up generated specifications. To include a source you would like to pull references from include an <code>external_specs</code> array in your spec config. The value should be a key/value object where the key is used in the external reference below and the value is the URL of the external spec.</p>
 <wa-callout id="example-1" class="spec-up-notice spec-up-notice--example" variant="neutral" appearance="filled-outlined"><div class="spec-up-notice-heading"><a class="notice-link" href="#example-1">EXAMPLE</a></div><pre class="language-json"><code class="language-json"><span class="token punctuation">{</span>
   <span class="token property">"specs"</span><span class="token operator">:</span> <span class="token punctuation">[</span>
@@ -190,7 +250,7 @@
 </code></pre>
 </wa-callout>
 <p>To include an external term reference within your spec use the following format <code>[[xref: {title}, {term}]]</code> where <code>{title}</code> is the title given to the spec in the config and <code>{term}</code> is the term being used. For example using the PE spec given in the example above <a class="term-reference" data-local-href="#term:PE:holder" href="https://identity.foundation/presentation-exchange#term:holder">Holder</a></p>
-<h2 id="blockquote">Blockquote<a class="toc-anchor" href="#blockquote">§</a></h2>
+<h2 id="blockquote"><span class="spec-up-heading-text">Blockquote</span><a class="toc-anchor" href="#blockquote">§</a></h2>
 <blockquote>
 <p>To be, or not to be, that is the question:
 Whether 'tis nobler in the mind to suffer
@@ -199,7 +259,7 @@ Or to take arms against a sea of troubles
 And by opposing end them. To die—to sleep,
 No more;</p>
 </blockquote>
-<h2 id="notices">Notices<a class="toc-anchor" href="#notices">§</a></h2>
+<h2 id="notices"><span class="spec-up-heading-text">Notices</span><a class="toc-anchor" href="#notices">§</a></h2>
 <pre>::: note Basic Note
   Check this out.
 :::
@@ -241,7 +301,7 @@ No more;</p>
 <span class="token punctuation">}</span>
 </code></pre>
 </wa-callout>
-<h2 id="content-insertion">Content Insertion<a class="toc-anchor" href="#content-insertion">§</a></h2>
+<h2 id="content-insertion"><span class="spec-up-heading-text">Content Insertion</span><a class="toc-anchor" href="#content-insertion">§</a></h2>
 <p>Use the following format to pull in content from other files in your project:</p>
 <pre>This text has been inserted here from another file: [[insert: ./single-file-test/assets/test.text]]
 </pre>
@@ -260,7 +320,7 @@ No more;</p>
 <span class="token punctuation">}</span>
 </code></pre>
 </wa-callout>
-<h2 id="tables">Tables<a class="toc-anchor" href="#tables">§</a></h2>
+<h2 id="tables"><span class="spec-up-heading-text">Tables</span><a class="toc-anchor" href="#tables">§</a></h2>
 <pre>Stage | Direct Products | ATP Yields
 ----: | --------------: | ---------:
 Glycolysis | 2 ATP ||
@@ -402,7 +462,7 @@ Citric acid cycle | 2 ATP ||
 </tr>
 </tbody>
 </table>
-<h2 id="sequence-diagrams">Sequence Diagrams<a class="toc-anchor" href="#sequence-diagrams">§</a></h2>
+<h2 id="sequence-diagrams"><span class="spec-up-heading-text">Sequence Diagrams</span><a class="toc-anchor" href="#sequence-diagrams">§</a></h2>
 <pre>```mermaid
 sequenceDiagram
   Alice -&gt;&gt; Bob: Hello Bob, how are you?
@@ -426,7 +486,7 @@ sequenceDiagram
   Bob--&gt;Alice: Checking with John...
   Alice-&gt;John: Yes... John, how are you?
 </div>
-<h2 id="flows">Flows<a class="toc-anchor" href="#flows">§</a></h2>
+<h2 id="flows"><span class="spec-up-heading-text">Flows</span><a class="toc-anchor" href="#flows">§</a></h2>
 <pre>```mermaid
 graph TD
   A[Start] --&gt; B{Is it?}
@@ -444,7 +504,7 @@ graph TD
   D --&gt; B
   B --&gt;|No| E[End]
 </div>
-<h2 id="charts">Charts<a class="toc-anchor" href="#charts">§</a></h2>
+<h2 id="charts"><span class="spec-up-heading-text">Charts</span><a class="toc-anchor" href="#charts">§</a></h2>
 <pre>```chart
 {
   "type": "pie",
@@ -505,7 +565,7 @@ graph TD
       }
     ]
   }
-}</script></wa-chart><h2 id="syntax-highlighting">Syntax Highlighting<a class="toc-anchor" href="#syntax-highlighting">§</a></h2>
+}</script></wa-chart><h2 id="syntax-highlighting"><span class="spec-up-heading-text">Syntax Highlighting</span><a class="toc-anchor" href="#syntax-highlighting">§</a></h2>
 <pre>```json
 {
   "@context": "https://www.w3.org/ns/did/v1",
@@ -540,7 +600,7 @@ graph TD
   <span class="token punctuation">}</span><span class="token punctuation">]</span>
 <span class="token punctuation">}</span>
 </code></pre>
-<h2 id="tex-math-equations">TeX Math Equations<a class="toc-anchor" href="#tex-math-equations">§</a></h2>
+<h2 id="tex-math-equations"><span class="spec-up-heading-text">TeX Math Equations</span><a class="toc-anchor" href="#tex-math-equations">§</a></h2>
 <p>When the <code>katex</code> option is enabled, the KaTeX math engine is used for TeX rendering. You can find a list of supported features and examples here: <a path-0="katex.org" path-1="docs" path-2="supported.html" href="https://katex.org/docs/supported.html"><span>https://katex.org/docs/supported.html</span></a>.</p>
 <p class="katex-block"><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mrow><mo fence="true">(</mo><mtable rowspacing="0.16em" columnalign="center" columnspacing="1em"><mtr><mtd><mstyle scriptlevel="0" displaystyle="false"><msub><mi>x</mi><mn>2</mn></msub></mstyle></mtd></mtr><mtr><mtd><mstyle scriptlevel="0" displaystyle="false"><msub><mi>y</mi><mn>2</mn></msub></mstyle></mtd></mtr></mtable><mo fence="true">)</mo></mrow><mo>=</mo><mrow><mo fence="true">(</mo><mtable rowspacing="0.16em" columnalign="center center" columnspacing="1em"><mtr><mtd><mstyle scriptlevel="0" displaystyle="false"><mi>A</mi></mstyle></mtd><mtd><mstyle scriptlevel="0" displaystyle="false"><mi>B</mi></mstyle></mtd></mtr><mtr><mtd><mstyle scriptlevel="0" displaystyle="false"><mi>C</mi></mstyle></mtd><mtd><mstyle scriptlevel="0" displaystyle="false"><mi>D</mi></mstyle></mtd></mtr></mtable><mo fence="true">)</mo></mrow><mo>⋅</mo><mrow><mo fence="true">(</mo><mtable rowspacing="0.16em" columnalign="center" columnspacing="1em"><mtr><mtd><mstyle scriptlevel="0" displaystyle="false"><msub><mi>x</mi><mn>1</mn></msub></mstyle></mtd></mtr><mtr><mtd><mstyle scriptlevel="0" displaystyle="false"><msub><mi>y</mi><mn>1</mn></msub></mstyle></mtd></mtr></mtable><mo fence="true">)</mo></mrow></mrow><annotation encoding="application/x-tex">\begin{pmatrix}x_2 \\ y_2 \end{pmatrix} = 
 \begin{pmatrix} A &amp; B \\ C &amp; D \end{pmatrix}\cdot
@@ -563,7 +623,7 @@ c100.7 8.3 195.3 44 280 108 55.3 42 101.7 93 139 153l9 14c2.7-4 5.7-8.7 9-14
 -5-4-11-12-44.7-59.3-101.3-106.3-170-141s-145.3-54.3-229-60H0V214z"></path></svg></span><span class="brace-right" style="height:0.548em;"><svg xmlns="http://www.w3.org/2000/svg" width="400em" height="0.548em" viewBox="0 0 400000 548" preserveAspectRatio="xMaxYMin slice"><path d="M399994 0l6 6v35l-6 11c-56 104-135.3 181.3-238 232-57.3
  28.7-117 45-179 50H-300V214h399897c43.3-7 81-15 113-26 100.7-33 179.7-91 237
 -174 2.7-5 6-9 10-13 .7-1 7.3-1 20-1h17z"></path></svg></span></span></span><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathnormal">a</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mord mathnormal">b</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mord mathnormal">c</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.7313em;"><span></span></span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:1.5535em;"><span></span></span></span></span></span></span></span></span></span></p>
-<h2 id="tab-panels">Tab Panels<a class="toc-anchor" href="#tab-panels">§</a></h2>
+<h2 id="tab-panels"><span class="spec-up-heading-text">Tab Panels</span><a class="toc-anchor" href="#tab-panels">§</a></h2>
 <wa-tab-group class="spec-up-tab-group" active="first-tab"><wa-tab panel="first-tab">First Tab</wa-tab><wa-tab-panel name="first-tab">
 <pre class="language-json"><code class="language-json"><span class="token punctuation">{</span>
   <span class="token property">"foo"</span><span class="token operator">:</span> <span class="token string">"foo"</span><span class="token punctuation">,</span>
@@ -577,9 +637,9 @@ c100.7 8.3 195.3 44 280 108 55.3 42 101.7 93 139 153l9 14c2.7-4 5.7-8.7 9-14
 <span class="token punctuation">}</span>
 </code></pre>
   </wa-tab-panel></wa-tab-group>
-<h2 id="fancy-links">Fancy Links<a class="toc-anchor" href="#fancy-links">§</a></h2>
+<h2 id="fancy-links"><span class="spec-up-heading-text">Fancy Links</span><a class="toc-anchor" href="#fancy-links">§</a></h2>
 <p>Spec-Up automatically upgrades the links of certain sites, like GitHub. GitHub is the only supported site with Fancy Links right now, but we’ll be adding more as we go.</p>
-<h3 id="github">GitHub<a class="toc-anchor" href="#github">§</a></h3>
+<h3 id="github"><span class="spec-up-heading-text">GitHub</span><a class="toc-anchor" href="#github">§</a></h3>
 <ul>
 <li><strong>Issues</strong>
 <ul>
@@ -606,7 +666,7 @@ c100.7 8.3 195.3 44 280 108 55.3 42 101.7 93 139 153l9 14c2.7-4 5.7-8.7 9-14
 </ul>
 </li>
 </ul>
-<h2 id="external-spec-references">External Spec References<a class="toc-anchor" href="#external-spec-references">§</a></h2>
+<h2 id="external-spec-references"><span class="spec-up-heading-text">External Spec References</span><a class="toc-anchor" href="#external-spec-references">§</a></h2>
 <p>You can reference external specifications from IETF, W3C, and WHATWG as follows:</p>
 <ol>
 <li>Anywhere in your document you want to referece an external specification, use the <code>spec</code>-prefixed custom token format: <code>[[spec:RFC4122]]</code></li>
@@ -625,7 +685,7 @@ c100.7 8.3 195.3 44 280 108 55.3 42 101.7 93 139 153l9 14c2.7-4 5.7-8.7 9-14
 <li>[<a class="spec-reference" href="#ref:RFC6901">RFC6901</a>] (<code>[[spec-inform:RFC6901]]</code>)</li>
 <li>[<a class="spec-reference" href="#ref:RFC7230">RFC7230</a>] (<code>[[spec-inform:RFC7230]]</code>)</li>
 </ul>
-<h3 id="default-references">Default References<a class="toc-anchor" href="#default-references">§</a></h3>
+<h3 id="default-references"><span class="spec-up-heading-text">Default References</span><a class="toc-anchor" href="#default-references">§</a></h3>
 <p>This is what is printed out when you include the <code>[[spec]]</code> custom token in your Markdown:</p>
 <p>
 </p><dl class="reference-list">
@@ -643,7 +703,7 @@ c100.7 8.3 195.3 44 280 108 55.3 42 101.7 93 139 153l9 14c2.7-4 5.7-8.7 9-14
     
 </dl>
 <p></p>
-<h3 id="normative-references">Normative References<a class="toc-anchor" href="#normative-references">§</a></h3>
+<h3 id="normative-references"><span class="spec-up-heading-text">Normative References</span><a class="toc-anchor" href="#normative-references">§</a></h3>
 <p>This is what is printed out when you include the <code>[[spec-norm]]</code> custom token in your Markdown:</p>
 <p>
 </p><dl class="reference-list">
@@ -661,7 +721,7 @@ c100.7 8.3 195.3 44 280 108 55.3 42 101.7 93 139 153l9 14c2.7-4 5.7-8.7 9-14
     
 </dl>
 <p></p>
-<h3 id="informative-references">Informative References<a class="toc-anchor" href="#informative-references">§</a></h3>
+<h3 id="informative-references"><span class="spec-up-heading-text">Informative References</span><a class="toc-anchor" href="#informative-references">§</a></h3>
 <p>This is what is printed out when you include the <code>[[spec-inform]]</code> custom token in your Markdown:</p>
 <p>
 </p><dl class="reference-list">
@@ -689,20 +749,20 @@ c100.7 8.3 195.3 44 280 108 55.3 42 101.7 93 139 153l9 14c2.7-4 5.7-8.7 9-14
         <div slot="label" class="spec-up-drawer-title">
           <div class="spec-up-drawer-title-row">
             <div class="spec-up-drawer-heading">
-              <span>Issues</span>
-            </div>
-            <div class="spec-up-issues-search-row">
-              <wa-input id="repo_issue_search" type="search" placeholder="Search open issues" autocomplete="off" spellcheck="false">
-                <wa-icon slot="start" name="search" label="Search GitHub issues"></wa-icon>
-                <span slot="end" class="spec-up-issues-search-end">
-                  <span id="repo_issue_search_spinner" class="spec-up-issues-search-spinner" hidden aria-hidden="true">
-                    <wa-spinner></wa-spinner>
-                  </span>
-                  <button id="repo_issue_search_clear" type="button" aria-label="Clear issue search" disabled>Clear</button>
-                </span>
-              </wa-input>
+              <span>GitHub Issues</span>
             </div>
             <div class="spec-up-drawer-title-actions"></div>
+          </div>
+          <div class="spec-up-issues-search-row">
+            <wa-input id="repo_issue_search" type="search" placeholder="Search open issues" autocomplete="off" spellcheck="false" size="small">
+              <wa-icon slot="start" name="search" label="Search GitHub issues"></wa-icon>
+              <span slot="end" class="spec-up-issues-search-end">
+                <span id="repo_issue_search_spinner" class="spec-up-issues-search-spinner" hidden aria-hidden="true">
+                  <wa-spinner></wa-spinner>
+                </span>
+                <button id="repo_issue_search_clear" type="button" aria-label="Clear issue search" disabled>Clear</button>
+              </span>
+            </wa-input>
           </div>
         </div>
         <div id="repo_issue_panel" class="spec-up-issues-panel">
@@ -716,94 +776,7 @@ c100.7 8.3 195.3 44 280 108 55.3 42 101.7 93 139 153l9 14c2.7-4 5.7-8.7 9-14
       </wa-drawer>
     
 
-        <div style="display: none;"><dl id="PE"><dt><span id="term:PE:claims"><span id="term:claim">Claim</span></span></dt><dd>An assertion made about a <a class="term-reference" href="#term:subject">Subject</a>. Used as an umbrella term for
-Credential, Assertion, Attestation, etc.</dd><dt><span id="term:PE:claims"><span id="term:PE:claim">Claim</span></span></dt><dd>An assertion made about a <a class="term-reference" href="#term:subject">Subject</a>. Used as an umbrella term for
-Credential, Assertion, Attestation, etc.</dd><dt><span id="term:PE:conformant-consumers"><span id="term:conformant-consumer">Conformant Consumer</span></span></dt><dd>An entity that follows the specified processing rules to consume a
-<a class="term-reference" href="#term:presentation-definition">Presentation Definition</a> or <a class="term-reference" href="#term:presentation-submission">Presentation Submission</a> that conforms
-to this specification.</dd><dt><span id="term:PE:conformant-consumers"><span id="term:PE:conformant-consumer">Conformant Consumer</span></span></dt><dd>An entity that follows the specified processing rules to consume a
-<a class="term-reference" href="#term:presentation-definition">Presentation Definition</a> or <a class="term-reference" href="#term:presentation-submission">Presentation Submission</a> that conforms
-to this specification.</dd><dt><span id="term:PE:conformant-producer">Conformant Producer</span></dt><dd>An entity that produces a <a class="term-reference" href="#term:presentation-definition">Presentation Definition</a> or
-<a class="term-reference" href="#term:presentation-submission">Presentation Submission</a> that conforms to this specification.</dd><dt><span id="term:PE:embed-locations">Embed Locations</span></dt><dd>Embed Locations are the specific paths and indexes per <a class="term-reference" href="#term:embed-target">Embed Target</a>
-where the <a class="term-reference" href="#term:verifier">Verifier</a> can expect to find the <a class="term-reference" href="#term:presentation">Presentation</a>. See <a href="#embed-locations">Embed Locations</a>.</dd><dt><span id="term:PE:embed-targets"><span id="term:embed-target">Embed Target</span></span></dt><dd>Embed Targets are data formats used in messaging protocols that may be used
-to transport a <a class="term-reference" href="#term:presentation-submission">Presentation Submission</a>. See
-<a href="#embed-targets">Embed Targets</a>.</dd><dt><span id="term:PE:embed-targets"><span id="term:PE:embed-target">Embed Target</span></span></dt><dd>Embed Targets are data formats used in messaging protocols that may be used
-to transport a <a class="term-reference" href="#term:presentation-submission">Presentation Submission</a>. See
-<a href="#embed-targets">Embed Targets</a>.</dd><dt><span id="term:PE:features"><span id="term:feature">Feature</span></span></dt><dd>Features enable <a class="term-reference" href="#term:verifiers">Verifiers</a> to express, and <a class="term-reference" href="#term:holders">Holders</a> to support,
-extended functionality (relative to the base objects) by defining one or more
-properties on one or more objects.</dd><dt><span id="term:PE:features"><span id="term:PE:feature">Feature</span></span></dt><dd>Features enable <a class="term-reference" href="#term:verifiers">Verifiers</a> to express, and <a class="term-reference" href="#term:holders">Holders</a> to support,
-extended functionality (relative to the base objects) by defining one or more
-properties on one or more objects.</dd><dt><span id="term:PE:holders"><span id="term:holder">Holder</span></span></dt><dd>Holders are entities that submit proofs to <a class="term-reference" href="#term:verifiers">Verifiers</a> to satisfy the
-requirements described in a <a class="term-reference" href="#term:presentation-definition">Presentation Definition</a>. A Holder is a
-<a class="term-reference" href="#term:conformant-consumer">Conformant Consumer</a> of a <a class="term-reference" href="#term:presentation-definition">Presentation Definition</a> and a
-<a class="term-reference" href="#term:conformant-producer">Conformant Producer</a> of a <a class="term-reference" href="#term:presentation-submission">Presentation Submission</a>.</dd><dt><span id="term:PE:holders"><span id="term:PE:holder">Holder</span></span></dt><dd>Holders are entities that submit proofs to <a class="term-reference" href="#term:verifiers">Verifiers</a> to satisfy the
-requirements described in a <a class="term-reference" href="#term:presentation-definition">Presentation Definition</a>. A Holder is a
-<a class="term-reference" href="#term:conformant-consumer">Conformant Consumer</a> of a <a class="term-reference" href="#term:presentation-definition">Presentation Definition</a> and a
-<a class="term-reference" href="#term:conformant-producer">Conformant Producer</a> of a <a class="term-reference" href="#term:presentation-submission">Presentation Submission</a>.</dd><dt><span id="term:PE:holder-binding">Holder Binding</span></dt><dd>Holder Bindings are requirements of a certain type of relationship between
-the <a class="term-reference" href="#term:holder">Holder</a> and the <a class="term-reference" href="#term:claims">Claims</a> within the <a class="term-reference" href="#term:presentation">Presentation</a>. See <a href="#holder-and-subject-binding">Holder Binding</a>.</dd><dt><span id="term:PE:dwn"><span id="term:decentralized-web-node">Decentralized Web Node</span></span></dt><dd>Some examples refer to an unfamiliar query protocol, <code>dwn://</code>, as a way of
-storing and querying schemata and other resources. While orthogonal to this
-specification and not yet on a standards track, the concept of “decentralized web nodes”
-proposes an architecture that may be of interest or utility to implementers of
-this specification. For more information, see the draft specification
-hosted at the decentralized identity foundation
-<a path-0="identity.foundation" path-1="decentralized-web-node" path-2="spec" path-3="" href="https://identity.foundation/decentralized-web-node/spec/">here</a></dd><dt><span id="term:PE:dwn"><span id="term:PE:decentralized-web-node">Decentralized Web Node</span></span></dt><dd>Some examples refer to an unfamiliar query protocol, <code>dwn://</code>, as a way of
-storing and querying schemata and other resources. While orthogonal to this
-specification and not yet on a standards track, the concept of “decentralized web nodes”
-proposes an architecture that may be of interest or utility to implementers of
-this specification. For more information, see the draft specification
-hosted at the decentralized identity foundation
-<a path-0="identity.foundation" path-1="decentralized-web-node" path-2="spec" path-3="" href="https://identity.foundation/decentralized-web-node/spec/">here</a></dd><dt><span id="term:PE:input-descriptors"><span id="term:input-descriptor">Input Descriptor</span></span></dt><dd>Input Descriptors are used by a Verifier to describe the information required
-of a <a class="term-reference" href="#term:holder">Holder</a> before an interaction can proceed. See
-<a href="#input-descriptor">Input Descriptor</a>.</dd><dt><span id="term:PE:input-descriptors"><span id="term:PE:input-descriptor">Input Descriptor</span></span></dt><dd>Input Descriptors are used by a Verifier to describe the information required
-of a <a class="term-reference" href="#term:holder">Holder</a> before an interaction can proceed. See
-<a href="#input-descriptor">Input Descriptor</a>.</dd><dt><span id="term:PE:input-descriptor-objects"><span id="term:input-descriptor-object">Input Descriptor Object</span></span></dt><dd>Input Descriptors Objects are populated with properties describing what type
-of input data/<a class="term-reference" href="#term:claim">Claim</a>, or sub-fields thereof, are required for submission
-to the <a class="term-reference" href="#term:verifier">Verifier</a>. See
-<a href="#input-descriptor-object">Input Descriptor Object</a>.</dd><dt><span id="term:PE:input-descriptor-objects"><span id="term:PE:input-descriptor-object">Input Descriptor Object</span></span></dt><dd>Input Descriptors Objects are populated with properties describing what type
-of input data/<a class="term-reference" href="#term:claim">Claim</a>, or sub-fields thereof, are required for submission
-to the <a class="term-reference" href="#term:verifier">Verifier</a>. See
-<a href="#input-descriptor-object">Input Descriptor Object</a>.</dd><dt><span id="term:PE:link-secrets">Link Secrets</span></dt><dd>Link Secrets are values held by the <a class="term-reference" href="#term:holder">Holder</a> but hidden from other
-parties. They are typically incorporated into cryptographic signatures used in
-claims to demonstrate correlation while preventing replay attacks. An Issuer
-may ascertain that a Holder possesses a link secret without its disclosure.
-See <a href="#link-secrets">Link Secrets</a>.</dd><dt><span id="term:PE:presentation-definition">Presentation Definition</span></dt><dd>Presentation Definitions are objects that articulate what proofs a Verifier
-requires. These help the Verifier to decide how or whether to interact with a
-<a class="term-reference" href="#term:holder">Holder</a>. Presentation Definitions are composed of inputs, which describe
-the forms and details of the proofs they require, and optional sets of
-selection rules, to allow Holders flexibility in cases where many different
-types of proofs may satisfy an input requirement. See
-<a href="#presentation-definition">Presentation Definition</a>.</dd><dt><span id="term:PE:presentation-request">Presentation Request</span></dt><dd>Presentation Requests are transport mechanisms for <a class="term-reference" href="#term:presentation">Presentation</a>. Presentation Requests can take multiple shapes, using a variety
-of protocols and signature schemes not refined in this specification. They are
-sent by a <a class="term-reference" href="#term:verifier">Verifier</a> to a <a class="term-reference" href="#term:holder">Holder</a>. Defining Presentation Requests
-is outside the scope of this specification. See
-<a href="#presentation-request">Presentation Request</a>.</dd><dt><span id="term:PE:presentation-submission">Presentation Submission</span></dt><dd>Presentation Submissions are objects embedded within target claim negotiation
-formats that unify the presentation of proofs to a <a class="term-reference" href="#term:verifier">Verifier</a> in
-accordance with the requirements a <a class="term-reference" href="#term:verifier">Verifier</a> specified in a
-<a class="term-reference" href="#term:presentation-definition">Presentation Definition</a>. See
-<a href="#presentation-submission">Presentation Submission</a>.</dd><dt><span id="term:PE:subjects"><span id="term:subject">Subject</span></span></dt><dd>Subjects are the entities about which <a class="term-reference" href="#term:claims">Claims</a> are made. The Subject may
-not be the same entity as the <a class="term-reference" href="#term:holder">Holder</a></dd><dt><span id="term:PE:subjects"><span id="term:PE:subject">Subject</span></span></dt><dd>Subjects are the entities about which <a class="term-reference" href="#term:claims">Claims</a> are made. The Subject may
-not be the same entity as the <a class="term-reference" href="#term:holder">Holder</a></dd><dt><span id="term:PE:submission-requirements"><span id="term:submission-requirement">Submission Requirement</span></span></dt><dd>Submission Requirements are objects that define what combinations of inputs
-must be submitted to comply with the requirements a <a class="term-reference" href="#term:verifier">Verifier</a> has for
-proceeding in a flow (e.g. credential issuance, allowing entry, accepting an
-application). See <a href="#submission-requirements">Submission Requirements</a>.</dd><dt><span id="term:PE:submission-requirements"><span id="term:PE:submission-requirement">Submission Requirement</span></span></dt><dd>Submission Requirements are objects that define what combinations of inputs
-must be submitted to comply with the requirements a <a class="term-reference" href="#term:verifier">Verifier</a> has for
-proceeding in a flow (e.g. credential issuance, allowing entry, accepting an
-application). See <a href="#submission-requirements">Submission Requirements</a>.</dd><dt><span id="term:PE:submission-requirement-objects"><span id="term:submission-requirement-object">Submission Requirement Object</span></span></dt><dd>Submission Requirement Objects describe valid combinations of inputs in a
-<a class="term-reference" href="#term:presentation-submission">Presentation Submission</a>. See
-<a href="#submission-requirement-objects">Submission Requirement Objects</a>.</dd><dt><span id="term:PE:submission-requirement-objects"><span id="term:PE:submission-requirement-object">Submission Requirement Object</span></span></dt><dd>Submission Requirement Objects describe valid combinations of inputs in a
-<a class="term-reference" href="#term:presentation-submission">Presentation Submission</a>. See
-<a href="#submission-requirement-objects">Submission Requirement Objects</a>.</dd><dt><span id="term:PE:submission-requirement-rules"><span id="term:submission-requirement-rule">Submission Requirement Rule</span></span></dt><dd>Submission Requirement Rules describe combinatorial rules within a
-<a class="term-reference" href="#term:submission-requirement-object">Submission Requirement Object</a> when processing inputs. They may be
-nested. See <a href="#submission-requirement-rules">Submission Requirement Rules</a>.</dd><dt><span id="term:PE:submission-requirement-rules"><span id="term:PE:submission-requirement-rule">Submission Requirement Rule</span></span></dt><dd>Submission Requirement Rules describe combinatorial rules within a
-<a class="term-reference" href="#term:submission-requirement-object">Submission Requirement Object</a> when processing inputs. They may be
-nested. See <a href="#submission-requirement-rules">Submission Requirement Rules</a>.</dd><dt><span id="term:PE:verifiers"><span id="term:verifier">Verifier</span></span></dt><dd>Verifiers are entities that define what proofs they require from a
-<a class="term-reference" href="#term:holder">Holder</a> (via a <a class="term-reference" href="#term:presentation-definition">Presentation Definition</a>) in order to proceed with
-an interaction. A Verifier is a <a class="term-reference" href="#term:conformant-producer">Conformant Producer</a> of a
-<a class="term-reference" href="#term:presentation-definition">Presentation Definition</a> and a <a class="term-reference" href="#term:conformant-consumer">Conformant Consumer</a> of a
-<a class="term-reference" href="#term:presentation-submission">Presentation Submission</a>.</dd><dt><span id="term:PE:verifiers"><span id="term:PE:verifier">Verifier</span></span></dt><dd>Verifiers are entities that define what proofs they require from a
-<a class="term-reference" href="#term:holder">Holder</a> (via a <a class="term-reference" href="#term:presentation-definition">Presentation Definition</a>) in order to proceed with
-an interaction. A Verifier is a <a class="term-reference" href="#term:conformant-producer">Conformant Producer</a> of a
-<a class="term-reference" href="#term:presentation-definition">Presentation Definition</a> and a <a class="term-reference" href="#term:conformant-consumer">Conformant Consumer</a> of a
-<a class="term-reference" href="#term:presentation-submission">Presentation Submission</a>.</dd><dt><span id="term:PE:oidc">OIDC</span></dt><dd><a path-0="openid.net" path-1="specs" path-2="openid-connect-core-1_0.html" href="https://openid.net/specs/openid-connect-core-1_0.html">Open ID Connect</a>. Jones, M., Bradley, J., and N. Sakimura. Status: Approved Specification</dd><dt><span id="term:PE:linked-data-proofs"><span id="term:linked-data-proof">Linked Data Proof</span></span></dt><dd><a path-0="w3c-ccg.github.io" path-1="data-integrity-spec" path-2="" href="https://w3c-ccg.github.io/data-integrity-spec/">Data Integrity 1.0</a>. Dave Longley, Manu Sporny. 2022-03. Status: Draft Community Group Report.</dd><dt><span id="term:PE:linked-data-proofs"><span id="term:PE:linked-data-proof">Linked Data Proof</span></span></dt><dd><a path-0="w3c-ccg.github.io" path-1="data-integrity-spec" path-2="" href="https://w3c-ccg.github.io/data-integrity-spec/">Data Integrity 1.0</a>. Dave Longley, Manu Sporny. 2022-03. Status: Draft Community Group Report.</dd><dt><span id="term:PE:json-schema-draft-7"><span id="term:json-schema">JSON Schema</span></span></dt><dd><a path-0="json-schema.org" path-1="draft-07" path-2="json-schema-release-notes.html" href="https://json-schema.org/draft-07/json-schema-release-notes.html">JSON Schema Draft-07</a>. OpenJS Foundation. 2018-03-19. Status: Internet-Draft.</dd><dt><span id="term:PE:json-schema-draft-7"><span id="term:PE:json-schema">JSON Schema</span></span></dt><dd><a path-0="json-schema.org" path-1="draft-07" path-2="json-schema-release-notes.html" href="https://json-schema.org/draft-07/json-schema-release-notes.html">JSON Schema Draft-07</a>. OpenJS Foundation. 2018-03-19. Status: Internet-Draft.</dd><dt><span id="term:PE:credential-handler-api"><span id="term:chapi">CHAPI</span></span></dt><dd><a path-0="w3c-ccg.github.io" path-1="credential-handler-api" path-2="" href="https://w3c-ccg.github.io/credential-handler-api/">W3C Credential Handler API 1.0</a>. Dave Longley, Manu Sporny. 2020-2-19. Status: Draft Community Group Report.</dd><dt><span id="term:PE:credential-handler-api"><span id="term:PE:chapi">CHAPI</span></span></dt><dd><a path-0="w3c-ccg.github.io" path-1="credential-handler-api" path-2="" href="https://w3c-ccg.github.io/credential-handler-api/">W3C Credential Handler API 1.0</a>. Dave Longley, Manu Sporny. 2020-2-19. Status: Draft Community Group Report.</dd><dt><span id="term:PE:didcomm">DIDComm</span></dt><dd><a path-0="github.com" path-1="decentralized-identity" path-2="didcomm-messaging" href="https://github.com/decentralized-identity/didcomm-messaging">DIF DIDComm Messaging</a>. Daniel Hardman, Sam Curren. Status: Working Group Draft.</dd></dl></div>
+        
         <script>window.specConfig = {"title":"Spec-Up Example","spec_directory":"./single-file-test","output_path":"./","logo":"logo.svg","logo_link":"https://github.com/decentralized-identity/spec-up","source":{"host":"github","account":"decentralized-identity","repo":"spec-up"},"external_specs":[{"PE":"https://identity.foundation/presentation-exchange"}],"assets":[{"path":"/custom-assets/custom.css"},{"path":"/custom-assets/custom-head.js","inject":"head"},{"path":"/custom-assets/custom-body.js","inject":"body","module":true}],"katex":true}</script>
         <script src="assets/compiled/body.js"></script><script src="/custom-assets/custom-body.js" type="module"></script>
       </body>

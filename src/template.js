@@ -1,6 +1,7 @@
 'use strict';
 
 const { escapeHtml } = require('./utils');
+const THEME_STORAGE_KEY = 'spec-up-color-scheme';
 
 function buildGithubUrls(source) {
   if (!source || source.host !== 'github' || !source.account || !source.repo) {
@@ -16,6 +17,38 @@ function buildGithubUrls(source) {
     repoLabel: repositoryPath,
     repoUrl
   };
+}
+
+function buildThemeBootstrapScript() {
+  return `
+    <script>
+      (() => {
+        const storageKey = '${THEME_STORAGE_KEY}';
+        const root = document.documentElement;
+        const media = window.matchMedia ? window.matchMedia('(prefers-color-scheme: dark)') : null;
+        let themePreference = 'auto';
+
+        try {
+          const storedThemePreference = window.localStorage.getItem(storageKey);
+
+          if (storedThemePreference === 'light' || storedThemePreference === 'dark' || storedThemePreference === 'auto') {
+            themePreference = storedThemePreference;
+          }
+        }
+        catch {}
+
+        const theme = themePreference === 'auto'
+          ? (media && media.matches ? 'dark' : 'light')
+          : themePreference;
+
+        root.classList.remove('wa-light', 'wa-dark');
+        root.classList.add(theme === 'dark' ? 'wa-dark' : 'wa-light');
+        root.dataset.theme = theme;
+        root.dataset.themePreference = themePreference;
+        root.style.colorScheme = theme;
+      })();
+    </script>
+  `;
 }
 
 function buildPageHtml({
@@ -38,20 +71,20 @@ function buildPageHtml({
         <div slot="label" class="spec-up-drawer-title">
           <div class="spec-up-drawer-title-row">
             <div class="spec-up-drawer-heading">
-              <span>Issues</span>
-            </div>
-            <div class="spec-up-issues-search-row">
-              <wa-input id="repo_issue_search" type="search" placeholder="Search open issues" autocomplete="off" spellcheck="false">
-                <wa-icon slot="start" name="search" label="Search GitHub issues"></wa-icon>
-                <span slot="end" class="spec-up-issues-search-end">
-                  <span id="repo_issue_search_spinner" class="spec-up-issues-search-spinner" hidden aria-hidden="true">
-                    <wa-spinner></wa-spinner>
-                  </span>
-                  <button id="repo_issue_search_clear" type="button" aria-label="Clear issue search" disabled>Clear</button>
-                </span>
-              </wa-input>
+              <span>GitHub Issues</span>
             </div>
             <div class="spec-up-drawer-title-actions"></div>
+          </div>
+          <div class="spec-up-issues-search-row">
+            <wa-input id="repo_issue_search" type="search" placeholder="Search open issues" autocomplete="off" spellcheck="false" size="small">
+              <wa-icon slot="start" name="search" label="Search GitHub issues"></wa-icon>
+              <span slot="end" class="spec-up-issues-search-end">
+                <span id="repo_issue_search_spinner" class="spec-up-issues-search-spinner" hidden aria-hidden="true">
+                  <wa-spinner></wa-spinner>
+                </span>
+                <button id="repo_issue_search_clear" type="button" aria-label="Clear issue search" disabled>Clear</button>
+              </span>
+            </wa-input>
           </div>
         </div>
         <div id="repo_issue_panel" class="spec-up-issues-panel">
@@ -65,16 +98,47 @@ function buildPageHtml({
       </wa-drawer>
     `
     : '';
-  const headerActionsMarkup = githubUrls
+  const issuesButtonMarkup = githubUrls
     ? `
-      <div class="spec-up-header-actions">
         <wa-button class="spec-up-issues-trigger" size="small" appearance="outlined" variant="neutral" data-drawer="open repo_issues_drawer">
           <wa-icon family="brands" name="github"></wa-icon>
           Issues
         </wa-button>
-      </div>
     `
     : '';
+  const headerActionsMarkup = `
+      <div class="spec-up-header-actions">
+        <wa-dropdown id="spec_up_theme_selector" class="spec-up-theme-selector color-scheme-selector" size="small" placement="bottom-start">
+          <wa-button
+            slot="trigger"
+            id="color-scheme-selector-trigger"
+            class="spec-up-theme-selector__trigger"
+            appearance="plain"
+            aria-label="Color theme"
+            variant="neutral"
+            size="small"
+          >
+            <wa-icon family="classic" name="sun" class="icon-embiggen only-light" aria-hidden="true"></wa-icon>
+            <wa-icon family="classic" name="moon" class="icon-embiggen only-dark" aria-hidden="true"></wa-icon>
+          </wa-button>
+          <wa-dropdown-item value="light">
+            <wa-icon slot="icon" family="classic" name="sun" class="icon-embiggen" aria-hidden="true"></wa-icon>
+            Light
+          </wa-dropdown-item>
+          <wa-dropdown-item value="dark">
+            <wa-icon slot="icon" family="classic" name="moon" class="icon-embiggen" aria-hidden="true"></wa-icon>
+            Dark
+          </wa-dropdown-item>
+          <wa-divider></wa-divider>
+          <wa-dropdown-item value="auto">
+            <wa-icon slot="icon" family="classic" name="sun" class="only-light icon-embiggen" aria-hidden="true"></wa-icon>
+            <wa-icon slot="icon" family="classic" name="moon" class="only-dark icon-embiggen" aria-hidden="true"></wa-icon>
+            System
+          </wa-dropdown-item>
+        </wa-dropdown>
+        ${issuesButtonMarkup}
+      </div>
+  `;
 
   return `
     <!DOCTYPE html>
@@ -83,11 +147,13 @@ function buildPageHtml({
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <meta name="color-scheme" content="light dark">
 
         <title>${escapeHtml(spec.title)}</title>
 
         ${spec.logo ? `<link rel="icon" href="${spec.logo}">` : ''}
 
+        ${buildThemeBootstrapScript()}
         ${assetTags.head}
       </head>
       <body features="${features}">

@@ -3,6 +3,11 @@ import mermaid from 'mermaid';
 (function() {
   const page = document.querySelector('wa-page');
   const ISSUE_PAGE_SIZE = 20;
+  const THEME_STORAGE_KEY = 'spec-up-color-scheme';
+  const THEME_MEDIA_QUERY = '(prefers-color-scheme: dark)';
+  const THEME_AUTO_PREFERENCE = 'auto';
+  const THEME_CHANGE_EVENT = 'spec-up-themechange';
+  const MERMAID_QUERY_SELECTOR = '.mermaid';
 
   function escapeHtml(value) {
     return String(value)
@@ -47,6 +52,264 @@ import mermaid from 'mermaid';
     }
 
     return `${text.slice(0, 177)}...`;
+  }
+
+  function isThemePreference(value) {
+    return value === 'light' || value === 'dark' || value === THEME_AUTO_PREFERENCE;
+  }
+
+  function getStoredThemePreference() {
+    try {
+      const storedThemePreference = window.localStorage.getItem(THEME_STORAGE_KEY);
+
+      return isThemePreference(storedThemePreference) ? storedThemePreference : null;
+    }
+    catch {
+      return null;
+    }
+  }
+
+  function setStoredThemePreference(theme) {
+    try {
+      window.localStorage.setItem(THEME_STORAGE_KEY, theme);
+    }
+    catch {
+      // Ignore storage failures and keep the in-memory theme active.
+    }
+  }
+
+  function getSystemThemePreference() {
+    if (window.matchMedia && window.matchMedia(THEME_MEDIA_QUERY).matches) {
+      return 'dark';
+    }
+
+    return 'light';
+  }
+
+  function resolveThemePreference(themePreference) {
+    if (themePreference === THEME_AUTO_PREFERENCE) {
+      return getSystemThemePreference();
+    }
+
+    return themePreference === 'dark' ? 'dark' : 'light';
+  }
+
+  function applyThemePreference(themePreference) {
+    const root = document.documentElement;
+    const previousTheme = root.dataset.theme || '';
+    const previousPreference = root.dataset.themePreference || '';
+    const normalizedPreference = isThemePreference(themePreference) ? themePreference : THEME_AUTO_PREFERENCE;
+    const normalizedTheme = resolveThemePreference(normalizedPreference);
+
+    root.classList.toggle('wa-dark', normalizedTheme === 'dark');
+    root.classList.toggle('wa-light', normalizedTheme === 'light');
+    root.dataset.theme = normalizedTheme;
+    root.dataset.themePreference = normalizedPreference;
+    root.style.colorScheme = normalizedTheme;
+
+    if (previousTheme !== normalizedTheme || previousPreference !== normalizedPreference) {
+      window.dispatchEvent(new CustomEvent(THEME_CHANGE_EVENT, {
+        detail: {
+          preference: normalizedPreference,
+          theme: normalizedTheme
+        }
+      }));
+    }
+
+    return {
+      preference: normalizedPreference,
+      theme: normalizedTheme
+    };
+  }
+
+  function formatThemeLabel(themePreference, theme) {
+    if (themePreference === THEME_AUTO_PREFERENCE) {
+      return `System (${theme === 'dark' ? 'Dark' : 'Light'})`;
+    }
+
+    return themePreference === 'dark' ? 'Dark' : 'Light';
+  }
+
+  function syncThemeSelector(themeState) {
+    const themeSelector = document.getElementById('spec_up_theme_selector');
+    const themeTrigger = document.getElementById('color-scheme-selector-trigger');
+
+    if (!themeSelector || !themeTrigger) {
+      return;
+    }
+
+    const themeLabel = formatThemeLabel(themeState.preference, themeState.theme);
+
+    themeSelector.dataset.themePreference = themeState.preference;
+    themeSelector.querySelectorAll('wa-dropdown-item[value]').forEach(item => {
+      const isCurrent = item.value === themeState.preference;
+
+      item.toggleAttribute('data-current', isCurrent);
+
+      if (isCurrent) {
+        item.setAttribute('aria-current', 'true');
+      }
+      else {
+        item.removeAttribute('aria-current');
+      }
+    });
+
+    themeTrigger.setAttribute('aria-label', `Color theme: ${themeLabel}`);
+    themeTrigger.setAttribute('title', `Color theme: ${themeLabel}`);
+  }
+
+  function createThemeController() {
+    const themeSelector = document.getElementById('spec_up_theme_selector');
+    const mediaQuery = window.matchMedia ? window.matchMedia(THEME_MEDIA_QUERY) : null;
+    let themeState = applyThemePreference(
+      getStoredThemePreference() ||
+      document.documentElement.dataset.themePreference ||
+      THEME_AUTO_PREFERENCE
+    );
+
+    syncThemeSelector(themeState);
+
+    if (!themeSelector) {
+      return null;
+    }
+
+    themeSelector.addEventListener('wa-select', event => {
+      const nextThemePreference = event.detail && event.detail.item ? event.detail.item.value : null;
+
+      if (!isThemePreference(nextThemePreference)) {
+        return;
+      }
+
+      themeState = applyThemePreference(nextThemePreference);
+      setStoredThemePreference(themeState.preference);
+      syncThemeSelector(themeState);
+    });
+
+    if (mediaQuery) {
+      const handleSystemThemeChange = () => {
+        const storedThemePreference = getStoredThemePreference();
+
+        if (storedThemePreference && storedThemePreference !== THEME_AUTO_PREFERENCE) {
+          return;
+        }
+
+        if ((storedThemePreference || themeState.preference) !== THEME_AUTO_PREFERENCE) {
+          return;
+        }
+
+        themeState = applyThemePreference(THEME_AUTO_PREFERENCE);
+        syncThemeSelector(themeState);
+      };
+
+      if (typeof mediaQuery.addEventListener === 'function') {
+        mediaQuery.addEventListener('change', handleSystemThemeChange);
+      }
+      else if (typeof mediaQuery.addListener === 'function') {
+        mediaQuery.addListener(handleSystemThemeChange);
+      }
+    }
+
+    return {
+      getTheme() {
+        return themeState.theme;
+      },
+      getThemePreference() {
+        return themeState.preference;
+      }
+    };
+  }
+
+  function getMermaidTheme(theme) {
+    return theme === 'dark' ? 'dark' : 'neutral';
+  }
+
+  function createMermaidController(themeController) {
+    const diagramSources = new WeakMap();
+    let renderQueue = Promise.resolve();
+
+    function getCurrentTheme() {
+      if (themeController && typeof themeController.getTheme === 'function') {
+        return themeController.getTheme();
+      }
+
+      return document.documentElement.dataset.theme === 'dark' ? 'dark' : 'light';
+    }
+
+    function getMermaidNodes() {
+      return Array.from(document.querySelectorAll(MERMAID_QUERY_SELECTOR));
+    }
+
+    function captureDiagramSources(nodes) {
+      nodes.forEach(node => {
+        if (!diagramSources.has(node)) {
+          diagramSources.set(node, node.innerHTML);
+        }
+      });
+    }
+
+    function restoreDiagramSources(nodes) {
+      nodes.forEach(node => {
+        const source = diagramSources.get(node);
+
+        if (typeof source !== 'string') {
+          return;
+        }
+
+        node.innerHTML = source;
+        node.removeAttribute('data-processed');
+      });
+    }
+
+    async function renderDiagrams(theme) {
+      const nodes = getMermaidNodes();
+
+      if (!nodes.length) {
+        mermaid.initialize({
+          startOnLoad: false,
+          theme: getMermaidTheme(theme)
+        });
+        return;
+      }
+
+      captureDiagramSources(nodes);
+      restoreDiagramSources(nodes);
+
+      mermaid.initialize({
+        startOnLoad: false,
+        theme: getMermaidTheme(theme)
+      });
+
+      await mermaid.run({ nodes });
+    }
+
+    function queueRender(theme) {
+      const normalizedTheme = theme === 'dark' ? 'dark' : 'light';
+
+      renderQueue = renderQueue
+        .catch(() => {})
+        .then(() => renderDiagrams(normalizedTheme))
+        .catch(error => {
+          console.warn('Mermaid diagrams could not be rendered.', error);
+        });
+
+      return renderQueue;
+    }
+
+    window.addEventListener(THEME_CHANGE_EVENT, event => {
+      const nextTheme = event && event.detail && event.detail.theme
+        ? event.detail.theme
+        : getCurrentTheme();
+
+      queueRender(nextTheme);
+    });
+
+    queueRender(getCurrentTheme());
+
+    return {
+      rerender() {
+        return queueRender(getCurrentTheme());
+      }
+    };
   }
 
   function renderIssues(issues) {
@@ -495,6 +758,8 @@ import mermaid from 'mermaid';
   });
 
   syncActiveTocLink();
+  const themeController = createThemeController();
+  createMermaidController(themeController);
 
   const source = specConfig.source;
 
@@ -505,11 +770,6 @@ import mermaid from 'mermaid';
       issueBrowser.loadBaseIssues();
     }
   }
-
-  mermaid.initialize({
-    startOnLoad: true,
-    theme: 'neutral'
-  });
 
   const tipMap = new WeakMap();
 

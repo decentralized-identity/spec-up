@@ -103,6 +103,7 @@ $x^2$
   assert.match(html, /data-plugin="shout">HELLO PLUGIN<\/strong>/);
   assert.match(html, /id="page-plugin"/);
   assert.match(html, /<wa-page class="spec-up-shell"/);
+  assert.match(html, /id="spec_up_theme_selector"/);
   assert.match(html, /class="toc-anchor" href="#terms"/);
   assert.match(html, /<script src="assets\/compiled\/head\.js"><\/script>/);
   assert.match(html, /<script src="assets\/compiled\/body\.js"><\/script>/);
@@ -138,12 +139,23 @@ test('renders github issues as a searchable drawer and moves the spec title into
   });
 
   assert.match(html, /class="wa-theme-default"/);
+  assert.match(html, /<meta name="color-scheme" content="light dark">/);
+  assert.match(html, /const storageKey = 'spec-up-color-scheme';/);
+  assert.match(html, /id="spec_up_theme_selector"/);
+  assert.match(html, /id="color-scheme-selector-trigger"/);
+  assert.match(html, /<wa-dropdown-item value="light">/);
+  assert.match(html, /<wa-dropdown-item value="dark">/);
+  assert.match(html, /<wa-dropdown-item value="auto">/);
+  assert.match(html, /<wa-divider><\/wa-divider>/);
+  assert.match(html, /family="classic" name="sun" class="icon-embiggen only-light"/);
+  assert.match(html, /family="classic" name="moon" class="icon-embiggen only-dark"/);
   assert.match(html, /<wa-drawer id="repo_issues_drawer"/);
   assert.match(html, /data-drawer="open repo_issues_drawer"/);
   assert.match(html, /<wa-icon family="brands" name="github"><\/wa-icon>\s*Issues/);
   assert.match(html, /<wa-button[^>]*data-toggle-nav[^>]*>\s*<wa-icon name="bars"><\/wa-icon>\s*<\/wa-button>/);
   assert.match(html, /<div slot="navigation-header" class="spec-up-navigation-title">\s*<strong>Drawer Test<\/strong>/);
   assert.match(html, /<div class="spec-up-drawer-title-row">/);
+  assert.match(html, /<div class="spec-up-drawer-title-row">[\s\S]*<div class="spec-up-drawer-title-actions"><\/div>\s*<\/div>\s*<div class="spec-up-issues-search-row">/);
   assert.match(html, /<div class="spec-up-issues-search-row">/);
   assert.match(html, /<wa-input id="repo_issue_search" type="search" placeholder="Search open issues"/);
   assert.match(html, /<wa-icon slot="start" name="search" label="Search GitHub issues"><\/wa-icon>/);

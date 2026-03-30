@@ -250,12 +250,16 @@ function attachHeadingAnchors(md, state) {
     };
   });
 
+  md.renderer.rules.heading_open = function renderHeadingOpen(tokens, idx, options, env, self) {
+    return `${self.renderToken(tokens, idx, options)}<span class="spec-up-heading-text">`;
+  };
+
   md.renderer.rules.heading_close = function renderHeadingClose(tokens, idx, options, env, self) {
     const openToken = tokens[idx - 2];
     const id = openToken && typeof openToken.attrGet === 'function' ? openToken.attrGet('id') : null;
     const anchorMarkup = id ? `<a class="toc-anchor" href="#${id}">§</a>` : '';
 
-    return `${anchorMarkup}${self.renderToken(tokens, idx, options)}`;
+    return `</span>${anchorMarkup}${self.renderToken(tokens, idx, options)}`;
   };
 }
 
