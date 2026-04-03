@@ -1,35 +1,65 @@
-
 name: spec-up-render
 
 on:
   push:
     branches:
       - master
+  workflow_dispatch:
+
+concurrency:
+  group: github-pages
+  cancel-in-progress: true
 
 jobs:
-  build-and-deploy-spec:
+  build:
     runs-on: ubuntu-latest
     permissions:
-      contents: write
+      contents: read
     steps:
-      - name: Checkout 🛎️
-        uses: actions/checkout@v2 # If you're using actions/checkout@v2 you must set persist-credentials to false in most cases for the deployment to work correctly.
-        with:
-          persist-credentials: false
+      - name: Checkout
+        uses: actions/checkout@v5
 
-      - name: Install and Build 🔧 # This example project is built using npm and outputs the result to the 'build' folder. Replace with the commands required to build your project, or remove this step entirely if your site is pre-built.
+      - name: Configure GitHub Pages
+        uses: actions/configure-pages@v5
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build site
+        run: npm run build
+
+      - name: Stage Pages artifact
         run: |
-          npm install
-          node -e "require('./index')({ nowatch: true })"
-          rm -rf node_modules
+          rm -rf .site
+          mkdir -p .site
+          cp index.html .site/index.html
+          cp logo.svg .site/logo.svg
+          cp -R assets .site/assets
+          cp -R fonts .site/fonts
+          cp -R single-file-test .site/single-file-test
+          cp -R multi-file-test .site/multi-file-test
 
-      - name: Deploy
-        uses: peaceiris/actions-gh-pages@v3.7.3
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v4
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./
-          allow_empty_commit: true
-          force_orphan: true
+          path: .site
 
-
-          
+  deploy:
+    runs-on: ubuntu-latest
+    needs: build
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
