@@ -23,7 +23,6 @@ import '../web-awesome/dist-cdn/components/tab-group/tab-group.js';
 import '../web-awesome/dist-cdn/components/tab/tab.js';
 import '../web-awesome/dist-cdn/components/tab-panel/tab-panel.js';
 import '../../assets/js/prism.js';
-import '../../assets/js/font-awesome.js';
 import '../../assets/js/popper.js';
 import '../../assets/js/tippy.js';
 import '../../assets/js/index.js';

@@ -12,6 +12,16 @@ const markdownItExtensions = require('../src/markdown-it-extensions');
 const { buildPageHtml } = require('../src/template');
 const createCoreMarkdownPlugin = require('../src/builtin-plugins/core-markdown');
 
+function getContentSecurityPolicy(html) {
+  const match = html.match(/<meta http-equiv="Content-Security-Policy" content="([^"]+)">/);
+
+  assert.ok(match, 'Expected generated HTML to include a Content-Security-Policy meta tag.');
+
+  return match[1]
+    .replace(/&quot;/g, '"')
+    .replace(/&amp;/g, '&');
+}
+
 test('renders custom plugins alongside built-in reference and katex plugins', async t => {
   const root = await fsp.mkdtemp(path.join(os.tmpdir(), 'spec-up-'));
   const specDirectory = path.join(root, 'spec');
@@ -98,7 +108,6 @@ $x^2$
   });
 
   const html = await fsp.readFile(path.join(outputDirectory, 'index.html'), 'utf8');
-
   assert.match(html, /class="term-reference" href="#term:thing"/);
   assert.match(html, /id="term:thing"/);
   assert.match(html, /data-plugin="shout">HELLO PLUGIN<\/strong>/);
@@ -138,10 +147,15 @@ test('renders github issues as a searchable drawer and moves the spec title into
       levelCounts: { 2: 1, 3: 0, 4: 0 }
     }
   });
+  const csp = getContentSecurityPolicy(html);
 
   assert.match(html, /class="wa-theme-default"/);
   assert.match(html, /<meta name="color-scheme" content="light dark">/);
   assert.match(html, /const storageKey = 'spec-up-color-scheme';/);
+  assert.match(csp, /default-src 'self'/);
+  assert.match(csp, /script-src 'self' 'unsafe-inline' blob: data:/);
+  assert.match(csp, /style-src 'self' 'unsafe-inline' data:/);
+  assert.match(csp, /connect-src 'self' data: blob: https:\/\/api\.github\.com https:\/\/ka-f\.fontawesome\.com https:\/\/ka-p\.fontawesome\.com/);
   assert.match(html, /id="spec_up_theme_selector"/);
   assert.match(html, /id="color-scheme-selector-trigger"/);
   assert.match(html, /<wa-dropdown-item value="light">/);
@@ -175,6 +189,41 @@ test('renders github issues as a searchable drawer and moves the spec title into
   assert.doesNotMatch(html, /slot="footer"/);
   assert.doesNotMatch(html, /slot="main-header"/);
   assert.doesNotMatch(html, /spec-up-document-card/);
+});
+
+test('template CSP allows remote asset origins and dev-server sockets', () => {
+  const html = buildPageHtml({
+    articleHtml: '<p>Spec body</p>',
+    assetTags: {
+      body: '<script src="https://cdn.example.com/site.js"></script>',
+      head: '<script type="module" src="http://127.0.0.1:5173/@vite/client"></script><link href="https://cdn.example.com/site.css" rel="stylesheet"/>',
+      svg: ''
+    },
+    externalReferencesHtml: '',
+    spec: {
+      config: {},
+      title: 'CSP Asset Test'
+    },
+    tocHtml: '',
+    tocMeta: {
+      count: 0,
+      levelCounts: { 2: 0, 3: 0, 4: 0 }
+    }
+  });
+  const csp = getContentSecurityPolicy(html);
+
+  assert.match(csp, /script-src[\s\S]*http:\/\/127\.0\.0\.1:5173[\s\S]*https:\/\/cdn\.example\.com/);
+  assert.match(csp, /style-src[\s\S]*http:\/\/127\.0\.0\.1:5173[\s\S]*https:\/\/cdn\.example\.com/);
+  assert.match(csp, /connect-src[\s\S]*http:\/\/127\.0\.0\.1:5173/);
+  assert.match(csp, /connect-src[\s\S]*ws:\/\/127\.0\.0\.1:5173/);
+  assert.match(csp, /connect-src[\s\S]*https:\/\/cdn\.example\.com/);
+  assert.match(csp, /connect-src[\s\S]*wss:\/\/cdn\.example\.com/);
+});
+
+test('vite body entry does not load the legacy Font Awesome CSS kit', async () => {
+  const bodyEntry = await fsp.readFile(path.join(__dirname, '..', 'src', 'vite', 'body.js'), 'utf8');
+
+  assert.doesNotMatch(bodyEntry, /font-awesome\.js/);
 });
 
 test('core markdown renders notices as callouts and converts legacy tab panels to Web Awesome tabs', async () => {

@@ -1,7 +1,97 @@
 'use strict';
 
-const { escapeHtml } = require('./utils');
+const { escapeHtml, unique } = require('./utils');
 const THEME_STORAGE_KEY = 'spec-up-color-scheme';
+const DEFAULT_CSP_DIRECTIVES = Object.freeze({
+  'default-src': ["'self'"],
+  'base-uri': ["'self'"],
+  'object-src': ["'none'"],
+  'script-src': ["'self'", "'unsafe-inline'", 'blob:', 'data:'],
+  'style-src': ["'self'", "'unsafe-inline'", 'data:'],
+  'img-src': ["'self'", 'data:', 'blob:', 'https:', 'http:'],
+  'font-src': ["'self'", 'data:', 'https:', 'http:'],
+  'media-src': ["'self'", 'data:', 'blob:', 'https:', 'http:'],
+  'frame-src': ["'self'", 'data:', 'blob:', 'https:', 'http:'],
+  'worker-src': ["'self'", 'data:', 'blob:'],
+  'connect-src': [
+    "'self'",
+    'data:',
+    'blob:',
+    'https://api.github.com',
+    'https://ka-f.fontawesome.com',
+    'https://ka-p.fontawesome.com'
+  ]
+});
+
+function escapeAttribute(value) {
+  return String(value)
+    .replace(/&/g, '&amp;')
+    .replace(/"/g, '&quot;');
+}
+
+function extractRemoteOrigins(markup, attributeName) {
+  const pattern = new RegExp(`${attributeName}\\s*=\\s*(['"])([^'"]+)\\1`, 'gi');
+  const origins = [];
+  let match;
+
+  while ((match = pattern.exec(String(markup || '')))) {
+    try {
+      const url = new URL(match[2]);
+
+      if (url.protocol === 'http:' || url.protocol === 'https:') {
+        origins.push(url.origin);
+      }
+    }
+    catch {
+      // Ignore relative asset paths and malformed URLs.
+    }
+  }
+
+  return unique(origins);
+}
+
+function toWebSocketOrigin(origin) {
+  if (origin.startsWith('https://')) {
+    return `wss://${origin.slice('https://'.length)}`;
+  }
+
+  if (origin.startsWith('http://')) {
+    return `ws://${origin.slice('http://'.length)}`;
+  }
+
+  return null;
+}
+
+function cloneCspDirectives() {
+  return Object.fromEntries(
+    Object.entries(DEFAULT_CSP_DIRECTIVES).map(([directive, sources]) => [directive, [...sources]])
+  );
+}
+
+function addCspSources(directives, directive, sources) {
+  directives[directive] = unique([
+    ...(directives[directive] || []),
+    ...sources.filter(Boolean)
+  ]);
+}
+
+function buildContentSecurityPolicy(assetTags) {
+  const assetMarkup = `${assetTags.head || ''}${assetTags.body || ''}`;
+  const assetOrigins = unique([
+    ...extractRemoteOrigins(assetMarkup, 'src'),
+    ...extractRemoteOrigins(assetMarkup, 'href')
+  ]);
+  const directives = cloneCspDirectives();
+  const socketOrigins = assetOrigins.map(toWebSocketOrigin).filter(Boolean);
+
+  addCspSources(directives, 'script-src', assetOrigins);
+  addCspSources(directives, 'style-src', assetOrigins);
+  addCspSources(directives, 'connect-src', [...assetOrigins, ...socketOrigins]);
+
+  return Object.entries(directives)
+    .map(([directive, sources]) => `${directive} ${sources.join(' ')}`)
+    .join('; ');
+}
 
 function buildGithubUrls(source) {
   if (!source || source.host !== 'github' || !source.account || !source.repo) {
@@ -61,6 +151,7 @@ function buildPageHtml({
   const features = ['logo', 'source'].filter(feature => Boolean(spec[feature])).join(' ');
   const externalMarkup = externalReferencesHtml ? `<div style="display: none;">${externalReferencesHtml}</div>` : '';
   const githubUrls = buildGithubUrls(spec.source);
+  const contentSecurityPolicy = buildContentSecurityPolicy(assetTags);
   const logoMarkup = spec.logo
     ? `<a class="spec-up-brand-mark spec-up-brand-mark--logo" href="${spec.logo_link || '#_'}"><img src="${spec.logo}" alt="${escapeHtml(spec.title)} logo"/></a>`
     : '<span class="spec-up-brand-mark spec-up-brand-mark--placeholder" aria-hidden="true">SU</span>';
@@ -148,6 +239,7 @@ function buildPageHtml({
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
         <meta name="color-scheme" content="light dark">
+        <meta http-equiv="Content-Security-Policy" content="${escapeAttribute(contentSecurityPolicy)}">
 
         <title>${escapeHtml(spec.title)}</title>
 
