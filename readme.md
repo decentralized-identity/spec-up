@@ -40,6 +40,7 @@ Installing Spec-Up is easy peasy lemon squeezy:
             ```
         - **`external_specs`** _(ARRAY, optional)_ - Enables `[[xref: ...]]` references to terms from other Spec-Up outputs. Each entry is a single-key object mapping a short handle to the external spec URL.
         - **`assets`** _(ARRAY, optional)_ - Injects extra CSS or JS assets into the rendered page when you need custom page-level behavior or styling. Asset objects support `path`, optional `inject` (`"head"` or `"body"` for JS), and optional `module` for JS modules.
+        - **`content_security_policy`** _(BOOLEAN or STRING, optional)_ - By default, Spec-Up does not emit a CSP meta tag. Set this to `true` to emit Spec-Up's generated CSP, or set it to a string to inject a custom CSP value.
         - **`plugins`** _(ARRAY, optional)_ - Plugins that should run only for this spec.
 3. Render either programmatically or through the Vite-based workflow used by this repo:
 

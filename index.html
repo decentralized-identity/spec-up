@@ -6,7 +6,7 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
         <meta name="color-scheme" content="light dark">
-        <meta http-equiv="Content-Security-Policy" content="default-src 'self'; base-uri 'self'; object-src 'none'; script-src 'self' 'unsafe-inline' blob: data: http://127.0.0.1:5173; style-src 'self' 'unsafe-inline' data: http://127.0.0.1:5173; img-src 'self' data: blob: https: http:; font-src 'self' data: https: http:; media-src 'self' data: blob: https: http:; frame-src 'self' data: blob: https: http:; worker-src 'self' data: blob:; connect-src 'self' data: blob: https://api.github.com https://ka-f.fontawesome.com https://ka-p.fontawesome.com http://127.0.0.1:5173 ws://127.0.0.1:5173">
+        
 
         <title>Spec-Up Example</title>
 
@@ -41,7 +41,7 @@
       })();
     </script>
   
-        <script type="module" src="http://127.0.0.1:5173/@vite/client"></script><script type="module" src="http://127.0.0.1:5173/src/vite/head.js"></script><script type="module" src="http://127.0.0.1:5173/src/vite/katex.js"></script>
+        <script src="assets/compiled/head.js"></script><script src="assets/compiled/katex.js"></script>
       </head>
       <body features="logo source">
         <svg id="svg" version="1.1" xmlns="http://www.w3.org/2000/svg">
@@ -876,96 +876,9 @@ Details of what I want to show here.
       </wa-drawer>
     
 
-        <div style="display: none;"><dl id="PE"><dt><span id="term:PE:claims"><span id="term:claim">Claim</span></span></dt><dd>An assertion made about a <a class="term-reference" href="#term:subject">Subject</a>. Used as an umbrella term for
-Credential, Assertion, Attestation, etc.</dd><dt><span id="term:PE:claims"><span id="term:PE:claim">Claim</span></span></dt><dd>An assertion made about a <a class="term-reference" href="#term:subject">Subject</a>. Used as an umbrella term for
-Credential, Assertion, Attestation, etc.</dd><dt><span id="term:PE:conformant-consumers"><span id="term:conformant-consumer">Conformant Consumer</span></span></dt><dd>An entity that follows the specified processing rules to consume a
-<a class="term-reference" href="#term:presentation-definition">Presentation Definition</a> or <a class="term-reference" href="#term:presentation-submission">Presentation Submission</a> that conforms
-to this specification.</dd><dt><span id="term:PE:conformant-consumers"><span id="term:PE:conformant-consumer">Conformant Consumer</span></span></dt><dd>An entity that follows the specified processing rules to consume a
-<a class="term-reference" href="#term:presentation-definition">Presentation Definition</a> or <a class="term-reference" href="#term:presentation-submission">Presentation Submission</a> that conforms
-to this specification.</dd><dt><span id="term:PE:conformant-producer">Conformant Producer</span></dt><dd>An entity that produces a <a class="term-reference" href="#term:presentation-definition">Presentation Definition</a> or
-<a class="term-reference" href="#term:presentation-submission">Presentation Submission</a> that conforms to this specification.</dd><dt><span id="term:PE:embed-locations">Embed Locations</span></dt><dd>Embed Locations are the specific paths and indexes per <a class="term-reference" href="#term:embed-target">Embed Target</a>
-where the <a class="term-reference" href="#term:verifier">Verifier</a> can expect to find the <a class="term-reference" href="#term:presentation">Presentation</a>. See <a href="#embed-locations">Embed Locations</a>.</dd><dt><span id="term:PE:embed-targets"><span id="term:embed-target">Embed Target</span></span></dt><dd>Embed Targets are data formats used in messaging protocols that may be used
-to transport a <a class="term-reference" href="#term:presentation-submission">Presentation Submission</a>. See
-<a href="#embed-targets">Embed Targets</a>.</dd><dt><span id="term:PE:embed-targets"><span id="term:PE:embed-target">Embed Target</span></span></dt><dd>Embed Targets are data formats used in messaging protocols that may be used
-to transport a <a class="term-reference" href="#term:presentation-submission">Presentation Submission</a>. See
-<a href="#embed-targets">Embed Targets</a>.</dd><dt><span id="term:PE:features"><span id="term:feature">Feature</span></span></dt><dd>Features enable <a class="term-reference" href="#term:verifiers">Verifiers</a> to express, and <a class="term-reference" href="#term:holders">Holders</a> to support,
-extended functionality (relative to the base objects) by defining one or more
-properties on one or more objects.</dd><dt><span id="term:PE:features"><span id="term:PE:feature">Feature</span></span></dt><dd>Features enable <a class="term-reference" href="#term:verifiers">Verifiers</a> to express, and <a class="term-reference" href="#term:holders">Holders</a> to support,
-extended functionality (relative to the base objects) by defining one or more
-properties on one or more objects.</dd><dt><span id="term:PE:holders"><span id="term:holder">Holder</span></span></dt><dd>Holders are entities that submit proofs to <a class="term-reference" href="#term:verifiers">Verifiers</a> to satisfy the
-requirements described in a <a class="term-reference" href="#term:presentation-definition">Presentation Definition</a>. A Holder is a
-<a class="term-reference" href="#term:conformant-consumer">Conformant Consumer</a> of a <a class="term-reference" href="#term:presentation-definition">Presentation Definition</a> and a
-<a class="term-reference" href="#term:conformant-producer">Conformant Producer</a> of a <a class="term-reference" href="#term:presentation-submission">Presentation Submission</a>.</dd><dt><span id="term:PE:holders"><span id="term:PE:holder">Holder</span></span></dt><dd>Holders are entities that submit proofs to <a class="term-reference" href="#term:verifiers">Verifiers</a> to satisfy the
-requirements described in a <a class="term-reference" href="#term:presentation-definition">Presentation Definition</a>. A Holder is a
-<a class="term-reference" href="#term:conformant-consumer">Conformant Consumer</a> of a <a class="term-reference" href="#term:presentation-definition">Presentation Definition</a> and a
-<a class="term-reference" href="#term:conformant-producer">Conformant Producer</a> of a <a class="term-reference" href="#term:presentation-submission">Presentation Submission</a>.</dd><dt><span id="term:PE:holder-binding">Holder Binding</span></dt><dd>Holder Bindings are requirements of a certain type of relationship between
-the <a class="term-reference" href="#term:holder">Holder</a> and the <a class="term-reference" href="#term:claims">Claims</a> within the <a class="term-reference" href="#term:presentation">Presentation</a>. See <a href="#holder-and-subject-binding">Holder Binding</a>.</dd><dt><span id="term:PE:dwn"><span id="term:decentralized-web-node">Decentralized Web Node</span></span></dt><dd>Some examples refer to an unfamiliar query protocol, <code>dwn://</code>, as a way of
-storing and querying schemata and other resources. While orthogonal to this
-specification and not yet on a standards track, the concept of “decentralized web nodes”
-proposes an architecture that may be of interest or utility to implementers of
-this specification. For more information, see the draft specification
-hosted at the decentralized identity foundation
-<a path-0="identity.foundation" path-1="decentralized-web-node" path-2="spec" path-3="" href="https://identity.foundation/decentralized-web-node/spec/">here</a></dd><dt><span id="term:PE:dwn"><span id="term:PE:decentralized-web-node">Decentralized Web Node</span></span></dt><dd>Some examples refer to an unfamiliar query protocol, <code>dwn://</code>, as a way of
-storing and querying schemata and other resources. While orthogonal to this
-specification and not yet on a standards track, the concept of “decentralized web nodes”
-proposes an architecture that may be of interest or utility to implementers of
-this specification. For more information, see the draft specification
-hosted at the decentralized identity foundation
-<a path-0="identity.foundation" path-1="decentralized-web-node" path-2="spec" path-3="" href="https://identity.foundation/decentralized-web-node/spec/">here</a></dd><dt><span id="term:PE:input-descriptors"><span id="term:input-descriptor">Input Descriptor</span></span></dt><dd>Input Descriptors are used by a Verifier to describe the information required
-of a <a class="term-reference" href="#term:holder">Holder</a> before an interaction can proceed. See
-<a href="#input-descriptor">Input Descriptor</a>.</dd><dt><span id="term:PE:input-descriptors"><span id="term:PE:input-descriptor">Input Descriptor</span></span></dt><dd>Input Descriptors are used by a Verifier to describe the information required
-of a <a class="term-reference" href="#term:holder">Holder</a> before an interaction can proceed. See
-<a href="#input-descriptor">Input Descriptor</a>.</dd><dt><span id="term:PE:input-descriptor-objects"><span id="term:input-descriptor-object">Input Descriptor Object</span></span></dt><dd>Input Descriptors Objects are populated with properties describing what type
-of input data/<a class="term-reference" href="#term:claim">Claim</a>, or sub-fields thereof, are required for submission
-to the <a class="term-reference" href="#term:verifier">Verifier</a>. See
-<a href="#input-descriptor-object">Input Descriptor Object</a>.</dd><dt><span id="term:PE:input-descriptor-objects"><span id="term:PE:input-descriptor-object">Input Descriptor Object</span></span></dt><dd>Input Descriptors Objects are populated with properties describing what type
-of input data/<a class="term-reference" href="#term:claim">Claim</a>, or sub-fields thereof, are required for submission
-to the <a class="term-reference" href="#term:verifier">Verifier</a>. See
-<a href="#input-descriptor-object">Input Descriptor Object</a>.</dd><dt><span id="term:PE:link-secrets">Link Secrets</span></dt><dd>Link Secrets are values held by the <a class="term-reference" href="#term:holder">Holder</a> but hidden from other
-parties. They are typically incorporated into cryptographic signatures used in
-claims to demonstrate correlation while preventing replay attacks. An Issuer
-may ascertain that a Holder possesses a link secret without its disclosure.
-See <a href="#link-secrets">Link Secrets</a>.</dd><dt><span id="term:PE:presentation-definition">Presentation Definition</span></dt><dd>Presentation Definitions are objects that articulate what proofs a Verifier
-requires. These help the Verifier to decide how or whether to interact with a
-<a class="term-reference" href="#term:holder">Holder</a>. Presentation Definitions are composed of inputs, which describe
-the forms and details of the proofs they require, and optional sets of
-selection rules, to allow Holders flexibility in cases where many different
-types of proofs may satisfy an input requirement. See
-<a href="#presentation-definition">Presentation Definition</a>.</dd><dt><span id="term:PE:presentation-request">Presentation Request</span></dt><dd>Presentation Requests are transport mechanisms for <a class="term-reference" href="#term:presentation">Presentation</a>. Presentation Requests can take multiple shapes, using a variety
-of protocols and signature schemes not refined in this specification. They are
-sent by a <a class="term-reference" href="#term:verifier">Verifier</a> to a <a class="term-reference" href="#term:holder">Holder</a>. Defining Presentation Requests
-is outside the scope of this specification. See
-<a href="#presentation-request">Presentation Request</a>.</dd><dt><span id="term:PE:presentation-submission">Presentation Submission</span></dt><dd>Presentation Submissions are objects embedded within target claim negotiation
-formats that unify the presentation of proofs to a <a class="term-reference" href="#term:verifier">Verifier</a> in
-accordance with the requirements a <a class="term-reference" href="#term:verifier">Verifier</a> specified in a
-<a class="term-reference" href="#term:presentation-definition">Presentation Definition</a>. See
-<a href="#presentation-submission">Presentation Submission</a>.</dd><dt><span id="term:PE:subjects"><span id="term:subject">Subject</span></span></dt><dd>Subjects are the entities about which <a class="term-reference" href="#term:claims">Claims</a> are made. The Subject may
-not be the same entity as the <a class="term-reference" href="#term:holder">Holder</a></dd><dt><span id="term:PE:subjects"><span id="term:PE:subject">Subject</span></span></dt><dd>Subjects are the entities about which <a class="term-reference" href="#term:claims">Claims</a> are made. The Subject may
-not be the same entity as the <a class="term-reference" href="#term:holder">Holder</a></dd><dt><span id="term:PE:submission-requirements"><span id="term:submission-requirement">Submission Requirement</span></span></dt><dd>Submission Requirements are objects that define what combinations of inputs
-must be submitted to comply with the requirements a <a class="term-reference" href="#term:verifier">Verifier</a> has for
-proceeding in a flow (e.g. credential issuance, allowing entry, accepting an
-application). See <a href="#submission-requirements">Submission Requirements</a>.</dd><dt><span id="term:PE:submission-requirements"><span id="term:PE:submission-requirement">Submission Requirement</span></span></dt><dd>Submission Requirements are objects that define what combinations of inputs
-must be submitted to comply with the requirements a <a class="term-reference" href="#term:verifier">Verifier</a> has for
-proceeding in a flow (e.g. credential issuance, allowing entry, accepting an
-application). See <a href="#submission-requirements">Submission Requirements</a>.</dd><dt><span id="term:PE:submission-requirement-objects"><span id="term:submission-requirement-object">Submission Requirement Object</span></span></dt><dd>Submission Requirement Objects describe valid combinations of inputs in a
-<a class="term-reference" href="#term:presentation-submission">Presentation Submission</a>. See
-<a href="#submission-requirement-objects">Submission Requirement Objects</a>.</dd><dt><span id="term:PE:submission-requirement-objects"><span id="term:PE:submission-requirement-object">Submission Requirement Object</span></span></dt><dd>Submission Requirement Objects describe valid combinations of inputs in a
-<a class="term-reference" href="#term:presentation-submission">Presentation Submission</a>. See
-<a href="#submission-requirement-objects">Submission Requirement Objects</a>.</dd><dt><span id="term:PE:submission-requirement-rules"><span id="term:submission-requirement-rule">Submission Requirement Rule</span></span></dt><dd>Submission Requirement Rules describe combinatorial rules within a
-<a class="term-reference" href="#term:submission-requirement-object">Submission Requirement Object</a> when processing inputs. They may be
-nested. See <a href="#submission-requirement-rules">Submission Requirement Rules</a>.</dd><dt><span id="term:PE:submission-requirement-rules"><span id="term:PE:submission-requirement-rule">Submission Requirement Rule</span></span></dt><dd>Submission Requirement Rules describe combinatorial rules within a
-<a class="term-reference" href="#term:submission-requirement-object">Submission Requirement Object</a> when processing inputs. They may be
-nested. See <a href="#submission-requirement-rules">Submission Requirement Rules</a>.</dd><dt><span id="term:PE:verifiers"><span id="term:verifier">Verifier</span></span></dt><dd>Verifiers are entities that define what proofs they require from a
-<a class="term-reference" href="#term:holder">Holder</a> (via a <a class="term-reference" href="#term:presentation-definition">Presentation Definition</a>) in order to proceed with
-an interaction. A Verifier is a <a class="term-reference" href="#term:conformant-producer">Conformant Producer</a> of a
-<a class="term-reference" href="#term:presentation-definition">Presentation Definition</a> and a <a class="term-reference" href="#term:conformant-consumer">Conformant Consumer</a> of a
-<a class="term-reference" href="#term:presentation-submission">Presentation Submission</a>.</dd><dt><span id="term:PE:verifiers"><span id="term:PE:verifier">Verifier</span></span></dt><dd>Verifiers are entities that define what proofs they require from a
-<a class="term-reference" href="#term:holder">Holder</a> (via a <a class="term-reference" href="#term:presentation-definition">Presentation Definition</a>) in order to proceed with
-an interaction. A Verifier is a <a class="term-reference" href="#term:conformant-producer">Conformant Producer</a> of a
-<a class="term-reference" href="#term:presentation-definition">Presentation Definition</a> and a <a class="term-reference" href="#term:conformant-consumer">Conformant Consumer</a> of a
-<a class="term-reference" href="#term:presentation-submission">Presentation Submission</a>.</dd><dt><span id="term:PE:oidc">OIDC</span></dt><dd><a path-0="openid.net" path-1="specs" path-2="openid-connect-core-1_0.html" href="https://openid.net/specs/openid-connect-core-1_0.html">Open ID Connect</a>. Jones, M., Bradley, J., and N. Sakimura. Status: Approved Specification</dd><dt><span id="term:PE:linked-data-proofs"><span id="term:linked-data-proof">Linked Data Proof</span></span></dt><dd><a path-0="w3c-ccg.github.io" path-1="data-integrity-spec" path-2="" href="https://w3c-ccg.github.io/data-integrity-spec/">Data Integrity 1.0</a>. Dave Longley, Manu Sporny. 2022-03. Status: Draft Community Group Report.</dd><dt><span id="term:PE:linked-data-proofs"><span id="term:PE:linked-data-proof">Linked Data Proof</span></span></dt><dd><a path-0="w3c-ccg.github.io" path-1="data-integrity-spec" path-2="" href="https://w3c-ccg.github.io/data-integrity-spec/">Data Integrity 1.0</a>. Dave Longley, Manu Sporny. 2022-03. Status: Draft Community Group Report.</dd><dt><span id="term:PE:json-schema-draft-7"><span id="term:json-schema">JSON Schema</span></span></dt><dd><a path-0="json-schema.org" path-1="draft-07" path-2="json-schema-release-notes.html" href="https://json-schema.org/draft-07/json-schema-release-notes.html">JSON Schema Draft-07</a>. OpenJS Foundation. 2018-03-19. Status: Internet-Draft.</dd><dt><span id="term:PE:json-schema-draft-7"><span id="term:PE:json-schema">JSON Schema</span></span></dt><dd><a path-0="json-schema.org" path-1="draft-07" path-2="json-schema-release-notes.html" href="https://json-schema.org/draft-07/json-schema-release-notes.html">JSON Schema Draft-07</a>. OpenJS Foundation. 2018-03-19. Status: Internet-Draft.</dd><dt><span id="term:PE:credential-handler-api"><span id="term:chapi">CHAPI</span></span></dt><dd><a path-0="w3c-ccg.github.io" path-1="credential-handler-api" path-2="" href="https://w3c-ccg.github.io/credential-handler-api/">W3C Credential Handler API 1.0</a>. Dave Longley, Manu Sporny. 2020-2-19. Status: Draft Community Group Report.</dd><dt><span id="term:PE:credential-handler-api"><span id="term:PE:chapi">CHAPI</span></span></dt><dd><a path-0="w3c-ccg.github.io" path-1="credential-handler-api" path-2="" href="https://w3c-ccg.github.io/credential-handler-api/">W3C Credential Handler API 1.0</a>. Dave Longley, Manu Sporny. 2020-2-19. Status: Draft Community Group Report.</dd><dt><span id="term:PE:didcomm">DIDComm</span></dt><dd><a path-0="github.com" path-1="decentralized-identity" path-2="didcomm-messaging" href="https://github.com/decentralized-identity/didcomm-messaging">DIF DIDComm Messaging</a>. Daniel Hardman, Sam Curren. Status: Working Group Draft.</dd></dl></div>
+        
         <script>window.specConfig = {"title":"Spec-Up Example","spec_directory":"./single-file-test","output_path":"./","logo":"logo.svg","logo_link":"https://github.com/decentralized-identity/spec-up","source":{"host":"github","account":"decentralized-identity","repo":"spec-up"},"external_specs":[{"PE":"https://identity.foundation/presentation-exchange"}],"katex":true}</script>
-        <script type="module" src="http://127.0.0.1:5173/src/vite/body.js"></script>
+        <script src="assets/compiled/body.js"></script>
       </body>
     </html>
   

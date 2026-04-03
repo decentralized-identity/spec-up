@@ -93,6 +93,20 @@ function buildContentSecurityPolicy(assetTags) {
     .join('; ');
 }
 
+function resolveContentSecurityPolicy(spec, assetTags) {
+  const configuredPolicy = spec.content_security_policy ?? spec.csp;
+
+  if (configuredPolicy === true) {
+    return buildContentSecurityPolicy(assetTags);
+  }
+
+  if (typeof configuredPolicy === 'string' && configuredPolicy.trim()) {
+    return configuredPolicy.trim();
+  }
+
+  return null;
+}
+
 function buildGithubUrls(source) {
   if (!source || source.host !== 'github' || !source.account || !source.repo) {
     return null;
@@ -151,7 +165,7 @@ function buildPageHtml({
   const features = ['logo', 'source'].filter(feature => Boolean(spec[feature])).join(' ');
   const externalMarkup = externalReferencesHtml ? `<div style="display: none;">${externalReferencesHtml}</div>` : '';
   const githubUrls = buildGithubUrls(spec.source);
-  const contentSecurityPolicy = buildContentSecurityPolicy(assetTags);
+  const contentSecurityPolicy = resolveContentSecurityPolicy(spec, assetTags);
   const logoMarkup = spec.logo
     ? `<a class="spec-up-brand-mark spec-up-brand-mark--logo" href="${spec.logo_link || '#_'}"><img src="${spec.logo}" alt="${escapeHtml(spec.title)} logo"/></a>`
     : '<span class="spec-up-brand-mark spec-up-brand-mark--placeholder" aria-hidden="true">SU</span>';
@@ -239,7 +253,7 @@ function buildPageHtml({
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
         <meta name="color-scheme" content="light dark">
-        <meta http-equiv="Content-Security-Policy" content="${escapeAttribute(contentSecurityPolicy)}">
+        ${contentSecurityPolicy ? `<meta http-equiv="Content-Security-Policy" content="${escapeAttribute(contentSecurityPolicy)}">` : ''}
 
         <title>${escapeHtml(spec.title)}</title>
 

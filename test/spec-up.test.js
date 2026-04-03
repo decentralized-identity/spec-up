@@ -147,15 +147,11 @@ test('renders github issues as a searchable drawer and moves the spec title into
       levelCounts: { 2: 1, 3: 0, 4: 0 }
     }
   });
-  const csp = getContentSecurityPolicy(html);
 
   assert.match(html, /class="wa-theme-default"/);
   assert.match(html, /<meta name="color-scheme" content="light dark">/);
   assert.match(html, /const storageKey = 'spec-up-color-scheme';/);
-  assert.match(csp, /default-src 'self'/);
-  assert.match(csp, /script-src 'self' 'unsafe-inline' blob: data:/);
-  assert.match(csp, /style-src 'self' 'unsafe-inline' data:/);
-  assert.match(csp, /connect-src 'self' data: blob: https:\/\/api\.github\.com https:\/\/ka-f\.fontawesome\.com https:\/\/ka-p\.fontawesome\.com/);
+  assert.doesNotMatch(html, /<meta http-equiv="Content-Security-Policy"/);
   assert.match(html, /id="spec_up_theme_selector"/);
   assert.match(html, /id="color-scheme-selector-trigger"/);
   assert.match(html, /<wa-dropdown-item value="light">/);
@@ -191,6 +187,33 @@ test('renders github issues as a searchable drawer and moves the spec title into
   assert.doesNotMatch(html, /spec-up-document-card/);
 });
 
+test('template emits CSP only when explicitly enabled', () => {
+  const html = buildPageHtml({
+    articleHtml: '<p>Spec body</p>',
+    assetTags: {
+      body: '',
+      head: '',
+      svg: ''
+    },
+    externalReferencesHtml: '',
+    spec: {
+      content_security_policy: true,
+      title: 'CSP Enabled Test'
+    },
+    tocHtml: '',
+    tocMeta: {
+      count: 0,
+      levelCounts: { 2: 0, 3: 0, 4: 0 }
+    }
+  });
+  const csp = getContentSecurityPolicy(html);
+
+  assert.match(csp, /default-src 'self'/);
+  assert.match(csp, /script-src 'self' 'unsafe-inline' blob: data:/);
+  assert.match(csp, /style-src 'self' 'unsafe-inline' data:/);
+  assert.match(csp, /connect-src 'self' data: blob: https:\/\/api\.github\.com https:\/\/ka-f\.fontawesome\.com https:\/\/ka-p\.fontawesome\.com/);
+});
+
 test('template CSP allows remote asset origins and dev-server sockets', () => {
   const html = buildPageHtml({
     articleHtml: '<p>Spec body</p>',
@@ -201,6 +224,7 @@ test('template CSP allows remote asset origins and dev-server sockets', () => {
     },
     externalReferencesHtml: '',
     spec: {
+      content_security_policy: true,
       config: {},
       title: 'CSP Asset Test'
     },
