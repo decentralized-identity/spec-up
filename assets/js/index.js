@@ -730,34 +730,262 @@ import mermaid from 'mermaid';
     }
   }
 
-  function syncActiveTocLink() {
-    const currentHash = window.location.hash;
-    let activeLink = null;
+  function createTocController() {
+    const tocLinks = Array.from(document.querySelectorAll('#toc a[href^="#"]'));
+    const content = document.getElementById('content');
+    const sections = tocLinks.map(link => {
+      const href = link.getAttribute('href') || '';
 
-    document.querySelectorAll('#toc a').forEach(link => {
-      if (currentHash && link.getAttribute('href') === currentHash) {
-        activeLink = link;
+      if (!href.startsWith('#') || href.length === 1) {
+        return null;
       }
 
-      link.removeAttribute('aria-current');
+      return {
+        heading: document.getElementById(href.slice(1)),
+        href
+      };
+    }).filter(section => section && section.heading);
+
+    if (!sections.length) {
+      return null;
+    }
+
+    const sectionHashes = new Set(sections.map(section => section.href));
+    let hashLock = null;
+    let activeHref = '';
+    let syncFrame = 0;
+
+    function setActiveLink(href) {
+      if (activeHref === href) {
+        return;
+      }
+
+      activeHref = href;
+      tocLinks.forEach(link => {
+        if (href && link.getAttribute('href') === href) {
+          link.setAttribute('aria-current', 'location');
+        }
+        else {
+          link.removeAttribute('aria-current');
+        }
+      });
+    }
+
+    function getScrollOffset() {
+      const header = document.getElementById('app_header');
+
+      if (header) {
+        return header.getBoundingClientRect().height + 16;
+      }
+
+      const headerHeight = Number.parseFloat(
+        window.getComputedStyle(document.documentElement).getPropertyValue('--header-height')
+      );
+
+      return (Number.isFinite(headerHeight) ? headerHeight : 0) + 16;
+    }
+
+    function getHashUnlockDistance() {
+      return Math.max(160, getScrollOffset() * 1.5);
+    }
+
+    function getElementFromHash(hash) {
+      if (!hash || hash === '#') {
+        return null;
+      }
+
+      const rawId = hash.slice(1);
+      let decodedId = rawId;
+
+      try {
+        decodedId = decodeURIComponent(rawId);
+      }
+      catch {}
+
+      return document.getElementById(decodedId) || document.getElementById(rawId);
+    }
+
+    function deferAfterNavigation(fn) {
+      if (typeof globalThis.skipAnimationFrame === 'function') {
+        globalThis.skipAnimationFrame(fn);
+        return;
+      }
+
+      window.requestAnimationFrame(() => {
+        window.requestAnimationFrame(fn);
+      });
+    }
+
+    function queueHashLock(hash) {
+      const normalizedHash = typeof hash === 'string' ? hash : '';
+      const element = getElementFromHash(normalizedHash);
+
+      if (!normalizedHash || !element) {
+        hashLock = null;
+        return;
+      }
+
+      hashLock = {
+        anchorScrollY: window.scrollY,
+        element,
+        hash: normalizedHash,
+        pending: true
+      };
+
+      deferAfterNavigation(() => {
+        if (window.location.hash !== normalizedHash) {
+          return;
+        }
+
+        const currentElement = getElementFromHash(normalizedHash);
+
+        if (!currentElement) {
+          hashLock = null;
+          return;
+        }
+
+        hashLock = {
+          anchorScrollY: window.scrollY,
+          element: currentElement,
+          hash: normalizedHash,
+          pending: false
+        };
+      });
+    }
+
+    function isHashLockActive() {
+      if (!hashLock) {
+        return false;
+      }
+
+      if (!hashLock.element.isConnected || window.location.hash !== hashLock.hash) {
+        hashLock = null;
+        return false;
+      }
+
+      if (hashLock.pending) {
+        return true;
+      }
+
+      if (Math.abs(window.scrollY - hashLock.anchorScrollY) < getHashUnlockDistance()) {
+        return true;
+      }
+
+      hashLock = null;
+      return false;
+    }
+
+    function syncUrlToSection(href) {
+      if (!href || isHashLockActive() || window.location.hash === href) {
+        return;
+      }
+
+      window.history.replaceState(
+        window.history.state,
+        '',
+        `${window.location.pathname}${window.location.search}${href}`
+      );
+    }
+
+    function syncFromHash() {
+      const currentHash = window.location.hash;
+
+      if (!currentHash || !sectionHashes.has(currentHash)) {
+        return false;
+      }
+
+      setActiveLink(currentHash);
+      return true;
+    }
+
+    function findActiveSectionHref() {
+      const scrollOffset = getScrollOffset();
+      let nextActiveHref = '';
+
+      for (const section of sections) {
+        if (section.heading.getBoundingClientRect().top <= scrollOffset) {
+          nextActiveHref = section.href;
+          continue;
+        }
+
+        break;
+      }
+
+      return nextActiveHref;
+    }
+
+    function syncFromScroll(updateUrl = true) {
+      const nextActiveHref = findActiveSectionHref();
+
+      setActiveLink(nextActiveHref);
+
+      if (updateUrl) {
+        syncUrlToSection(nextActiveHref);
+      }
+    }
+
+    function scheduleSyncFromScroll(updateUrl = true) {
+      if (syncFrame) {
+        return;
+      }
+
+      syncFrame = window.requestAnimationFrame(() => {
+        syncFrame = 0;
+        syncFromScroll(updateUrl);
+      });
+    }
+
+    globalThis.delegateEvent('click', 'a[href^="#"]', (_event, link) => {
+      const href = link.getAttribute('href') || '';
+
+      if (href.length > 1) {
+        queueHashLock(href);
+      }
+    }, { passive: true });
+
+    globalThis.delegateEvent('click', '#toc a', (_event, link) => {
+      setActiveLink(link.getAttribute('href') || '');
+      closeNavigation();
+    }, { passive: true });
+
+    window.addEventListener('hashchange', () => {
+      queueHashLock(window.location.hash);
+
+      if (!syncFromHash()) {
+        scheduleSyncFromScroll(false);
+      }
+
+      closeNavigation();
     });
 
-    if (activeLink) {
-      activeLink.setAttribute('aria-current', 'location');
+    window.addEventListener('scroll', scheduleSyncFromScroll, { passive: true });
+    window.addEventListener('resize', () => {
+      scheduleSyncFromScroll(false);
+    });
+    window.addEventListener('load', () => {
+      scheduleSyncFromScroll(false);
+    });
+
+    if (content && typeof ResizeObserver === 'function') {
+      const resizeObserver = new ResizeObserver(() => {
+        scheduleSyncFromScroll(false);
+      });
+
+      resizeObserver.observe(content);
     }
+
+    queueHashLock(window.location.hash);
+
+    if (!syncFromHash()) {
+      syncFromScroll(false);
+    }
+
+    return {
+      syncFromScroll: scheduleSyncFromScroll
+    };
   }
 
-  globalThis.delegateEvent('click', '#toc a', () => {
-    syncActiveTocLink();
-    closeNavigation();
-  }, { passive: true });
-
-  window.addEventListener('hashchange', () => {
-    syncActiveTocLink();
-    closeNavigation();
-  });
-
-  syncActiveTocLink();
+  createTocController();
   const themeController = createThemeController();
   createMermaidController(themeController);
 

@@ -8,6 +8,7 @@ const test = require('node:test');
 const MarkdownIt = require('markdown-it');
 
 const specUp = require('../index');
+const markdownItExtensions = require('../src/markdown-it-extensions');
 const { buildPageHtml } = require('../src/template');
 const createCoreMarkdownPlugin = require('../src/builtin-plugins/core-markdown');
 
@@ -225,4 +226,126 @@ Check this out.
   assert.match(html, /<wa-chart class="spec-up-chart" label="Pie chart" description="Chart rendered from specification content."><script type="application\/json">/);
   assert.doesNotMatch(html, /<canvas class="chartjs">/);
   assert.doesNotMatch(html, /<tab-panels/);
+});
+
+test('core markdown renders ::: tabs blocks as Web Awesome tabs with markdown content in each panel', async () => {
+  const plugin = createCoreMarkdownPlugin();
+  const state = {};
+  const md = new MarkdownIt({
+    html: true,
+    linkify: true,
+    typographer: true
+  });
+
+  await plugin.beforeRender({ state });
+  plugin.configureMarkdownIt({ md, state });
+
+  const rendered = md.render(`
+::: tabs
+
+:: Tab Title 1
+
+Foo *test*
+
+\`\`\`json
+{"foo":"bar"}
+\`\`\`
+
+:: Tab Title 2
+
+Bar test
+
+\`\`\`json
+{"bar":"baz"}
+\`\`\`
+
+:::
+`);
+  const html = plugin.transformRenderedHtml({ html: rendered });
+
+  assert.match(html, /<wa-tab-group class="spec-up-tab-group" active="tab-title-1">/);
+  assert.match(html, /<wa-tab panel="tab-title-1">Tab Title 1<\/wa-tab>/);
+  assert.match(html, /<wa-tab panel="tab-title-2">Tab Title 2<\/wa-tab>/);
+  assert.match(html, /<wa-tab-panel name="tab-title-1"><p>Foo <em>test<\/em><\/p>[\s\S]*<pre class="language-json"><code class="language-json">[\s\S]*"foo"[\s\S]*"bar"[\s\S]*<\/code><\/pre><\/wa-tab-panel>/);
+  assert.match(html, /<wa-tab-panel name="tab-title-2"><p>Bar test<\/p>[\s\S]*<pre class="language-json"><code class="language-json">[\s\S]*"bar"[\s\S]*"baz"[\s\S]*<\/code><\/pre><\/wa-tab-panel>/);
+  assert.doesNotMatch(html, /<p>::: tabs<\/p>/);
+  assert.doesNotMatch(html, /<p>:: Tab Title 1<\/p>/);
+});
+
+test('core markdown renders ::: summary blocks as Web Awesome details components', async () => {
+  const plugin = createCoreMarkdownPlugin();
+  const state = {};
+  const md = new MarkdownIt({
+    html: true,
+    linkify: true,
+    typographer: true
+  });
+
+  await plugin.beforeRender({ state });
+  plugin.configureMarkdownIt({ md, state });
+
+  const html = plugin.transformRenderedHtml({
+    html: md.render(`
+::: summary My summary text here
+Details of what I want to show here.
+
+\`\`\`json
+{"foo":"bar"}
+\`\`\`
+:::
+`)
+  });
+
+  assert.match(html, /<wa-details class="spec-up-details" summary="My summary text here">/);
+  assert.match(html, /<p>Details of what I want to show here\.<\/p>/);
+  assert.match(html, /<pre class="language-json"><code class="language-json">[\s\S]*"foo"[\s\S]*"bar"[\s\S]*<\/code><\/pre>/);
+  assert.doesNotMatch(html, /<p>::: summary My summary text here<\/p>/);
+});
+
+test('core markdown renders [[badge: ...]] tokens as Web Awesome badges with default and explicit variants', async () => {
+  const plugin = createCoreMarkdownPlugin();
+  const state = {};
+  const md = new MarkdownIt({
+    html: true,
+    linkify: true,
+    typographer: true
+  });
+
+  await plugin.beforeRender({ state });
+  md.use(markdownItExtensions, plugin.markdownTemplates({ state }));
+  plugin.configureMarkdownIt({ md, state });
+
+  const rendered = md.render(`
+Default: [[badge: All Systems Operational]]
+
+Explicit: [[badge: Needs Attention, warning]]
+`);
+  const html = plugin.transformRenderedHtml({ html: rendered });
+
+  assert.match(html, /<wa-badge variant="brand">All Systems Operational<\/wa-badge>/);
+  assert.match(html, /<wa-badge variant="warning">Needs Attention<\/wa-badge>/);
+});
+
+test('core markdown renders [[progress: ...]] tokens as Web Awesome progress bars and rings', async () => {
+  const plugin = createCoreMarkdownPlugin();
+  const state = {};
+  const md = new MarkdownIt({
+    html: true,
+    linkify: true,
+    typographer: true
+  });
+
+  await plugin.beforeRender({ state });
+  md.use(markdownItExtensions, plugin.markdownTemplates({ state }));
+  plugin.configureMarkdownIt({ md, state });
+
+  const rendered = md.render(`
+Bar: [[progress: bar, 50]]
+
+Ring: [[progress: ring, 75]]
+`);
+  const html = plugin.transformRenderedHtml({ html: rendered });
+
+  assert.match(html, /<wa-progress-bar value="50">50<\/wa-progress-bar>/);
+  assert.match(html, /<wa-progress-ring value="75">75<\/wa-progress-ring>/);
 });

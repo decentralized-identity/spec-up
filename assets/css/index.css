@@ -17,6 +17,8 @@
   --full-color: 0,0,0;
   --active-color: var(--wa-color-text-link);
   --visited-color: color-mix(in srgb, var(--wa-color-brand-40) 72%, #5d3fd3);
+  --toc-counter-color: var(--wa-color-brand-40);
+  --toc-anchor-opacity: 0.35;
   --green-status: rgb(0, 123, 9);
   --light-green-status: rgb(0, 194, 13);
   --blockquote-text: rgb(var(--mid-color));
@@ -87,6 +89,8 @@ html.wa-dark {
   --mid-color: 148,163,184;
   --high-color: 226,232,240;
   --full-color: 248,250,252;
+  --toc-counter-color: var(--wa-color-brand-60);
+  --toc-anchor-opacity: 0.5;
   --green-status: rgb(74, 222, 128);
   --light-green-status: rgb(187, 247, 208);
   --inline-code-text: color-mix(in srgb, var(--wa-color-danger-60) 80%, var(--wa-color-text-normal));
@@ -260,7 +264,7 @@ h1 .toc-anchor {
   line-height: inherit;
   color: inherit;
   text-decoration: none;
-  opacity: 0.35;
+  opacity: var(--toc-anchor-opacity);
   transition: opacity 0.3s ease;
 }
 
@@ -938,7 +942,7 @@ wa-page.spec-up-shell[view='desktop'] > .spec-up-navigation-title {
 }
 
 .toc a:before {
-  color: var(--wa-color-brand-40);
+  color: var(--toc-counter-color);
   font-weight: 700;
 }
 
@@ -950,6 +954,10 @@ wa-page.spec-up-shell[view='desktop'] > .spec-up-navigation-title {
   background: var(--wa-color-brand-fill-quiet);
   box-shadow: inset 0 0 0 1px var(--wa-color-brand-border-quiet);
   color: var(--wa-color-brand-on-quiet);
+}
+
+.toc a[aria-current="location"]:before {
+  color: currentColor;
 }
 
 .toc > li {
@@ -1094,7 +1102,8 @@ a[path-0$="github.com"][path-3="projects"]:after {
 }
 
 .spec-up-notice,
-.spec-up-tab-group {
+.spec-up-tab-group,
+.spec-up-details {
   margin: 1.5em 0 1.75em;
 }
 

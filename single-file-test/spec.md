@@ -35,7 +35,7 @@ Using Spec-Up is easy peasy lemon squeezy:
     - **`output_path`** _(STRING, optional)_ - Writes the generated output somewhere other than `spec_directory`.
     - **`source`** _(OBJECT, optional)_ - Adds repo metadata used by repo-aware UI features such as the GitHub links shown in this example.
     - **`external_specs`** _(ARRAY, optional)_ - Enables `[[xref: ...]]` references into other Spec-Up-rendered specs.
-    - **`assets`** _(ARRAY, optional)_ - Injects extra CSS or JS files into the rendered page.
+    - **`assets`** _(ARRAY, optional)_ - Injects extra CSS or JS files into the rendered page when you need custom page assets. Asset objects support `path`, optional `inject` (`"head"` or `"body"` for JS), and optional `module` for JS modules.
     - **`plugins`** _(ARRAY, optional)_ - Adds plugins for this spec, or at the top level of `specs.json` for every spec in the project.
 3. Render either programmatically or through the Vite workflow:
 
@@ -461,13 +461,38 @@ $$
 
 ## Tab Panels
 
-<tab-panels selected-index="0">
-  <nav>
-    <button type="button">First Tab</button>
-    <button type="button">Second Tab</button>
-  </nav>
+```markdown
+::: tabs
 
-  <section>
+:: First Tab
+
+This is the first tab.
+
+```json
+{
+  "foo": "foo",
+  "baz": 1
+}
+`` `
+
+:: Second Tab
+
+This is the second tab.
+
+```json
+{
+  "foo": "bar",
+  "baz": 2
+}
+`` `
+:::
+```
+
+::: tabs
+
+:: First Tab
+
+This is the first tab.
 
 ```json
 {
@@ -476,8 +501,9 @@ $$
 }
 ```
 
-  </section>
-  <section>
+:: Second Tab
+
+This is the second tab.
 
 ```json
 {
@@ -485,9 +511,41 @@ $$
   "baz": 2
 }
 ```
+:::
 
-  </section>
-</tab-panels>
+## Summary Blocks
+
+```markdown
+::: summary My summary text here
+Details of what I want to show here.
+:::
+```
+
+::: summary My summary text here
+Details of what I want to show here.
+:::
+
+## Badges
+
+```markdown
+[[badge: All Systems Operational]]
+[[badge: Needs Attention, warning]]
+```
+
+[[badge: All Systems Operational]]
+[[badge: Needs Attention, warning]]
+
+## Progress
+
+```markdown
+[[progress: bar, 50]]
+
+[[progress: ring, 75]]
+```
+
+[[progress: bar, 50]]
+
+[[progress: ring, 75]]
 
 ## Fancy Links
 

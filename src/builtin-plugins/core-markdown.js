@@ -42,6 +42,15 @@ const NOTICE_CONFIG = {
   }
 };
 
+const PROGRESS_COMPONENTS = {
+  bar: 'wa-progress-bar',
+  ring: 'wa-progress-ring',
+  'progress-bar': 'wa-progress-bar',
+  'progress-ring': 'wa-progress-ring',
+  'wa-progress-bar': 'wa-progress-bar',
+  'wa-progress-ring': 'wa-progress-ring'
+};
+
 function slugifyHeading(value) {
   const base = String(value)
     .trim()
@@ -68,46 +77,147 @@ function createTabPanelName(label, index, usedNames) {
   return name;
 }
 
+function createTabGroup(document, tabs, activeIndex = 0) {
+  const tabGroup = document.createElement('wa-tab-group');
+  const usedNames = new Set();
+  let activePanelName = '';
+
+  tabGroup.className = 'spec-up-tab-group';
+
+  tabs.forEach((tabDefinition, index) => {
+    const label = (tabDefinition.label || `Tab ${index + 1}`).trim() || `Tab ${index + 1}`;
+    const panelName = createTabPanelName(label, index, usedNames);
+    const tab = document.createElement('wa-tab');
+    const panel = document.createElement('wa-tab-panel');
+
+    tab.setAttribute('panel', panelName);
+    tab.textContent = label;
+
+    panel.setAttribute('name', panelName);
+
+    for (const node of tabDefinition.nodes || []) {
+      panel.append(node);
+    }
+
+    if (index === activeIndex) {
+      activePanelName = panelName;
+    }
+
+    tabGroup.append(tab, panel);
+  });
+
+  if (activePanelName) {
+    tabGroup.setAttribute('active', activePanelName);
+  }
+
+  return tabGroup;
+}
+
 function convertLegacyTabPanels(document) {
   for (const legacyGroup of document.querySelectorAll('tab-panels')) {
-    const tabGroup = document.createElement('wa-tab-group');
     const legacyNav = Array.from(legacyGroup.children).find(child => child.tagName === 'NAV');
     const legacyTabs = legacyNav ? Array.from(legacyNav.children) : [];
     const legacyPanels = Array.from(legacyGroup.children).filter(child => child.tagName === 'SECTION');
     const selectedIndex = Number.parseInt(legacyGroup.getAttribute('selected-index') || '0', 10);
     const activeIndex = Number.isNaN(selectedIndex) ? 0 : Math.max(0, Math.min(selectedIndex, legacyPanels.length - 1));
-    const usedNames = new Set();
-    let activePanelName = '';
-
-    tabGroup.className = 'spec-up-tab-group';
-
-    legacyPanels.forEach((legacyPanel, index) => {
-      const label = (legacyTabs[index]?.textContent || `Tab ${index + 1}`).trim();
-      const panelName = createTabPanelName(label, index, usedNames);
-      const tab = document.createElement('wa-tab');
-      const panel = document.createElement('wa-tab-panel');
-
-      tab.setAttribute('panel', panelName);
-      tab.textContent = label;
-
-      panel.setAttribute('name', panelName);
-
-      while (legacyPanel.firstChild) {
-        panel.append(legacyPanel.firstChild);
-      }
-
-      if (index === activeIndex) {
-        activePanelName = panelName;
-      }
-
-      tabGroup.append(tab, panel);
-    });
-
-    if (activePanelName) {
-      tabGroup.setAttribute('active', activePanelName);
-    }
+    const tabs = legacyPanels.map((legacyPanel, index) => ({
+      label: (legacyTabs[index]?.textContent || `Tab ${index + 1}`).trim(),
+      nodes: Array.from(legacyPanel.childNodes)
+    }));
+    const tabGroup = createTabGroup(document, tabs, activeIndex);
 
     legacyGroup.replaceWith(tabGroup);
+  }
+}
+
+function getTabsFenceLabel(element) {
+  if (!element || element.tagName !== 'P') {
+    return null;
+  }
+
+  const match = element.textContent.trim().match(/^::\s+(.+?)\s*$/);
+
+  return match ? match[1] : null;
+}
+
+function isTabsFenceOpen(element) {
+  return Boolean(element && element.tagName === 'P' && /^:::\s+tabs\s*$/i.test(element.textContent.trim()));
+}
+
+function isTabsFenceClose(element) {
+  return Boolean(element && element.tagName === 'P' && /^:::\s*$/.test(element.textContent.trim()));
+}
+
+function convertTabsFenceAt(openMarker) {
+  const document = openMarker.ownerDocument;
+  const headerMarkers = [];
+  const tabs = [];
+  let closeMarker = null;
+  let currentTab = null;
+  let cursor = openMarker.nextElementSibling;
+
+  while (cursor) {
+    const next = cursor.nextElementSibling;
+
+    if (isTabsFenceClose(cursor)) {
+      closeMarker = cursor;
+      break;
+    }
+
+    const label = getTabsFenceLabel(cursor);
+
+    if (label) {
+      currentTab = {
+        label,
+        nodes: []
+      };
+      headerMarkers.push(cursor);
+      tabs.push(currentTab);
+      cursor = next;
+      continue;
+    }
+
+    if (!currentTab) {
+      return null;
+    }
+
+    currentTab.nodes.push(cursor);
+    cursor = next;
+  }
+
+  if (!closeMarker || tabs.length === 0) {
+    return null;
+  }
+
+  const tabGroup = createTabGroup(document, tabs, 0);
+
+  openMarker.replaceWith(tabGroup);
+
+  for (const headerMarker of headerMarkers) {
+    headerMarker.remove();
+  }
+
+  closeMarker.remove();
+
+  return tabGroup;
+}
+
+function convertTabsFenceMarkup(root) {
+  let child = root.firstElementChild;
+
+  while (child) {
+    if (isTabsFenceOpen(child)) {
+      const replacement = convertTabsFenceAt(child);
+
+      if (replacement) {
+        convertTabsFenceMarkup(replacement);
+        child = replacement.nextElementSibling;
+        continue;
+      }
+    }
+
+    convertTabsFenceMarkup(child);
+    child = child.nextElementSibling;
   }
 }
 
@@ -151,13 +261,14 @@ function convertLegacyCharts(document) {
 }
 
 function transformLegacyMarkup(html) {
-  if (!html.includes('<tab-panels') && !html.includes('class="chartjs"')) {
+  if (!html.includes('<tab-panels') && !html.includes('class="chartjs"') && !html.includes('::: tabs')) {
     return html;
   }
 
   const dom = new JSDOM(`<body>${html}</body>`);
   const { document } = dom.window;
 
+  convertTabsFenceMarkup(document.body);
   convertLegacyTabPanels(document);
   convertLegacyCharts(document);
 
@@ -302,6 +413,42 @@ function renderNoticeOpenTag(matches, state) {
   return `<wa-callout id="${id}" class="spec-up-notice spec-up-notice--${type}" variant="${config.variant}" appearance="filled-outlined">${iconMarkup}<div class="spec-up-notice-heading"><a class="notice-link" href="#${id}">${escapeHtml(type.toUpperCase())}</a>${titleMarkup}</div>`;
 }
 
+function renderDetailsOpenTag(summary) {
+  const normalizedSummary = String(summary || '').trim() || 'Details';
+
+  return `<wa-details class="spec-up-details" summary="${escapeHtml(normalizedSummary)}">`;
+}
+
+function renderBadge(text, variant) {
+  const label = String(text || '').trim();
+
+  if (!label) {
+    return '';
+  }
+
+  const normalizedVariant = String(variant || '').trim() || 'brand';
+
+  return `<wa-badge variant="${escapeHtml(normalizedVariant)}">${escapeHtml(label)}</wa-badge>`;
+}
+
+function formatProgressValue(value) {
+  return Number.isInteger(value) ? String(value) : String(value).replace(/(?:\.0+|(\.\d+?)0+)$/, '$1');
+}
+
+function renderProgress(type, value, label) {
+  const tagName = PROGRESS_COMPONENTS[String(type || '').trim().toLowerCase()];
+  const parsedValue = Number.parseFloat(String(value || '').trim());
+
+  if (!tagName || !Number.isFinite(parsedValue)) {
+    return '';
+  }
+
+  const normalizedValue = formatProgressValue(Math.max(0, Math.min(100, parsedValue)));
+  const normalizedLabel = String(label || '').trim() || normalizedValue;
+
+  return `<${tagName} value="${escapeHtml(normalizedValue)}">${escapeHtml(normalizedLabel)}</${tagName}>`;
+}
+
 function createCoreMarkdownPlugin() {
   return {
     name: 'core-markdown',
@@ -323,6 +470,26 @@ function createCoreMarkdownPlugin() {
           4: 0
         }
       };
+    },
+    markdownTemplates() {
+      return [
+        {
+          filter(type) {
+            return type === 'badge';
+          },
+          render(token, type, text, variant) {
+            return renderBadge(text, variant);
+          }
+        },
+        {
+          filter(type) {
+            return type === 'progress';
+          },
+          render(token, type, progressType, value, label) {
+            return renderProgress(progressType, value, label);
+          }
+        }
+      ];
     },
     configureMarkdownIt({ md, state }) {
       Prism.languages.chart = Prism.languages.chart || Prism.languages.json || Prism.languages.javascript;
@@ -360,6 +527,21 @@ function createCoreMarkdownPlugin() {
         validate(params) {
           const matches = params.match(/(\w+)\s?(.*)?/);
           return Boolean(matches && state.noticeCounts[matches[1]]);
+        }
+      });
+      md.use(markdownItContainer, 'summary', {
+        render(tokens, idx) {
+          const token = tokens[idx];
+          const summary = token.info.trim().replace(/^summary(?:\s+|$)/i, '');
+
+          if (token.nesting !== 1) {
+            return '</wa-details>\n';
+          }
+
+          return `${renderDetailsOpenTag(summary)}\n`;
+        },
+        validate(params) {
+          return /^summary(?:\s+.*)?$/i.test(params.trim());
         }
       });
       md.use(markdownItPrism);
