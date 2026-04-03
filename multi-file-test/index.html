@@ -1,0 +1,339 @@
+
+    <!DOCTYPE html>
+    <html lang="en" class="wa-theme-default">
+      <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <meta name="color-scheme" content="light dark">
+        <meta http-equiv="Content-Security-Policy" content="default-src 'self'; base-uri 'self'; object-src 'none'; script-src 'self' 'unsafe-inline' blob: data:; style-src 'self' 'unsafe-inline' data:; img-src 'self' data: blob: https: http:; font-src 'self' data: https: http:; media-src 'self' data: blob: https: http:; frame-src 'self' data: blob: https: http:; worker-src 'self' data: blob:; connect-src 'self' data: blob: https://api.github.com https://ka-f.fontawesome.com https://ka-p.fontawesome.com">
+
+        <title>Spec-Up Multi-File Example</title>
+
+        <link rel="icon" href="../logo.svg">
+
+        
+    <script>
+      (() => {
+        const storageKey = 'spec-up-color-scheme';
+        const root = document.documentElement;
+        const media = window.matchMedia ? window.matchMedia('(prefers-color-scheme: dark)') : null;
+        let themePreference = 'auto';
+
+        try {
+          const storedThemePreference = window.localStorage.getItem(storageKey);
+
+          if (storedThemePreference === 'light' || storedThemePreference === 'dark' || storedThemePreference === 'auto') {
+            themePreference = storedThemePreference;
+          }
+        }
+        catch {}
+
+        const theme = themePreference === 'auto'
+          ? (media && media.matches ? 'dark' : 'light')
+          : themePreference;
+
+        root.classList.remove('wa-light', 'wa-dark');
+        root.classList.add(theme === 'dark' ? 'wa-dark' : 'wa-light');
+        root.dataset.theme = theme;
+        root.dataset.themePreference = themePreference;
+        root.style.colorScheme = theme;
+      })();
+    </script>
+  
+        <script src="assets/compiled/head.js"></script>
+      </head>
+      <body features="logo source">
+        <svg id="svg" version="1.1" xmlns="http://www.w3.org/2000/svg">
+  <symbol id="svg-github" viewBox="0 0 20 20">
+    <path d="M10 0.247c-5.522 0-10 4.477-10 10 0 4.418 2.865 8.167 6.839 9.489 0.5 0.093 0.683-0.217 0.683-0.481 0-0.238-0.009-1.026-0.014-1.862-2.782 0.605-3.369-1.18-3.369-1.18-0.455-1.156-1.11-1.463-1.11-1.463-0.907-0.621 0.069-0.608 0.069-0.608 1.004 0.071 1.533 1.031 1.533 1.031 0.892 1.529 2.339 1.087 2.91 0.831 0.090-0.646 0.349-1.087 0.635-1.337-2.221-0.253-4.556-1.11-4.556-4.942 0-1.092 0.391-1.984 1.030-2.684-0.104-0.252-0.446-1.269 0.097-2.646 0 0 0.84-0.269 2.751 1.025 0.798-0.222 1.653-0.333 2.503-0.337 0.85 0.004 1.706 0.115 2.505 0.337 1.909-1.294 2.747-1.025 2.747-1.025 0.544 1.378 0.202 2.395 0.098 2.646 0.641 0.7 1.029 1.592 1.029 2.684 0 3.841-2.339 4.687-4.566 4.934 0.359 0.31 0.678 0.919 0.678 1.852 0 1.338-0.012 2.415-0.012 2.744 0 0.266 0.18 0.578 0.687 0.48 3.971-1.324 6.833-5.071 6.833-9.488 0-5.523-4.477-10-10-10z"></path>
+  </symbol>
+  <symbol id="svg-nested-list" viewBox="0 0 37 32">
+    <path d="M0 2.286c0-1.262 1.023-2.286 2.286-2.286s2.286 1.023 2.286 2.286c0 1.262-1.023 2.286-2.286 2.286s-2.286-1.023-2.286-2.286zM9.143 0h27.429v4.571h-27.429zM9.143 11.429c0-1.262 1.023-2.286 2.286-2.286s2.286 1.023 2.286 2.286c0 1.262-1.023 2.286-2.286 2.286s-2.286-1.023-2.286-2.286zM18.286 9.143h18.286v4.571h-18.286zM9.143 29.714c0-1.262 1.023-2.286 2.286-2.286s2.286 1.023 2.286 2.286c0 1.262-1.023 2.286-2.286 2.286s-2.286-1.023-2.286-2.286zM18.286 27.429h18.286v4.571h-18.286zM18.286 20.571c0-1.262 1.023-2.286 2.286-2.286s2.286 1.023 2.286 2.286c0 1.262-1.023 2.286-2.286 2.286s-2.286-1.023-2.286-2.286zM27.429 18.286h9.143v4.571h-9.143z"></path>
+  </symbol>
+</svg>
+
+
+        <wa-page class="spec-up-shell" mobile-breakpoint="1080" disable-navigation-toggle>
+          <span slot="skip-to-content">Skip to specification content</span>
+
+          <header slot="header" id="app_header">
+            <div class="spec-up-brand">
+              <wa-button data-toggle-nav size="small" appearance="plain" variant="neutral" class="spec-up-nav-toggle" aria-label="Open table of contents">
+                <wa-icon name="bars"></wa-icon>
+              </wa-button>
+              <a class="spec-up-brand-mark spec-up-brand-mark--logo" href="https://github.com/decentralized-identity/spec-up"><img src="../logo.svg" alt="Spec-Up Multi-File Example logo"/></a>
+              <div class="spec-up-brand-copy">
+                <strong>Spec-Up Multi-File Example</strong>
+              </div>
+            </div>
+            
+      <div class="spec-up-header-actions">
+        <wa-dropdown id="spec_up_theme_selector" class="spec-up-theme-selector color-scheme-selector" size="small" placement="bottom-start">
+          <wa-button
+            slot="trigger"
+            id="color-scheme-selector-trigger"
+            class="spec-up-theme-selector__trigger"
+            appearance="plain"
+            aria-label="Color theme"
+            variant="neutral"
+            size="small"
+          >
+            <wa-icon family="classic" name="sun" class="icon-embiggen only-light" aria-hidden="true"></wa-icon>
+            <wa-icon family="classic" name="moon" class="icon-embiggen only-dark" aria-hidden="true"></wa-icon>
+          </wa-button>
+          <wa-dropdown-item value="light">
+            <wa-icon slot="icon" family="classic" name="sun" class="icon-embiggen" aria-hidden="true"></wa-icon>
+            Light
+          </wa-dropdown-item>
+          <wa-dropdown-item value="dark">
+            <wa-icon slot="icon" family="classic" name="moon" class="icon-embiggen" aria-hidden="true"></wa-icon>
+            Dark
+          </wa-dropdown-item>
+          <wa-divider></wa-divider>
+          <wa-dropdown-item value="auto">
+            <wa-icon slot="icon" family="classic" name="sun" class="only-light icon-embiggen" aria-hidden="true"></wa-icon>
+            <wa-icon slot="icon" family="classic" name="moon" class="only-dark icon-embiggen" aria-hidden="true"></wa-icon>
+            System
+          </wa-dropdown-item>
+        </wa-dropdown>
+        
+        <wa-button class="spec-up-issues-trigger" size="small" appearance="outlined" variant="neutral" data-drawer="open repo_issues_drawer">
+          <wa-icon family="brands" name="github"></wa-icon>
+          Issues
+        </wa-button>
+    
+      </div>
+  
+          </header>
+
+          <div slot="navigation-header" class="spec-up-navigation-title">
+            <strong>Spec-Up Multi-File Example</strong>
+          </div>
+
+          <nav id="toc" slot="navigation" aria-label="Table of contents">
+            <ul class="toc"><li><a href="#abstract">Abstract</a></li><li><a href="#getting-started">Getting Started</a></li><li><a href="#features">Features</a><ul><li><a href="#diagrams">Diagrams</a></li><li><a href="#charts">Charts</a></li><li><a href="#syntax-highlighting">Syntax Highlighting</a></li></ul></li></ul>
+          </nav>
+
+          <main class="spec-up-main">
+            <article id="content">
+              <h1 id="spec-up-multi-file-example"><span class="spec-up-heading-text">Spec-Up Multi-File Example</span><a class="toc-anchor" href="#spec-up-multi-file-example">§</a></h1>
+<p><strong>Specification Status:</strong> Strawman</p>
+<p><strong>Latest Draft:</strong>
+<a path-0="github.com" path-1="decentralized-identity" path-2="spec-up" href="https://github.com/decentralized-identity/spec-up">https://github.com/decentralized-identity/spec-up</a></p>
+<dl>
+<dt><strong>Editors:</strong></dt>
+<dd><a path-0="www.linkedin.com" path-1="in" path-2="dbuchner" path-3="" href="https://www.linkedin.com/in/dbuchner/">Daniel Buchner</a></dd>
+</dl>
+<!-- -->
+<dl>
+<dt><strong>Participate:</strong></dt>
+<dd><a path-0="github.com" path-1="csuwildcat" path-2="spec-up" href="https://github.com/csuwildcat/spec-up">GitHub repo</a></dd>
+<dd><a path-0="github.com" path-1="csuwildcat" path-2="spec-up" path-3="issues" href="https://github.com/csuwildcat/spec-up/issues">File a bug</a></dd>
+<dd><a path-0="github.com" path-1="csuwildcat" path-2="spec-up" path-3="commits" path-4="master" href="https://github.com/csuwildcat/spec-up/commits/master">Commit history</a></dd>
+</dl>
+<hr>
+<h2 id="abstract"><span class="spec-up-heading-text">Abstract</span><a class="toc-anchor" href="#abstract">§</a></h2>
+<p>Let’s face it, other tools and generators for writing technical specifications aimed at standards bodies or industry groups are cumbersome, underwhelming, and lack the features you might want in a technical specification document. Spec-Up’s goal is to deliver you a better spec-writing experience with far less effort and tedium than other tools in the ecosystem. Spec-Up is a dead simple tool that auto-generates great specs from markdown. The version of markdown Spec-up uses contains all the same features you might expect from common implementations, like GitHub, but adds much more, including notice blocks, complex tables, charts, advanced syntax highlighting, UML diagrams, etc.</p>
+<h2 id="getting-started"><span class="spec-up-heading-text">Getting Started</span><a class="toc-anchor" href="#getting-started">§</a></h2>
+<p>Using Spec-Up is easy peasy lemon squeezy:</p>
+<ol>
+<li><code>npm install spec-up</code></li>
+<li>Create a root-level <code>specs.json</code> file that points at the markdown files you want assembled into a spec:
+<ul>
+<li><code>spec_directory</code> points at the directory that contains your spec source files</li>
+<li><code>markdown_paths</code> lists the files to assemble, in order</li>
+<li><code>output_path</code>, <code>assets</code>, <code>plugins</code>, and <code>katex</code> are available when you need them</li>
+</ul>
+</li>
+<li>Render programmatically with <code>require('spec-up')({ nowatch: true })</code>, or use the Vite-based workflow shown below.</li>
+</ol>
+<p>Boom! That’s it. For local authoring, <code>npm run edit</code> and <code>npm run dev</code> will watch your spec sources and re-render automatically when files change.</p>
+<p><strong>Usage</strong></p>
+<p>If your <code>specs.json</code>, <code>package.json</code>, and <code>vite.config.mjs</code> files are in working order, Spec-Up can be called from the root of your repo in four common modes:</p>
+<table>
+<thead>
+<tr>
+<th>command</th>
+<th>behavior</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>npm run build</code></td>
+<td>runs <code>vite build</code>, rebuilds compiled frontend assets when needed, and renders the configured specs once.</td>
+</tr>
+<tr>
+<td><code>npm run edit</code></td>
+<td>runs <code>vite build --watch</code> so spec markdown, injected assets, plugin files, and frontend source are watched together.</td>
+</tr>
+<tr>
+<td><code>npm run render</code></td>
+<td>alias for <code>vite build</code> if you prefer the old command name.</td>
+</tr>
+<tr>
+<td><code>npm run dev</code></td>
+<td>runs the Vite dev server and reloads the rendered spec when watched sources change.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="features"><span class="spec-up-heading-text">Features</span><a class="toc-anchor" href="#features">§</a></h2>
+<h3 id="diagrams"><span class="spec-up-heading-text">Diagrams</span><a class="toc-anchor" href="#diagrams">§</a></h3>
+<pre>```mermaid
+sequenceDiagram
+  participant Alice
+  participant Bob
+  Alice-&gt;&gt;Bob: Hey Bob
+  Bob--&gt;&gt;Alice: Great!
+  Alice-&gt;&gt;Bob: How about you?
+  Bob--&gt;&gt;Alice: Doing well!
+```
+</pre>
+<div class="mermaid">
+sequenceDiagram
+  participant Alice
+  participant Bob
+  Alice-&gt;&gt;Bob: Hey Bob
+  Bob--&gt;&gt;Alice: Great!
+  Alice-&gt;&gt;Bob: How about you?
+  Bob--&gt;&gt;Alice: Doing well!
+</div>
+<h3 id="charts"><span class="spec-up-heading-text">Charts</span><a class="toc-anchor" href="#charts">§</a></h3>
+<pre>```chart
+{
+  "type": "pie",
+  "data": {
+    "labels": [
+      "Red",
+      "Blue",
+      "Yellow"
+    ],
+    "datasets": [
+      {
+        "data": [
+          300,
+          50,
+          100
+        ],
+        "backgroundColor": [
+          "#FF6384",
+          "#36A2EB",
+          "#FFCE56"
+        ],
+        "hoverBackgroundColor": [
+          "#FF6384",
+          "#36A2EB",
+          "#FFCE56"
+        ]
+      }
+    ]
+  }
+}
+```
+</pre>
+<wa-chart class="spec-up-chart" label="Pie chart" description="Chart rendered from specification content."><script type="application/json">{
+  "type": "pie",
+  "data": {
+    "labels": [
+      "Red",
+      "Blue",
+      "Yellow"
+    ],
+    "datasets": [
+      {
+        "data": [
+          300,
+          50,
+          100
+        ],
+        "backgroundColor": [
+          "#FF6384",
+          "#36A2EB",
+          "#FFCE56"
+        ],
+        "hoverBackgroundColor": [
+          "#FF6384",
+          "#36A2EB",
+          "#FFCE56"
+        ]
+      }
+    ]
+  }
+}</script></wa-chart><h3 id="syntax-highlighting"><span class="spec-up-heading-text">Syntax Highlighting</span><a class="toc-anchor" href="#syntax-highlighting">§</a></h3>
+<pre>```json
+{
+  "@context": "https://www.w3.org/ns/did/v1",
+  "id": "did:example:123456789abcdefghi",
+  "authentication": [{
+    "id": "did:example:123456789abcdefghi#keys-1",
+    "type": "RsaVerificationKey2018",
+    "controller": "did:example:123456789abcdefghi",
+    "publicKeyPem": "-----BEGIN PUBLIC KEY...END PUBLIC KEY-----\r\n"
+  }],
+  "service": [{
+    "id":"did:example:123456789abcdefghi#vcs",
+    "type": "VerifiableCredentialService",
+    "serviceEndpoint": "https://example.com/vc/"
+  }]
+}
+```
+</pre>
+<pre class="language-json"><code class="language-json"><span class="token punctuation">{</span>
+  <span class="token property">"@context"</span><span class="token operator">:</span> <span class="token string">"https://www.w3.org/ns/did/v1"</span><span class="token punctuation">,</span>
+  <span class="token property">"id"</span><span class="token operator">:</span> <span class="token string">"did:example:123456789abcdefghi"</span><span class="token punctuation">,</span>
+  <span class="token property">"authentication"</span><span class="token operator">:</span> <span class="token punctuation">[</span><span class="token punctuation">{</span> 
+    <span class="token property">"id"</span><span class="token operator">:</span> <span class="token string">"did:example:123456789abcdefghi#keys-1"</span><span class="token punctuation">,</span>
+    <span class="token property">"type"</span><span class="token operator">:</span> <span class="token string">"RsaVerificationKey2018"</span><span class="token punctuation">,</span>
+    <span class="token property">"controller"</span><span class="token operator">:</span> <span class="token string">"did:example:123456789abcdefghi"</span><span class="token punctuation">,</span>
+    <span class="token property">"publicKeyPem"</span><span class="token operator">:</span> <span class="token string">"-----BEGIN PUBLIC KEY...END PUBLIC KEY-----\r\n"</span>
+  <span class="token punctuation">}</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+  <span class="token property">"service"</span><span class="token operator">:</span> <span class="token punctuation">[</span><span class="token punctuation">{</span>
+    <span class="token property">"id"</span><span class="token operator">:</span><span class="token string">"did:example:123456789abcdefghi#vcs"</span><span class="token punctuation">,</span>
+    <span class="token property">"type"</span><span class="token operator">:</span> <span class="token string">"VerifiableCredentialService"</span><span class="token punctuation">,</span>
+    <span class="token property">"serviceEndpoint"</span><span class="token operator">:</span> <span class="token string">"https://example.com/vc/"</span>
+  <span class="token punctuation">}</span><span class="token punctuation">]</span>
+<span class="token punctuation">}</span>
+</code></pre>
+
+            </article>
+          </main>
+        </wa-page>
+
+        
+      <wa-drawer id="repo_issues_drawer" class="spec-up-issues-drawer" label="GitHub Issues" placement="end" light-dismiss>
+        <div slot="label" class="spec-up-drawer-title">
+          <div class="spec-up-drawer-title-row">
+            <div class="spec-up-drawer-heading">
+              <span>GitHub Issues</span>
+            </div>
+            <div class="spec-up-drawer-title-actions"></div>
+          </div>
+          <div class="spec-up-issues-search-row">
+            <wa-input id="repo_issue_search" type="search" placeholder="Search open issues" autocomplete="off" spellcheck="false" size="small">
+              <wa-icon slot="start" name="search" label="Search GitHub issues"></wa-icon>
+              <span slot="end" class="spec-up-issues-search-end">
+                <span id="repo_issue_search_spinner" class="spec-up-issues-search-spinner" hidden aria-hidden="true">
+                  <wa-spinner></wa-spinner>
+                </span>
+                <button id="repo_issue_search_clear" type="button" aria-label="Clear issue search" disabled>Clear</button>
+              </span>
+            </wa-input>
+          </div>
+        </div>
+        <div id="repo_issue_panel" class="spec-up-issues-panel">
+          <p id="repo_issue_status">Loading open GitHub issues…</p>
+          <ul id="repo_issue_list" class="spec-up-issue-list"></ul>
+          <div id="repo_issue_load_more" class="spec-up-issues-loading" hidden>
+            <wa-spinner></wa-spinner>
+            <span>Loading more issues…</span>
+          </div>
+        </div>
+      </wa-drawer>
+    
+
+        
+        <script>window.specConfig = {"title":"Spec-Up Multi-File Example","spec_directory":"./multi-file-test","markdown_paths":["header.md","abstract.md","getting-started.md","features.md"],"logo":"../logo.svg","logo_link":"https://github.com/decentralized-identity/spec-up","source":{"host":"github","account":"decentralized-identity","repo":"spec-up"}}</script>
+        <script src="assets/compiled/body.js"></script>
+      </body>
+    </html>
+  

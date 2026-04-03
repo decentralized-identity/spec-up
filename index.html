@@ -1,0 +1,884 @@
+
+    <!DOCTYPE html>
+    <html lang="en" class="wa-theme-default">
+      <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <meta name="color-scheme" content="light dark">
+        <meta http-equiv="Content-Security-Policy" content="default-src 'self'; base-uri 'self'; object-src 'none'; script-src 'self' 'unsafe-inline' blob: data:; style-src 'self' 'unsafe-inline' data:; img-src 'self' data: blob: https: http:; font-src 'self' data: https: http:; media-src 'self' data: blob: https: http:; frame-src 'self' data: blob: https: http:; worker-src 'self' data: blob:; connect-src 'self' data: blob: https://api.github.com https://ka-f.fontawesome.com https://ka-p.fontawesome.com">
+
+        <title>Spec-Up Example</title>
+
+        <link rel="icon" href="logo.svg">
+
+        
+    <script>
+      (() => {
+        const storageKey = 'spec-up-color-scheme';
+        const root = document.documentElement;
+        const media = window.matchMedia ? window.matchMedia('(prefers-color-scheme: dark)') : null;
+        let themePreference = 'auto';
+
+        try {
+          const storedThemePreference = window.localStorage.getItem(storageKey);
+
+          if (storedThemePreference === 'light' || storedThemePreference === 'dark' || storedThemePreference === 'auto') {
+            themePreference = storedThemePreference;
+          }
+        }
+        catch {}
+
+        const theme = themePreference === 'auto'
+          ? (media && media.matches ? 'dark' : 'light')
+          : themePreference;
+
+        root.classList.remove('wa-light', 'wa-dark');
+        root.classList.add(theme === 'dark' ? 'wa-dark' : 'wa-light');
+        root.dataset.theme = theme;
+        root.dataset.themePreference = themePreference;
+        root.style.colorScheme = theme;
+      })();
+    </script>
+  
+        <script src="assets/compiled/head.js"></script><script src="assets/compiled/katex.js"></script>
+      </head>
+      <body features="logo source">
+        <svg id="svg" version="1.1" xmlns="http://www.w3.org/2000/svg">
+  <symbol id="svg-github" viewBox="0 0 20 20">
+    <path d="M10 0.247c-5.522 0-10 4.477-10 10 0 4.418 2.865 8.167 6.839 9.489 0.5 0.093 0.683-0.217 0.683-0.481 0-0.238-0.009-1.026-0.014-1.862-2.782 0.605-3.369-1.18-3.369-1.18-0.455-1.156-1.11-1.463-1.11-1.463-0.907-0.621 0.069-0.608 0.069-0.608 1.004 0.071 1.533 1.031 1.533 1.031 0.892 1.529 2.339 1.087 2.91 0.831 0.090-0.646 0.349-1.087 0.635-1.337-2.221-0.253-4.556-1.11-4.556-4.942 0-1.092 0.391-1.984 1.030-2.684-0.104-0.252-0.446-1.269 0.097-2.646 0 0 0.84-0.269 2.751 1.025 0.798-0.222 1.653-0.333 2.503-0.337 0.85 0.004 1.706 0.115 2.505 0.337 1.909-1.294 2.747-1.025 2.747-1.025 0.544 1.378 0.202 2.395 0.098 2.646 0.641 0.7 1.029 1.592 1.029 2.684 0 3.841-2.339 4.687-4.566 4.934 0.359 0.31 0.678 0.919 0.678 1.852 0 1.338-0.012 2.415-0.012 2.744 0 0.266 0.18 0.578 0.687 0.48 3.971-1.324 6.833-5.071 6.833-9.488 0-5.523-4.477-10-10-10z"></path>
+  </symbol>
+  <symbol id="svg-nested-list" viewBox="0 0 37 32">
+    <path d="M0 2.286c0-1.262 1.023-2.286 2.286-2.286s2.286 1.023 2.286 2.286c0 1.262-1.023 2.286-2.286 2.286s-2.286-1.023-2.286-2.286zM9.143 0h27.429v4.571h-27.429zM9.143 11.429c0-1.262 1.023-2.286 2.286-2.286s2.286 1.023 2.286 2.286c0 1.262-1.023 2.286-2.286 2.286s-2.286-1.023-2.286-2.286zM18.286 9.143h18.286v4.571h-18.286zM9.143 29.714c0-1.262 1.023-2.286 2.286-2.286s2.286 1.023 2.286 2.286c0 1.262-1.023 2.286-2.286 2.286s-2.286-1.023-2.286-2.286zM18.286 27.429h18.286v4.571h-18.286zM18.286 20.571c0-1.262 1.023-2.286 2.286-2.286s2.286 1.023 2.286 2.286c0 1.262-1.023 2.286-2.286 2.286s-2.286-1.023-2.286-2.286zM27.429 18.286h9.143v4.571h-9.143z"></path>
+  </symbol>
+</svg>
+
+
+        <wa-page class="spec-up-shell" mobile-breakpoint="1080" disable-navigation-toggle>
+          <span slot="skip-to-content">Skip to specification content</span>
+
+          <header slot="header" id="app_header">
+            <div class="spec-up-brand">
+              <wa-button data-toggle-nav size="small" appearance="plain" variant="neutral" class="spec-up-nav-toggle" aria-label="Open table of contents">
+                <wa-icon name="bars"></wa-icon>
+              </wa-button>
+              <a class="spec-up-brand-mark spec-up-brand-mark--logo" href="https://github.com/decentralized-identity/spec-up"><img src="logo.svg" alt="Spec-Up Example logo"/></a>
+              <div class="spec-up-brand-copy">
+                <strong>Spec-Up Example</strong>
+              </div>
+            </div>
+            
+      <div class="spec-up-header-actions">
+        <wa-dropdown id="spec_up_theme_selector" class="spec-up-theme-selector color-scheme-selector" size="small" placement="bottom-start">
+          <wa-button
+            slot="trigger"
+            id="color-scheme-selector-trigger"
+            class="spec-up-theme-selector__trigger"
+            appearance="plain"
+            aria-label="Color theme"
+            variant="neutral"
+            size="small"
+          >
+            <wa-icon family="classic" name="sun" class="icon-embiggen only-light" aria-hidden="true"></wa-icon>
+            <wa-icon family="classic" name="moon" class="icon-embiggen only-dark" aria-hidden="true"></wa-icon>
+          </wa-button>
+          <wa-dropdown-item value="light">
+            <wa-icon slot="icon" family="classic" name="sun" class="icon-embiggen" aria-hidden="true"></wa-icon>
+            Light
+          </wa-dropdown-item>
+          <wa-dropdown-item value="dark">
+            <wa-icon slot="icon" family="classic" name="moon" class="icon-embiggen" aria-hidden="true"></wa-icon>
+            Dark
+          </wa-dropdown-item>
+          <wa-divider></wa-divider>
+          <wa-dropdown-item value="auto">
+            <wa-icon slot="icon" family="classic" name="sun" class="only-light icon-embiggen" aria-hidden="true"></wa-icon>
+            <wa-icon slot="icon" family="classic" name="moon" class="only-dark icon-embiggen" aria-hidden="true"></wa-icon>
+            System
+          </wa-dropdown-item>
+        </wa-dropdown>
+        
+        <wa-button class="spec-up-issues-trigger" size="small" appearance="outlined" variant="neutral" data-drawer="open repo_issues_drawer">
+          <wa-icon family="brands" name="github"></wa-icon>
+          Issues
+        </wa-button>
+    
+      </div>
+  
+          </header>
+
+          <div slot="navigation-header" class="spec-up-navigation-title">
+            <strong>Spec-Up Example</strong>
+          </div>
+
+          <nav id="toc" slot="navigation" aria-label="Table of contents">
+            <ul class="toc"><li><a href="#abstract">Abstract</a></li><li><a href="#getting-started">Getting Started</a></li><li><a href="#table-of-contents">Table of Contents</a></li><li><a href="#term-references">Term References</a><ul><li><a href="#definition-lists">Definition Lists</a></li><li><a href="#table-defined-terms">Table-defined Terms</a></li><li><a href="#external-term-references">External Term References</a></li></ul></li><li><a href="#blockquote">Blockquote</a></li><li><a href="#notices">Notices</a></li><li><a href="#content-insertion">Content Insertion</a></li><li><a href="#tables">Tables</a></li><li><a href="#sequence-diagrams">Sequence Diagrams</a></li><li><a href="#flows">Flows</a></li><li><a href="#charts">Charts</a></li><li><a href="#syntax-highlighting">Syntax Highlighting</a></li><li><a href="#tex-math-equations">TeX Math Equations</a></li><li><a href="#tab-panels">Tab Panels</a></li><li><a href="#summary-blocks">Summary Blocks</a></li><li><a href="#badges">Badges</a></li><li><a href="#progress">Progress</a></li><li><a href="#relative-time">Relative Time</a></li><li><a href="#copy">Copy</a></li><li><a href="#qr-codes">QR Codes</a></li><li><a href="#carousel">Carousel</a></li><li><a href="#fancy-links">Fancy Links</a><ul><li><a href="#github">GitHub</a></li></ul></li><li><a href="#external-spec-references">External Spec References</a><ul><li><a href="#default-references">Default References</a></li><li><a href="#normative-references">Normative References</a></li><li><a href="#informative-references">Informative References</a></li></ul></li></ul>
+          </nav>
+
+          <main class="spec-up-main">
+            <article id="content">
+              <h1 id="spec-up-example"><span class="spec-up-heading-text">Spec-Up Example</span><a class="toc-anchor" href="#spec-up-example">§</a></h1>
+<p><strong>Specification Status:</strong> Draft</p>
+<p><strong>Latest Draft:</strong>
+<a path-0="identity.foundation" path-1="spec-up" href="https://identity.foundation/spec-up">https://identity.foundation/spec-up</a></p>
+<dl>
+<dt>Editors:</dt>
+<dd><a path-0="www.linkedin.com" path-1="in" path-2="dbuchner" path-3="" href="https://www.linkedin.com/in/dbuchner/">Daniel Buchner</a></dd>
+<dt>Participate:</dt>
+<dd><a path-0="github.com" path-1="decentralized-identity" path-2="spec-up" href="https://github.com/decentralized-identity/spec-up">GitHub repo</a></dd>
+<dd><a path-0="github.com" path-1="decentralized-identity" path-2="spec-up" path-3="issues" href="https://github.com/decentralized-identity/spec-up/issues">File a bug</a></dd>
+<dd><a path-0="github.com" path-1="decentralized-identity" path-2="spec-up" path-3="commits" path-4="master" href="https://github.com/decentralized-identity/spec-up/commits/master">Commit history</a></dd>
+</dl>
+<hr>
+<h2 id="abstract"><span class="spec-up-heading-text">Abstract</span><a class="toc-anchor" href="#abstract">§</a></h2>
+<p>Let’s face it, other tools and generators for writing technical specifications aimed at standards bodies or industry groups are cumbersome, underwhelming, and lack the features you might want in a technical specification document. Spec-Up’s goal is to deliver you a better spec-writing experience with far less effort and tedium than other tools in the ecosystem. Spec-Up is a simple tool that auto-generates great specs from markdown. The version of markdown Spec-up uses contains all the same features you might expect from common implementations, like GitHub, but adds much more, including notice blocks, complex tables, charts, advanced syntax highlighting, UML diagrams, etc.</p>
+<h2 id="getting-started"><span class="spec-up-heading-text">Getting Started</span><a class="toc-anchor" href="#getting-started">§</a></h2>
+<p>Using Spec-Up is easy peasy lemon squeezy:</p>
+<ol>
+<li>
+<p><code>npm install spec-up</code></p>
+</li>
+<li>
+<p>Create a <code>specs.json</code> file <strong>in the root folder of your repository</strong> to configure one or more specs. Common fields include:</p>
+<ul>
+<li><strong><code>spec_directory</code></strong> <em>(STRING, required)</em> - The <strong>repo-root-relative</strong> location of your spec markdown directory. If you do not provide <code>markdown_paths</code>, Spec-Up reads <code>spec.md</code> from this directory by default.</li>
+<li><strong><code>title</code></strong> <em>(STRING, required)</em> - The title rendered in the generated document’s H1 text and page title.</li>
+<li><strong><code>logo</code></strong> / <strong><code>logo_link</code></strong> <em>(optional)</em> - Add a logo and optional target link for the rendered header.</li>
+<li><strong><code>markdown_paths</code></strong> <em>(ARRAY, optional)</em> - If you want to assemble multiple files into a single output document, list them here in order. Paths are resolved relative to <code>spec_directory</code>.</li>
+<li><strong><code>katex</code></strong> <em>(BOOLEAN, optional)</em> - Enables TeX support via KaTeX.</li>
+<li><strong><code>output_path</code></strong> <em>(STRING, optional)</em> - Writes the generated output somewhere other than <code>spec_directory</code>.</li>
+<li><strong><code>source</code></strong> <em>(OBJECT, optional)</em> - Adds repo metadata used by repo-aware UI features such as the GitHub links shown in this example.</li>
+<li><strong><code>external_specs</code></strong> <em>(ARRAY, optional)</em> - Enables <code>[[xref: ...]]</code> references into other Spec-Up-rendered specs.</li>
+<li><strong><code>assets</code></strong> <em>(ARRAY, optional)</em> - Injects extra CSS or JS files into the rendered page when you need custom page assets. Asset objects support <code>path</code>, optional <code>inject</code> (<code>"head"</code> or <code>"body"</code> for JS), and optional <code>module</code> for JS modules.</li>
+<li><strong><code>plugins</code></strong> <em>(ARRAY, optional)</em> - Adds plugins for this spec, or at the top level of <code>specs.json</code> for every spec in the project.</li>
+</ul>
+</li>
+<li>
+<p>Render either programmatically or through the Vite workflow:</p>
+<ul>
+<li><code>require('spec-up')({ nowatch: true })</code> renders once.</li>
+<li><code>require('spec-up')()</code> renders and keeps file watchers running.</li>
+<li>The default local workflow in this repo uses Vite, as shown below.</li>
+</ul>
+</li>
+</ol>
+<p>Boom! That’s it. Use <code>npm run build</code> for a one-shot render, <code>npm run edit</code> for a watch build, or <code>npm run dev</code> for a live-reloading dev server.</p>
+<p><strong>Usage</strong></p>
+<p>If your <code>specs.json</code>, <code>package.json</code>, and <code>vite.config.mjs</code> files are in the project root, Spec-Up can be run from the repo root in four common modes:</p>
+<table>
+<thead>
+<tr>
+<th>command</th>
+<th>behavior</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>npm run build</code></td>
+<td>runs <code>vite build</code>, rebuilds compiled frontend assets when needed, and renders the configured specs once.</td>
+</tr>
+<tr>
+<td><code>npm run edit</code></td>
+<td>runs <code>vite build --watch</code> so spec markdown, injected assets, plugin files, and frontend source are watched together.</td>
+</tr>
+<tr>
+<td><code>npm run render</code></td>
+<td>alias for <code>vite build</code> if you prefer the old command name.</td>
+</tr>
+<tr>
+<td><code>npm run dev</code></td>
+<td>runs the Vite dev server and reloads the rendered spec when watched sources change.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="table-of-contents"><span class="spec-up-heading-text">Table of Contents</span><a class="toc-anchor" href="#table-of-contents">§</a></h2>
+<p>&lt;-- You see that beautiful TOC over there to your left? (tap the header link to slide it out on mobile) Yeah, you don’t need to do a damn thing, that just magically appears based on your use of <code>h2</code>, <code>h3</code>, and <code>h4</code> headings.</p>
+<h2 id="term-references"><span class="spec-up-heading-text">Term References</span><a class="toc-anchor" href="#term-references">§</a></h2>
+<h3 id="definition-lists"><span class="spec-up-heading-text">Definition Lists</span><a class="toc-anchor" href="#definition-lists">§</a></h3>
+<p>Many specs may want to include a section for terminology references, and Definition Lists are a great way to do that. Here’s how to leverage Spec-Up’s automatic term reference features via Definition List markup:</p>
+<pre>[[def: Term 1, Term One]]:
+~ This is the first term we will define.
+
+[[def: Term 2, Term Two]]:
+~ This is the second term, but not the last.
+
+[[def: Term 3, Term Three]]:
+~ This is the last term, because you know what they say: third term's the charm!
+</pre>
+<dl>
+<dt><span id="term:term-one"><span id="term:term-1">Term 1</span></span>:</dt>
+<dd>This is the first term we will define.</dd>
+<dt><span id="term:term-two"><span id="term:term-2">Term 2</span></span>:</dt>
+<dd>This is the second term, but not the last.</dd>
+<dt><span id="term:term-three"><span id="term:term-3">Term 3</span></span>:</dt>
+<dd>This is the last term, because you know what they say: third term’s the charm!</dd>
+</dl>
+<p>Now let’s refer to some of the terms defined above to show how the auto-linking of terms works: <a class="term-reference" href="#term:term-1">Term 1</a>, <a class="term-reference" href="#term:term-two">Term Two</a>, <a class="term-reference" href="#term:term-3">Term 3</a>. Additionally, as long as you define your terms using Definition Lists (as seen in the markdown above), you will be able to hover any reference to a term to see a tooltip with its definition.</p>
+<h3 id="table-defined-terms"><span class="spec-up-heading-text">Table-defined Terms</span><a class="toc-anchor" href="#table-defined-terms">§</a></h3>
+<p>You can also reference table-oriented terms and definitions which are decomposed into heading-titled attributes in distinct cells:</p>
+<pre>Variable           | Default Value | Max Value
+------------------- | -------------- | ---------
+[[def: Variable 1]] | 123          | 9999
+</pre>
+<table>
+<thead>
+<tr>
+<th>Variable</th>
+<th>Default Value</th>
+<th>Max Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><span id="term:variable-1">Variable 1</span></td>
+<td>123</td>
+<td>9999</td>
+</tr>
+</tbody>
+</table>
+<p>Anytime you add a definition of a term in the first column of a table, like <a class="term-reference" href="#term:variable-1">Variable 1</a>, it will link to the cell and display a tooltip with the entire set of row values when you hover the term.</p>
+<h3 id="external-term-references"><span class="spec-up-heading-text">External Term References</span><a class="toc-anchor" href="#external-term-references">§</a></h3>
+<p>It is possible to include references to terms from external spec-up generated specifications. To include a source you would like to pull references from include an <code>external_specs</code> array in your spec config. The value should be a key/value object where the key is used in the external reference below and the value is the URL of the external spec.</p>
+<wa-callout id="example-1" class="spec-up-notice spec-up-notice--example" variant="neutral" appearance="filled-outlined"><div class="spec-up-notice-heading"><a class="notice-link" href="#example-1">EXAMPLE</a></div><pre class="language-json"><code class="language-json"><span class="token punctuation">{</span>
+  <span class="token property">"specs"</span><span class="token operator">:</span> <span class="token punctuation">[</span>
+    <span class="token punctuation">{</span>
+      ...
+      <span class="token property">"external_specs"</span><span class="token operator">:</span> <span class="token punctuation">[</span>
+        <span class="token punctuation">{</span><span class="token property">"PE"</span><span class="token operator">:</span> <span class="token string">"https://identity.foundation/presentation-exchange"</span><span class="token punctuation">}</span>
+      <span class="token punctuation">]</span>
+    <span class="token punctuation">}</span>
+  <span class="token punctuation">]</span>
+<span class="token punctuation">}</span>
+</code></pre>
+</wa-callout>
+<p>To include an external term reference within your spec use the following format <code>[[xref: {title}, {term}]]</code> where <code>{title}</code> is the title given to the spec in the config and <code>{term}</code> is the term being used. For example using the PE spec given in the example above <a class="term-reference" data-local-href="#term:PE:holder" href="https://identity.foundation/presentation-exchange#term:holder">Holder</a></p>
+<h2 id="blockquote"><span class="spec-up-heading-text">Blockquote</span><a class="toc-anchor" href="#blockquote">§</a></h2>
+<blockquote>
+<p>To be, or not to be, that is the question:
+Whether 'tis nobler in the mind to suffer
+The slings and arrows of outrageous fortune,
+Or to take arms against a sea of troubles
+And by opposing end them. To die—to sleep,
+No more;</p>
+</blockquote>
+<h2 id="notices"><span class="spec-up-heading-text">Notices</span><a class="toc-anchor" href="#notices">§</a></h2>
+<pre>::: note Basic Note
+  Check this out.
+:::
+</pre>
+<wa-callout id="basic-note" class="spec-up-notice spec-up-notice--note" variant="brand" appearance="filled-outlined"><wa-icon slot="icon" name="circle-info" label="note"></wa-icon><div class="spec-up-notice-heading"><a class="notice-link" href="#basic-note">NOTE</a></div><p>Check this out.</p>
+</wa-callout>
+<wa-callout id="note-1" class="spec-up-notice spec-up-notice--note" variant="brand" appearance="filled-outlined"><wa-icon slot="icon" name="circle-info" label="note"></wa-icon><div class="spec-up-notice-heading"><a class="notice-link" href="#note-1">NOTE</a></div><p>Here’s another.</p>
+</wa-callout>
+<wa-callout id="note-2" class="spec-up-notice spec-up-notice--note" variant="brand" appearance="filled-outlined"><wa-icon slot="icon" name="circle-info" label="note"></wa-icon><div class="spec-up-notice-heading"><a class="notice-link" href="#note-2">NOTE</a></div><p>And one more!</p>
+</wa-callout>
+<wa-callout id="basic-note-1" class="spec-up-notice spec-up-notice--note" variant="brand" appearance="filled-outlined"><wa-icon slot="icon" name="circle-info" label="note"></wa-icon><div class="spec-up-notice-heading"><a class="notice-link" href="#basic-note-1">NOTE</a></div><p>One last note!!!</p>
+</wa-callout>
+<pre>::: issue Issue Notice
+  I take issue with that, kind sir.
+:::
+</pre>
+<wa-callout id="issue-notice" class="spec-up-notice spec-up-notice--issue" variant="danger" appearance="filled-outlined"><wa-icon slot="icon" name="circle-exclamation" label="issue"></wa-icon><div class="spec-up-notice-heading"><a class="notice-link" href="#issue-notice">ISSUE</a></div><p>I take issue with that, kind sir.</p>
+</wa-callout>
+<pre>::: warning Warning Notice
+  Houston, I think we have a problem
+:::
+</pre>
+<wa-callout id="warning-notice" class="spec-up-notice spec-up-notice--warning" variant="warning" appearance="filled-outlined"><wa-icon slot="icon" name="triangle-exclamation" label="warning"></wa-icon><div class="spec-up-notice-heading"><a class="notice-link" href="#warning-notice">WARNING</a></div><p>Houston, I think we have a problem</p>
+</wa-callout>
+<pre>::: todo Really Important
+  Get this done!
+:::
+</pre>
+<wa-callout id="really-important" class="spec-up-notice spec-up-notice--todo" variant="warning" appearance="filled-outlined"><wa-icon slot="icon" name="circle-check" label="todo"></wa-icon><div class="spec-up-notice-heading"><a class="notice-link" href="#really-important">TODO</a></div><p>Get this done!</p>
+</wa-callout>
+<pre>::: example Code Example
+  Put your code block here
+:::
+</pre>
+<wa-callout id="code-example" class="spec-up-notice spec-up-notice--example" variant="neutral" appearance="filled-outlined"><div class="spec-up-notice-heading"><a class="notice-link" href="#code-example">EXAMPLE</a><span class="spec-up-notice-title">Code Example</span></div><pre class="language-json"><code class="language-json"><span class="token comment">// Some comment in JSON</span>
+<span class="token punctuation">{</span>
+  <span class="token property">"foo"</span><span class="token operator">:</span> <span class="token string">"bar"</span><span class="token punctuation">,</span>
+  <span class="token property">"baz"</span><span class="token operator">:</span> <span class="token number">2</span>
+<span class="token punctuation">}</span>
+</code></pre>
+</wa-callout>
+<h2 id="content-insertion"><span class="spec-up-heading-text">Content Insertion</span><a class="toc-anchor" href="#content-insertion">§</a></h2>
+<p>Use the following format to pull in content from other files in your project:</p>
+<pre>This text has been inserted here from another file: [[insert: ./single-file-test/assets/test.text]]
+</pre>
+<p>This text has been inserted here from another file: Beam me in, Scotty!</p>
+<p>You can even insert content within more complex blocks, like the JSON object below which is being pulled in and rendered in a syntax-highlighted example block:</p>
+<pre>::: example Code Example
+```json
+[[insert: ./single-file-test/assets/test.json]]
+```
+:::
+</pre>
+<wa-callout id="code-example-1" class="spec-up-notice spec-up-notice--example" variant="neutral" appearance="filled-outlined"><div class="spec-up-notice-heading"><a class="notice-link" href="#code-example-1">EXAMPLE</a><span class="spec-up-notice-title">Code Example</span></div><pre class="language-json"><code class="language-json"><span class="token punctuation">{</span>
+  <span class="token property">"foo"</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+    <span class="token property">"bar"</span><span class="token operator">:</span> <span class="token number">1</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre>
+</wa-callout>
+<h2 id="tables"><span class="spec-up-heading-text">Tables</span><a class="toc-anchor" href="#tables">§</a></h2>
+<pre>Stage | Direct Products | ATP Yields
+----: | --------------: | ---------:
+Glycolysis | 2 ATP ||
+^^ | 2 NADH | 3--5 ATP |
+Pyruvaye oxidation | 2 NADH | 5 ATP |
+Citric acid cycle | 2 ATP ||
+^^ | 6 NADH | 15 ATP |
+^^ | 2 FADH2 | 3 ATP |
+**30--32** ATP |||
+[Net ATP yields per hexose]
+</pre>
+<table>
+<caption id="netatpyieldsperhexose" style="caption-side: bottom">Net ATP yields per hexose</caption>
+<thead>
+<tr>
+<th style="text-align:right">Stage</th>
+<th style="text-align:right">Direct Products</th>
+<th style="text-align:right">ATP Yields</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:right" rowspan="2">Glycolysis</td>
+</tr>
+<tr>
+<td style="text-align:right">2 NADH</td>
+<td style="text-align:right">3–5 ATP</td>
+</tr>
+<tr>
+<td style="text-align:right">Pyruvaye oxidation</td>
+<td style="text-align:right">2 NADH</td>
+<td style="text-align:right">5 ATP</td>
+</tr>
+<tr>
+<td style="text-align:right" rowspan="3">Citric acid cycle</td>
+</tr>
+<tr>
+<td style="text-align:right">6 NADH</td>
+<td style="text-align:right">15 ATP</td>
+</tr>
+<tr>
+<td style="text-align:right">2 FADH2</td>
+<td style="text-align:right">3 ATP</td>
+</tr>
+<tr></tr>
+</tbody>
+</table>
+<pre>|--|--|--|--|--|--|--|--|
+|♜|  |♝|♛|♚|♝|♞|♜|
+|  |♟|♟|♟|  |♟|♟|♟|
+|♟|  |♞|  |  |  |  | |
+|  |♗|  |  |♟|  |  | |
+|  |  |  |  |♙|  |  | |
+|  |  |  |  |  |♘|  | |
+|♙|♙|♙|♙|  |♙|♙|♙|
+|♖|♘|♗|♕|♔|  |  |♖|
+</pre>
+<table>
+<tbody>
+<tr>
+<td>♜</td>
+<td></td>
+<td>♝</td>
+<td>♛</td>
+<td>♚</td>
+<td>♝</td>
+<td>♞</td>
+<td>♜</td>
+</tr>
+<tr>
+<td></td>
+<td>♟</td>
+<td>♟</td>
+<td>♟</td>
+<td></td>
+<td>♟</td>
+<td>♟</td>
+<td>♟</td>
+</tr>
+<tr>
+<td>♟</td>
+<td></td>
+<td>♞</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>♗</td>
+<td></td>
+<td></td>
+<td>♟</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>♙</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>♘</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>♙</td>
+<td>♙</td>
+<td>♙</td>
+<td>♙</td>
+<td></td>
+<td>♙</td>
+<td>♙</td>
+<td>♙</td>
+</tr>
+<tr>
+<td>♖</td>
+<td>♘</td>
+<td>♗</td>
+<td>♕</td>
+<td>♔</td>
+<td></td>
+<td></td>
+<td>♖</td>
+</tr>
+</tbody>
+</table>
+<h2 id="sequence-diagrams"><span class="spec-up-heading-text">Sequence Diagrams</span><a class="toc-anchor" href="#sequence-diagrams">§</a></h2>
+<pre>```mermaid
+sequenceDiagram
+  Alice -&gt;&gt; Bob: Hello Bob, how are you?
+  Bob--&gt;&gt;John: How about you John?
+  Bob--x Alice: I am good thanks!
+  Bob-x John: I am good thanks!
+  Note right of John: Bob thinks a long<br>long time, so long<br>that the text does<br>not fit on a row.
+
+  Bob--&gt;Alice: Checking with John...
+  Alice-&gt;John: Yes... John, how are you?
+```
+</pre>
+<div class="mermaid">
+sequenceDiagram
+  Alice -&gt;&gt; Bob: Hello Bob, how are you?
+  Bob--&gt;&gt;John: How about you John?
+  Bob--x Alice: I am good thanks!
+  Bob-x John: I am good thanks!
+  Note right of John: Bob thinks a long<br>long time, so long<br>that the text does<br>not fit on a row.
+
+  Bob--&gt;Alice: Checking with John...
+  Alice-&gt;John: Yes... John, how are you?
+</div>
+<h2 id="flows"><span class="spec-up-heading-text">Flows</span><a class="toc-anchor" href="#flows">§</a></h2>
+<pre>```mermaid
+graph TD
+  A[Start] --&gt; B{Is it?}
+  B --&gt;|Yes| C[OK]
+  C --&gt; D[Rethink]
+  D --&gt; B
+  B --&gt;|No| E[End]
+```
+</pre>
+<div class="mermaid">
+graph TD
+  A[Start] --&gt; B{Is it?}
+  B --&gt;|Yes| C[OK]
+  C --&gt; D[Rethink]
+  D --&gt; B
+  B --&gt;|No| E[End]
+</div>
+<h2 id="charts"><span class="spec-up-heading-text">Charts</span><a class="toc-anchor" href="#charts">§</a></h2>
+<pre>```chart
+{
+  "type": "pie",
+  "data": {
+    "labels": [
+      "Red",
+      "Blue",
+      "Yellow"
+    ],
+    "datasets": [
+      {
+        "data": [
+          300,
+          50,
+          100
+        ],
+        "backgroundColor": [
+          "#FF6384",
+          "#36A2EB",
+          "#FFCE56"
+        ],
+        "hoverBackgroundColor": [
+          "#FF6384",
+          "#36A2EB",
+          "#FFCE56"
+        ]
+      }
+    ]
+  }
+}
+```
+</pre>
+<wa-chart class="spec-up-chart" label="Pie chart" description="Chart rendered from specification content."><script type="application/json">{
+  "type": "pie",
+  "data": {
+    "labels": [
+      "Red",
+      "Blue",
+      "Yellow"
+    ],
+    "datasets": [
+      {
+        "data": [
+          300,
+          50,
+          100
+        ],
+        "backgroundColor": [
+          "#FF6384",
+          "#36A2EB",
+          "#FFCE56"
+        ],
+        "hoverBackgroundColor": [
+          "#FF6384",
+          "#36A2EB",
+          "#FFCE56"
+        ]
+      }
+    ]
+  }
+}</script></wa-chart><h2 id="syntax-highlighting"><span class="spec-up-heading-text">Syntax Highlighting</span><a class="toc-anchor" href="#syntax-highlighting">§</a></h2>
+<pre>```json
+{
+  "@context": "https://www.w3.org/ns/did/v1",
+  "id": "did:example:123456789abcdefghi",
+  "authentication": [{
+    "id": "did:example:123456789abcdefghi#keys-1",
+    "type": "RsaVerificationKey2018",
+    "controller": "did:example:123456789abcdefghi",
+    "publicKeyPem": "-----BEGIN PUBLIC KEY...END PUBLIC KEY-----\r\n"
+  }],
+  "service": [{
+    "id":"did:example:123456789abcdefghi#vcs",
+    "type": "VerifiableCredentialService",
+    "serviceEndpoint": "https://example.com/vc/"
+  }]
+}
+```
+</pre>
+<pre class="language-json"><code class="language-json"><span class="token punctuation">{</span>
+  <span class="token property">"@context"</span><span class="token operator">:</span> <span class="token string">"https://www.w3.org/ns/did/v1"</span><span class="token punctuation">,</span>
+  <span class="token property">"id"</span><span class="token operator">:</span> <span class="token string">"did:example:123456789abcdefghi"</span><span class="token punctuation">,</span>
+  <span class="token property">"authentication"</span><span class="token operator">:</span> <span class="token punctuation">[</span><span class="token punctuation">{</span> 
+    <span class="token property">"id"</span><span class="token operator">:</span> <span class="token string">"did:example:123456789abcdefghi#keys-1"</span><span class="token punctuation">,</span>
+    <span class="token property">"type"</span><span class="token operator">:</span> <span class="token string">"RsaVerificationKey2018"</span><span class="token punctuation">,</span>
+    <span class="token property">"controller"</span><span class="token operator">:</span> <span class="token string">"did:example:123456789abcdefghi"</span><span class="token punctuation">,</span>
+    <span class="token property">"publicKeyPem"</span><span class="token operator">:</span> <span class="token string">"-----BEGIN PUBLIC KEY...END PUBLIC KEY-----\r\n"</span>
+  <span class="token punctuation">}</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+  <span class="token property">"service"</span><span class="token operator">:</span> <span class="token punctuation">[</span><span class="token punctuation">{</span>
+    <span class="token property">"id"</span><span class="token operator">:</span><span class="token string">"did:example:123456789abcdefghi#vcs"</span><span class="token punctuation">,</span>
+    <span class="token property">"type"</span><span class="token operator">:</span> <span class="token string">"VerifiableCredentialService"</span><span class="token punctuation">,</span>
+    <span class="token property">"serviceEndpoint"</span><span class="token operator">:</span> <span class="token string">"https://example.com/vc/"</span>
+  <span class="token punctuation">}</span><span class="token punctuation">]</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<h2 id="tex-math-equations"><span class="spec-up-heading-text">TeX Math Equations</span><a class="toc-anchor" href="#tex-math-equations">§</a></h2>
+<p>When the <code>katex</code> option is enabled, the KaTeX math engine is used for TeX rendering. You can find a list of supported features and examples here: <a path-0="katex.org" path-1="docs" path-2="supported.html" href="https://katex.org/docs/supported.html"><span>https://katex.org/docs/supported.html</span></a>.</p>
+<p class="katex-block"><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mrow><mo fence="true">(</mo><mtable rowspacing="0.16em" columnalign="center" columnspacing="1em"><mtr><mtd><mstyle scriptlevel="0" displaystyle="false"><msub><mi>x</mi><mn>2</mn></msub></mstyle></mtd></mtr><mtr><mtd><mstyle scriptlevel="0" displaystyle="false"><msub><mi>y</mi><mn>2</mn></msub></mstyle></mtd></mtr></mtable><mo fence="true">)</mo></mrow><mo>=</mo><mrow><mo fence="true">(</mo><mtable rowspacing="0.16em" columnalign="center center" columnspacing="1em"><mtr><mtd><mstyle scriptlevel="0" displaystyle="false"><mi>A</mi></mstyle></mtd><mtd><mstyle scriptlevel="0" displaystyle="false"><mi>B</mi></mstyle></mtd></mtr><mtr><mtd><mstyle scriptlevel="0" displaystyle="false"><mi>C</mi></mstyle></mtd><mtd><mstyle scriptlevel="0" displaystyle="false"><mi>D</mi></mstyle></mtd></mtr></mtable><mo fence="true">)</mo></mrow><mo>⋅</mo><mrow><mo fence="true">(</mo><mtable rowspacing="0.16em" columnalign="center" columnspacing="1em"><mtr><mtd><mstyle scriptlevel="0" displaystyle="false"><msub><mi>x</mi><mn>1</mn></msub></mstyle></mtd></mtr><mtr><mtd><mstyle scriptlevel="0" displaystyle="false"><msub><mi>y</mi><mn>1</mn></msub></mstyle></mtd></mtr></mtable><mo fence="true">)</mo></mrow></mrow><annotation encoding="application/x-tex">\begin{pmatrix}x_2 \\ y_2 \end{pmatrix} = 
+\begin{pmatrix} A &amp; B \\ C &amp; D \end{pmatrix}\cdot
+\begin{pmatrix} x_1 \\ y_1 \end{pmatrix}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:2.4em;vertical-align:-0.95em;"></span><span class="minner"><span class="mopen delimcenter" style="top:0em;"><span class="delimsizing size3">(</span></span><span class="mord"><span class="mtable"><span class="col-align-c"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.45em;"><span style="top:-3.61em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord"><span class="mord mathnormal">x</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span><span style="top:-2.41em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord"><span class="mord mathnormal" style="margin-right:0.03588em;">y</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:-0.0359em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.95em;"><span></span></span></span></span></span></span></span><span class="mclose delimcenter" style="top:0em;"><span class="delimsizing size3">)</span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:2.4em;vertical-align:-0.95em;"></span><span class="minner"><span class="mopen delimcenter" style="top:0em;"><span class="delimsizing size3">(</span></span><span class="mord"><span class="mtable"><span class="col-align-c"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.45em;"><span style="top:-3.61em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathnormal">A</span></span></span><span style="top:-2.41em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.07153em;">C</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.95em;"><span></span></span></span></span></span><span class="arraycolsep" style="width:0.5em;"></span><span class="arraycolsep" style="width:0.5em;"></span><span class="col-align-c"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.45em;"><span style="top:-3.61em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.05017em;">B</span></span></span><span style="top:-2.41em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.02778em;">D</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.95em;"><span></span></span></span></span></span></span></span><span class="mclose delimcenter" style="top:0em;"><span class="delimsizing size3">)</span></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">⋅</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:2.4em;vertical-align:-0.95em;"></span><span class="minner"><span class="mopen delimcenter" style="top:0em;"><span class="delimsizing size3">(</span></span><span class="mord"><span class="mtable"><span class="col-align-c"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.45em;"><span style="top:-3.61em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord"><span class="mord mathnormal">x</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span><span style="top:-2.41em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord"><span class="mord mathnormal" style="margin-right:0.03588em;">y</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:-0.0359em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.95em;"><span></span></span></span></span></span></span></span><span class="mclose delimcenter" style="top:0em;"><span class="delimsizing size3">)</span></span></span></span></span></span></span></p>
+<p class="katex-block"><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mtable rowspacing="0.66em" columnalign="center center center" columnlines="dashed dashed" columnspacing="1em" rowlines="solid dashed"><mtr><mtd><mstyle scriptlevel="0" displaystyle="false"><mi>a</mi></mstyle></mtd><mtd><mstyle scriptlevel="0" displaystyle="false"><mi>b</mi></mstyle></mtd><mtd><mstyle scriptlevel="0" displaystyle="false"><mi>c</mi></mstyle></mtd></mtr><mtr><mtd><mstyle scriptlevel="0" displaystyle="false"><mi>d</mi></mstyle></mtd><mtd><mstyle scriptlevel="0" displaystyle="false"><mi>e</mi></mstyle></mtd><mtd><mstyle scriptlevel="0" displaystyle="false"><mi>f</mi></mstyle></mtd></mtr><mtr><mtd><mstyle scriptlevel="0" displaystyle="false"><mi>g</mi></mstyle></mtd><mtd><mstyle scriptlevel="0" displaystyle="false"><mi>h</mi></mstyle></mtd><mtd><mstyle scriptlevel="0" displaystyle="false"><mi>i</mi></mstyle></mtd></mtr></mtable><annotation encoding="application/x-tex">\def\arraystretch{1.5}
+   \begin{array}{c:c:c}
+   a &amp; b &amp; c \\ \hline
+   d &amp; e &amp; f \\
+   \hdashline
+   g &amp; h &amp; i
+\end{array}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:5.4em;vertical-align:-2.45em;"></span><span class="mord"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:2.95em;"><span style="top:-4.95em;"><span class="pstrut" style="height:4.95em;"></span><span class="mtable"><span class="arraycolsep" style="width:0.5em;"></span><span class="col-align-c"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:2.95em;"><span style="top:-4.95em;"><span class="pstrut" style="height:3.26em;"></span><span class="mord"><span class="mord mathnormal">a</span></span></span><span style="top:-3.15em;"><span class="pstrut" style="height:3.26em;"></span><span class="mord"><span class="mord mathnormal">d</span></span></span><span style="top:-1.35em;"><span class="pstrut" style="height:3.26em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.03588em;">g</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:2.45em;"><span></span></span></span></span></span><span class="arraycolsep" style="width:0.5em;"></span><span class="vertical-separator" style="height:5.4em;border-right-width:0.04em;border-right-style:dashed;margin:0 -0.02em;vertical-align:-2.45em;"></span><span class="arraycolsep" style="width:0.5em;"></span><span class="col-align-c"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:2.95em;"><span style="top:-4.95em;"><span class="pstrut" style="height:3.26em;"></span><span class="mord"><span class="mord mathnormal">b</span></span></span><span style="top:-3.15em;"><span class="pstrut" style="height:3.26em;"></span><span class="mord"><span class="mord mathnormal">e</span></span></span><span style="top:-1.35em;"><span class="pstrut" style="height:3.26em;"></span><span class="mord"><span class="mord mathnormal">h</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:2.45em;"><span></span></span></span></span></span><span class="arraycolsep" style="width:0.5em;"></span><span class="vertical-separator" style="height:5.4em;border-right-width:0.04em;border-right-style:dashed;margin:0 -0.02em;vertical-align:-2.45em;"></span><span class="arraycolsep" style="width:0.5em;"></span><span class="col-align-c"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:2.95em;"><span style="top:-4.95em;"><span class="pstrut" style="height:3.26em;"></span><span class="mord"><span class="mord mathnormal">c</span></span></span><span style="top:-3.15em;"><span class="pstrut" style="height:3.26em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.10764em;">f</span></span></span><span style="top:-1.35em;"><span class="pstrut" style="height:3.26em;"></span><span class="mord"><span class="mord mathnormal">i</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:2.45em;"><span></span></span></span></span></span><span class="arraycolsep" style="width:0.5em;"></span></span></span><span style="top:-4.3em;"><span class="pstrut" style="height:4.95em;"></span><span class="hdashline" style="border-bottom-width:0.04em;"></span></span><span style="top:-6.1em;"><span class="pstrut" style="height:4.95em;"></span><span class="hline" style="border-bottom-width:0.04em;"></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:2.45em;"><span></span></span></span></span></span></span></span></span></span></p>
+<p class="katex-block"><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><munder><munder><mrow><mi>a</mi><mo>+</mo><mi>b</mi><mo>+</mo><mi>c</mi></mrow><mo stretchy="true">⏟</mo></munder><mtext>Note:&nbsp;such&nbsp;math,&nbsp;much&nbsp;wow.</mtext></munder></mrow><annotation encoding="application/x-tex">\underbrace{a+b+c}_{\text{Note: such math, much wow.}}
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:2.248em;vertical-align:-1.5535em;"></span><span class="mord munder"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.6944em;"><span style="top:-1.5826em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord text mtight"><span class="mord mtight">Note:&nbsp;such&nbsp;math,&nbsp;much&nbsp;wow.</span></span></span></span></span><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord munder"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.6944em;"><span class="svg-align" style="top:-2.2687em;"><span class="pstrut" style="height:3em;"></span><span class="stretchy" style="height:0.548em;min-width:1.6em;"><span class="brace-left" style="height:0.548em;"><svg xmlns="http://www.w3.org/2000/svg" width="400em" height="0.548em" viewBox="0 0 400000 548" preserveAspectRatio="xMinYMin slice"><path d="M0 6l6-6h17c12.688 0 19.313.3 20 1 4 4 7.313 8.3 10 13
+ 35.313 51.3 80.813 93.8 136.5 127.5 55.688 33.7 117.188 55.8 184.5 66.5.688
+ 0 2 .3 4 1 18.688 2.7 76 4.3 172 5h399450v120H429l-6-1c-124.688-8-235-61.7
+-331-161C60.687 138.7 32.312 99.3 7 54L0 41V6z"></path></svg></span><span class="brace-center" style="height:0.548em;"><svg xmlns="http://www.w3.org/2000/svg" width="400em" height="0.548em" viewBox="0 0 400000 548" preserveAspectRatio="xMidYMin slice"><path d="M199572 214
+c100.7 8.3 195.3 44 280 108 55.3 42 101.7 93 139 153l9 14c2.7-4 5.7-8.7 9-14
+ 53.3-86.7 123.7-153 211-199 66.7-36 137.3-56.3 212-62h199568v120H200432c-178.3
+ 11.7-311.7 78.3-403 201-6 8-9.7 12-11 12-.7.7-6.7 1-18 1s-17.3-.3-18-1c-1.3 0
+-5-4-11-12-44.7-59.3-101.3-106.3-170-141s-145.3-54.3-229-60H0V214z"></path></svg></span><span class="brace-right" style="height:0.548em;"><svg xmlns="http://www.w3.org/2000/svg" width="400em" height="0.548em" viewBox="0 0 400000 548" preserveAspectRatio="xMaxYMin slice"><path d="M399994 0l6 6v35l-6 11c-56 104-135.3 181.3-238 232-57.3
+ 28.7-117 45-179 50H-300V214h399897c43.3-7 81-15 113-26 100.7-33 179.7-91 237
+-174 2.7-5 6-9 10-13 .7-1 7.3-1 20-1h17z"></path></svg></span></span></span><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathnormal">a</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mord mathnormal">b</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mord mathnormal">c</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.7313em;"><span></span></span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:1.5535em;"><span></span></span></span></span></span></span></span></span></span></p>
+<h2 id="tab-panels"><span class="spec-up-heading-text">Tab Panels</span><a class="toc-anchor" href="#tab-panels">§</a></h2>
+<pre class="language-markdown"><code class="language-markdown">::: tabs
+
+:: First Tab
+
+This is the first tab.
+
+```json
+{
+  "foo": "foo",
+  "baz": 1
+}
+`` `
+
+:: Second Tab
+
+This is the second tab.
+
+```json
+{
+  "foo": "bar",
+  "baz": 2
+}
+`` `
+:::
+</code></pre>
+<wa-tab-group class="spec-up-tab-group" active="first-tab"><wa-tab panel="first-tab">First Tab</wa-tab><wa-tab-panel name="first-tab"><p>This is the first tab.</p><pre class="language-json"><code class="language-json"><span class="token punctuation">{</span>
+  <span class="token property">"foo"</span><span class="token operator">:</span> <span class="token string">"foo"</span><span class="token punctuation">,</span>
+  <span class="token property">"baz"</span><span class="token operator">:</span> <span class="token number">1</span>
+<span class="token punctuation">}</span>
+</code></pre></wa-tab-panel><wa-tab panel="second-tab">Second Tab</wa-tab><wa-tab-panel name="second-tab"><p>This is the second tab.</p><pre class="language-json"><code class="language-json"><span class="token punctuation">{</span>
+  <span class="token property">"foo"</span><span class="token operator">:</span> <span class="token string">"bar"</span><span class="token punctuation">,</span>
+  <span class="token property">"baz"</span><span class="token operator">:</span> <span class="token number">2</span>
+<span class="token punctuation">}</span>
+</code></pre></wa-tab-panel></wa-tab-group>
+
+
+
+
+
+
+
+<h2 id="summary-blocks"><span class="spec-up-heading-text">Summary Blocks</span><a class="toc-anchor" href="#summary-blocks">§</a></h2>
+<pre class="language-markdown"><code class="language-markdown">::: summary My summary text here
+Details of what I want to show here.
+:::
+</code></pre>
+<wa-details class="spec-up-details" summary="My summary text here">
+<p>Details of what I want to show here.</p>
+</wa-details>
+<h2 id="badges"><span class="spec-up-heading-text">Badges</span><a class="toc-anchor" href="#badges">§</a></h2>
+<pre class="language-markdown"><code class="language-markdown">[[badge: All Systems Operational]]
+[[badge: Needs Attention, warning]]
+</code></pre>
+<p><wa-badge variant="brand">All Systems Operational</wa-badge>
+<wa-badge variant="warning">Needs Attention</wa-badge></p>
+<h2 id="progress"><span class="spec-up-heading-text">Progress</span><a class="toc-anchor" href="#progress">§</a></h2>
+<pre class="language-markdown"><code class="language-markdown">[[progress: bar, 50]]
+
+[[progress: ring, 75]]
+
+[[progress: bar, 50, 50%]]
+
+[[progress: ring, 75, 3rem]]
+</code></pre>
+<p><wa-progress-bar value="50">50%</wa-progress-bar></p>
+<p><wa-progress-ring value="75">75%</wa-progress-ring></p>
+<p><wa-progress-bar value="50" style="width: 50%;">50%</wa-progress-bar></p>
+<p><wa-progress-ring value="75" style="--size: 3rem;">75%</wa-progress-ring></p>
+<h2 id="relative-time"><span class="spec-up-heading-text">Relative Time</span><a class="toc-anchor" href="#relative-time">§</a></h2>
+<pre class="language-markdown"><code class="language-markdown">[[time: 2020-07-15T09:17:00-04:00, long]]
+
+[[time: 2020-07-15T09:17:00-04:00, short]]
+</code></pre>
+<p><wa-relative-time date="2020-07-15T09:17:00-04:00" format="long"></wa-relative-time></p>
+<p><wa-relative-time date="2020-07-15T09:17:00-04:00" format="short"></wa-relative-time></p>
+<h2 id="copy"><span class="spec-up-heading-text">Copy</span><a class="toc-anchor" href="#copy">§</a></h2>
+<pre class="language-markdown"><code class="language-markdown">[[copy: did:key:z6Mkf4XhsxVYQ1nQ6V6k4Q9j7xVjQm1Qw9Yk6B8JfP3L2mN4]]
+
+[[copy: https://github.com/decentralized-identity/spec-up]]
+</code></pre>
+<p><span class="spec-up-copy-line"><span class="spec-up-copy-text" id="spec-up-copy-target-1">did:key:z6Mkf4XhsxVYQ1nQ6V6k4Q9j7xVjQm1Qw9Yk6B8JfP3L2mN4</span><wa-copy-button class="spec-up-copy-button" from="spec-up-copy-target-1" copy-label="Copy" success-label="Copied" error-label="Copy failed"></wa-copy-button></span></p>
+<p><span class="spec-up-copy-line"><span class="spec-up-copy-text" id="spec-up-copy-target-2">https://github.com/decentralized-identity/spec-up</span><wa-copy-button class="spec-up-copy-button" from="spec-up-copy-target-2" copy-label="Copy" success-label="Copied" error-label="Copy failed"></wa-copy-button></span></p>
+<h2 id="qr-codes"><span class="spec-up-heading-text">QR Codes</span><a class="toc-anchor" href="#qr-codes">§</a></h2>
+<pre class="language-markdown"><code class="language-markdown">[[qr: github.com/csuwildcat]]
+
+[[qr: github.com/csuwildcat, 200]]
+</code></pre>
+<p><wa-qr-code value="github.com/csuwildcat"></wa-qr-code></p>
+<p><wa-qr-code value="github.com/csuwildcat" size="200"></wa-qr-code></p>
+<h2 id="carousel"><span class="spec-up-heading-text">Carousel</span><a class="toc-anchor" href="#carousel">§</a></h2>
+<pre class="language-markdown"><code class="language-markdown">::: carousel
+
+<span class="token url"><span class="token operator">!</span>[<span class="token content">Carousel panel one</span>](<span class="token url">single-file-test/assets/carousel-panel-1.svg</span> <span class="token string">"Carousel Panel One"</span>)</span>
+
+::
+
+<span class="token url"><span class="token operator">!</span>[<span class="token content">Carousel panel two</span>](<span class="token url">single-file-test/assets/carousel-panel-2.svg</span> <span class="token string">"Carousel Panel Two"</span>)</span>
+
+::
+
+<span class="token url"><span class="token operator">!</span>[<span class="token content">Carousel panel three</span>](<span class="token url">single-file-test/assets/carousel-panel-3.svg</span> <span class="token string">"Carousel Panel Three"</span>)</span>
+
+:::
+</code></pre>
+<wa-carousel class="spec-up-carousel" navigation="" pagination="" mouse-dragging=""><wa-carousel-item><p><img src="single-file-test/assets/carousel-panel-1.svg" alt="Carousel panel one" title="Carousel Panel One"></p></wa-carousel-item><wa-carousel-item><p><img src="single-file-test/assets/carousel-panel-2.svg" alt="Carousel panel two" title="Carousel Panel Two"></p></wa-carousel-item><wa-carousel-item><p><img src="single-file-test/assets/carousel-panel-3.svg" alt="Carousel panel three" title="Carousel Panel Three"></p></wa-carousel-item></wa-carousel>
+
+
+
+
+
+
+<h2 id="fancy-links"><span class="spec-up-heading-text">Fancy Links</span><a class="toc-anchor" href="#fancy-links">§</a></h2>
+<p>Spec-Up automatically upgrades the links of certain sites, like GitHub. GitHub is the only supported site with Fancy Links right now, but we’ll be adding more as we go.</p>
+<h3 id="github"><span class="spec-up-heading-text">GitHub</span><a class="toc-anchor" href="#github">§</a></h3>
+<ul>
+<li><strong>Issues</strong>
+<ul>
+<li>Source: <code>https://github.com/decentralized-identity/presentation-exchange/issues/119</code></li>
+<li>Render: <a path-0="github.com" path-1="decentralized-identity" path-2="presentation-exchange" path-3="issues" path-4="119" href="https://github.com/decentralized-identity/presentation-exchange/issues/119"><span>https://github.com/decentralized-identity/presentation-exchange/issues/119</span></a></li>
+</ul>
+</li>
+<li><strong>Pull Requests</strong>
+<ul>
+<li>Source: <code>https://github.com/decentralized-identity/sidetree/pull/863</code></li>
+<li>Render: <a path-0="github.com" path-1="decentralized-identity" path-2="sidetree" path-3="pull" path-4="863" href="https://github.com/decentralized-identity/sidetree/pull/863"><span>https://github.com/decentralized-identity/sidetree/pull/863</span></a></li>
+</ul>
+</li>
+<li><strong>Releases</strong>
+<ul>
+<li>Source: <code>https://github.com/decentralized-identity/sidetree/releases/tag/v0.9.1</code></li>
+<li>Render: <a path-0="github.com" path-1="decentralized-identity" path-2="sidetree" path-3="releases" path-4="tag" path-5="v0.9.1" href="https://github.com/decentralized-identity/sidetree/releases/tag/v0.9.1"><span>https://github.com/decentralized-identity/sidetree/releases/tag/v0.9.1</span></a></li>
+</ul>
+</li>
+<li><strong>Projects</strong>
+<ul>
+<li>Source: <code>https://github.com/decentralized-identity/sidetree/projects/1</code></li>
+<li>Render: <a path-0="github.com" path-1="decentralized-identity" path-2="sidetree" path-3="projects" path-4="1" href="https://github.com/decentralized-identity/sidetree/projects/1"><span>https://github.com/decentralized-identity/sidetree/projects/1</span></a></li>
+</ul>
+</li>
+</ul>
+<h2 id="external-spec-references"><span class="spec-up-heading-text">External Spec References</span><a class="toc-anchor" href="#external-spec-references">§</a></h2>
+<p>You can reference external specifications from IETF, W3C, and WHATWG as follows:</p>
+<ol>
+<li>Anywhere in your document you want to referece an external specification, use the <code>spec</code>-prefixed custom token format: <code>[[spec:RFC4122]]</code></li>
+<li>Wherever in your document you want to print out all your external specification references, use the <code>spec</code> custom token format <em>without any spec name</em>: <code>[[spec]]</code></li>
+</ol>
+<ul>
+<li>If you want to split up your references into groups (e.g. normative vs informative), just make sure to use dash-delimited unique reference grouping string in your custom tokens: <code>[[spec-norm:RFC4122]]</code>, <code>[[spec-inform:RFC4122]]</code>, <code>[[spec-foo:RFC4122]]</code>, etc.</li>
+<li>To print out a custom group’s references, just include the grouping string for a given set of references in a custom token <em>without any spec name</em>: <code>[[spec-norm]]</code>, <code>[[spec-inform]]</code>, <code>[[spec-foo]]</code>.</li>
+</ul>
+<p>Here are a set of example references that are distributed among the reference groups <code>spec</code>, <code>spec-norm</code>, <code>spec-inform</code>:</p>
+<ul>
+<li>[<a class="spec-reference" href="#ref:RFC3548">RFC3548</a>] (<code>[[spec:RFC3548]]</code>)</li>
+<li>[<a class="spec-reference" href="#ref:RFC7518">RFC7518</a>] (<code>[[spec:RFC7518]]</code>)</li>
+<li>[<a class="spec-reference" href="#ref:DID-CORE">DID-CORE</a>] (<code>[[spec-norm:DID-CORE]]</code>)</li>
+<li>[<a class="spec-reference" href="#ref:DID-SPEC-REGISTRIES">DID-SPEC-REGISTRIES</a>] (<code>[[spec-norm:DID-SPEC-REGISTRIES]]</code>)</li>
+<li>[<a class="spec-reference" href="#ref:RFC6901">RFC6901</a>] (<code>[[spec-inform:RFC6901]]</code>)</li>
+<li>[<a class="spec-reference" href="#ref:RFC7230">RFC7230</a>] (<code>[[spec-inform:RFC7230]]</code>)</li>
+</ul>
+<h3 id="default-references"><span class="spec-up-heading-text">Default References</span><a class="toc-anchor" href="#default-references">§</a></h3>
+<p>This is what is printed out when you include the <code>[[spec]]</code> custom token in your Markdown:</p>
+<p>
+</p><dl class="reference-list">
+      <dt id="ref:RFC3548">RFC3548</dt>
+      <dd>
+        <cite><a href="https://www.rfc-editor.org/rfc/rfc3548">The Base16, Base32, and Base64 Data Encodings</a></cite>.
+        S. Josefsson, Ed.; 2003-07. <span class="reference-status">Status: Informational</span>.
+      </dd>
+    
+      <dt id="ref:RFC7518">RFC7518</dt>
+      <dd>
+        <cite><a href="https://www.rfc-editor.org/rfc/rfc7518">JSON Web Algorithms (JWA)</a></cite>.
+        M. Jones; 2015-05. <span class="reference-status">Status: Proposed Standard</span>.
+      </dd>
+    
+</dl>
+<p></p>
+<h3 id="normative-references"><span class="spec-up-heading-text">Normative References</span><a class="toc-anchor" href="#normative-references">§</a></h3>
+<p>This is what is printed out when you include the <code>[[spec-norm]]</code> custom token in your Markdown:</p>
+<p>
+</p><dl class="reference-list">
+      <dt id="ref:DID-CORE">DID-CORE</dt>
+      <dd>
+        <cite><a href="https://www.w3.org/TR/did-core/">Decentralized Identifiers (DIDs) v1.0</a></cite>.
+        Manu Sporny; Amy Guy; Markus Sabadello; Drummond Reed; 2022-07-19. <span class="reference-status">Status: REC</span>.
+      </dd>
+    
+      <dt id="ref:DID-SPEC-REGISTRIES">DID-SPEC-REGISTRIES</dt>
+      <dd>
+        <cite><a href="https://www.w3.org/TR/did-spec-registries/">DID Specification Registries</a></cite>.
+        Orie Steele; Manu Sporny; 2023-09-11. <span class="reference-status">Status: NOTE</span>.
+      </dd>
+    
+</dl>
+<p></p>
+<h3 id="informative-references"><span class="spec-up-heading-text">Informative References</span><a class="toc-anchor" href="#informative-references">§</a></h3>
+<p>This is what is printed out when you include the <code>[[spec-inform]]</code> custom token in your Markdown:</p>
+<p>
+</p><dl class="reference-list">
+      <dt id="ref:RFC6901">RFC6901</dt>
+      <dd>
+        <cite><a href="https://www.rfc-editor.org/rfc/rfc6901">JavaScript Object Notation (JSON) Pointer</a></cite>.
+        P. Bryan, Ed.; K. Zyp; M. Nottingham, Ed.; 2013-04. <span class="reference-status">Status: Proposed Standard</span>.
+      </dd>
+    
+      <dt id="ref:RFC7230">RFC7230</dt>
+      <dd>
+        <cite><a href="https://httpwg.org/specs/rfc7230.html">Hypertext Transfer Protocol (HTTP/1.1): Message Syntax and Routing</a></cite>.
+        R. Fielding, Ed.; J. Reschke, Ed.; 2014-06. <span class="reference-status">Status: Proposed Standard</span>.
+      </dd>
+    
+</dl>
+<p></p>
+
+            </article>
+          </main>
+        </wa-page>
+
+        
+      <wa-drawer id="repo_issues_drawer" class="spec-up-issues-drawer" label="GitHub Issues" placement="end" light-dismiss>
+        <div slot="label" class="spec-up-drawer-title">
+          <div class="spec-up-drawer-title-row">
+            <div class="spec-up-drawer-heading">
+              <span>GitHub Issues</span>
+            </div>
+            <div class="spec-up-drawer-title-actions"></div>
+          </div>
+          <div class="spec-up-issues-search-row">
+            <wa-input id="repo_issue_search" type="search" placeholder="Search open issues" autocomplete="off" spellcheck="false" size="small">
+              <wa-icon slot="start" name="search" label="Search GitHub issues"></wa-icon>
+              <span slot="end" class="spec-up-issues-search-end">
+                <span id="repo_issue_search_spinner" class="spec-up-issues-search-spinner" hidden aria-hidden="true">
+                  <wa-spinner></wa-spinner>
+                </span>
+                <button id="repo_issue_search_clear" type="button" aria-label="Clear issue search" disabled>Clear</button>
+              </span>
+            </wa-input>
+          </div>
+        </div>
+        <div id="repo_issue_panel" class="spec-up-issues-panel">
+          <p id="repo_issue_status">Loading open GitHub issues…</p>
+          <ul id="repo_issue_list" class="spec-up-issue-list"></ul>
+          <div id="repo_issue_load_more" class="spec-up-issues-loading" hidden>
+            <wa-spinner></wa-spinner>
+            <span>Loading more issues…</span>
+          </div>
+        </div>
+      </wa-drawer>
+    
+
+        
+        <script>window.specConfig = {"title":"Spec-Up Example","spec_directory":"./single-file-test","output_path":"./","logo":"logo.svg","logo_link":"https://github.com/decentralized-identity/spec-up","source":{"host":"github","account":"decentralized-identity","repo":"spec-up"},"external_specs":[{"PE":"https://identity.foundation/presentation-exchange"}],"katex":true}</script>
+        <script src="assets/compiled/body.js"></script>
+      </body>
+    </html>
+  
