@@ -896,6 +896,8 @@ wa-drawer.spec-up-issues-drawer::part(body) {
 }
 
 wa-page.spec-up-shell::part(menu) {
+  width: 100%;
+  max-width: 375px;
   background-color: rgba(255 255 255 / 0.03);
 }
 
@@ -1258,6 +1260,10 @@ wa-page.spec-up-shell[view='desktop'] [data-toggle-nav] {
 
 wa-page.spec-up-shell[view='mobile'] {
   --menu-width: 0;
+}
+
+wa-page.spec-up-shell[view='mobile']::part(menu) {
+  background-color: transparent;
 }
 
 wa-page.spec-up-shell[view='mobile']::part(navigation) {
