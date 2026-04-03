@@ -541,11 +541,87 @@ Details of what I want to show here.
 [[progress: bar, 50]]
 
 [[progress: ring, 75]]
+
+[[progress: bar, 50, 50%]]
+
+[[progress: ring, 75, 3rem]]
 ```
 
 [[progress: bar, 50]]
 
 [[progress: ring, 75]]
+
+[[progress: bar, 50, 50%]]
+
+[[progress: ring, 75, 3rem]]
+
+## Relative Time
+
+```markdown
+[[time: 2020-07-15T09:17:00-04:00, long]]
+
+[[time: 2020-07-15T09:17:00-04:00, short]]
+```
+
+[[time: 2020-07-15T09:17:00-04:00, long]]
+
+[[time: 2020-07-15T09:17:00-04:00, short]]
+
+## Copy
+
+```markdown
+[[copy: did:key:z6Mkf4XhsxVYQ1nQ6V6k4Q9j7xVjQm1Qw9Yk6B8JfP3L2mN4]]
+
+[[copy: https://github.com/decentralized-identity/spec-up]]
+```
+
+[[copy: did:key:z6Mkf4XhsxVYQ1nQ6V6k4Q9j7xVjQm1Qw9Yk6B8JfP3L2mN4]]
+
+[[copy: https://github.com/decentralized-identity/spec-up]]
+
+## QR Codes
+
+```markdown
+[[qr: github.com/csuwildcat]]
+
+[[qr: github.com/csuwildcat, 200]]
+```
+
+[[qr: github.com/csuwildcat]]
+
+[[qr: github.com/csuwildcat, 200]]
+
+## Carousel
+
+```markdown
+::: carousel
+
+![Carousel panel one](single-file-test/assets/carousel-panel-1.svg "Carousel Panel One")
+
+::
+
+![Carousel panel two](single-file-test/assets/carousel-panel-2.svg "Carousel Panel Two")
+
+::
+
+![Carousel panel three](single-file-test/assets/carousel-panel-3.svg "Carousel Panel Three")
+
+:::
+```
+
+::: carousel
+
+![Carousel panel one](single-file-test/assets/carousel-panel-1.svg "Carousel Panel One")
+
+::
+
+![Carousel panel two](single-file-test/assets/carousel-panel-2.svg "Carousel Panel Two")
+
+::
+
+![Carousel panel three](single-file-test/assets/carousel-panel-3.svg "Carousel Panel Three")
+
+:::
 
 ## Fancy Links
 

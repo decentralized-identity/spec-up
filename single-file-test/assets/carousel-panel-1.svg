@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="720" viewBox="0 0 1200 720" role="img" aria-labelledby="title desc">
+  <title id="title">Carousel Panel One</title>
+  <desc id="desc">A warm gradient test image with circular overlays.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1f3a5f" />
+      <stop offset="55%" stop-color="#ff7b54" />
+      <stop offset="100%" stop-color="#ffd166" />
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="720" fill="url(#bg)" rx="36" />
+  <circle cx="230" cy="180" r="140" fill="rgba(255,255,255,0.18)" />
+  <circle cx="920" cy="520" r="210" fill="rgba(255,255,255,0.12)" />
+  <rect x="90" y="500" width="1020" height="110" rx="24" fill="rgba(15,23,42,0.28)" />
+  <text x="120" y="560" fill="#ffffff" font-family="Arial, sans-serif" font-size="58" font-weight="700">Spec-Up Carousel Demo 01</text>
+  <text x="120" y="606" fill="#fff6e8" font-family="Arial, sans-serif" font-size="28">Warm gradient panel rendered from markdown image syntax.</text>
+</svg>

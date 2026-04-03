@@ -50,6 +50,7 @@ const PROGRESS_COMPONENTS = {
   'wa-progress-bar': 'wa-progress-bar',
   'wa-progress-ring': 'wa-progress-ring'
 };
+const RELATIVE_TIME_FORMATS = new Set(['long', 'short', 'narrow']);
 
 function slugifyHeading(value) {
   const base = String(value)
@@ -113,6 +114,27 @@ function createTabGroup(document, tabs, activeIndex = 0) {
   return tabGroup;
 }
 
+function createCarousel(document, slides) {
+  const carousel = document.createElement('wa-carousel');
+
+  carousel.className = 'spec-up-carousel';
+  carousel.setAttribute('navigation', '');
+  carousel.setAttribute('pagination', '');
+  carousel.setAttribute('mouse-dragging', '');
+
+  slides.forEach(slideDefinition => {
+    const item = document.createElement('wa-carousel-item');
+
+    for (const node of slideDefinition.nodes || []) {
+      item.append(node);
+    }
+
+    carousel.append(item);
+  });
+
+  return carousel;
+}
+
 function convertLegacyTabPanels(document) {
   for (const legacyGroup of document.querySelectorAll('tab-panels')) {
     const legacyNav = Array.from(legacyGroup.children).find(child => child.tagName === 'NAV');
@@ -146,6 +168,14 @@ function isTabsFenceOpen(element) {
 
 function isTabsFenceClose(element) {
   return Boolean(element && element.tagName === 'P' && /^:::\s*$/.test(element.textContent.trim()));
+}
+
+function isCarouselFenceOpen(element) {
+  return Boolean(element && element.tagName === 'P' && /^:::\s+carousel\s*$/i.test(element.textContent.trim()));
+}
+
+function isCarouselSlideSeparator(element) {
+  return Boolean(element && element.tagName === 'P' && /^::\s*$/.test(element.textContent.trim()));
 }
 
 function convertTabsFenceAt(openMarker) {
@@ -202,6 +232,57 @@ function convertTabsFenceAt(openMarker) {
   return tabGroup;
 }
 
+function convertCarouselFenceAt(openMarker) {
+  const document = openMarker.ownerDocument;
+  const separatorMarkers = [];
+  const slides = [{
+    nodes: []
+  }];
+  let closeMarker = null;
+  let currentSlide = slides[0];
+  let cursor = openMarker.nextElementSibling;
+
+  while (cursor) {
+    const next = cursor.nextElementSibling;
+
+    if (isTabsFenceClose(cursor)) {
+      closeMarker = cursor;
+      break;
+    }
+
+    if (isCarouselSlideSeparator(cursor)) {
+      currentSlide = {
+        nodes: []
+      };
+      separatorMarkers.push(cursor);
+      slides.push(currentSlide);
+      cursor = next;
+      continue;
+    }
+
+    currentSlide.nodes.push(cursor);
+    cursor = next;
+  }
+
+  const populatedSlides = slides.filter(slide => slide.nodes.length > 0);
+
+  if (!closeMarker || populatedSlides.length === 0) {
+    return null;
+  }
+
+  const carousel = createCarousel(document, populatedSlides);
+
+  openMarker.replaceWith(carousel);
+
+  for (const separatorMarker of separatorMarkers) {
+    separatorMarker.remove();
+  }
+
+  closeMarker.remove();
+
+  return carousel;
+}
+
 function convertTabsFenceMarkup(root) {
   let child = root.firstElementChild;
 
@@ -217,6 +298,25 @@ function convertTabsFenceMarkup(root) {
     }
 
     convertTabsFenceMarkup(child);
+    child = child.nextElementSibling;
+  }
+}
+
+function convertCarouselFenceMarkup(root) {
+  let child = root.firstElementChild;
+
+  while (child) {
+    if (isCarouselFenceOpen(child)) {
+      const replacement = convertCarouselFenceAt(child);
+
+      if (replacement) {
+        convertCarouselFenceMarkup(replacement);
+        child = replacement.nextElementSibling;
+        continue;
+      }
+    }
+
+    convertCarouselFenceMarkup(child);
     child = child.nextElementSibling;
   }
 }
@@ -261,13 +361,14 @@ function convertLegacyCharts(document) {
 }
 
 function transformLegacyMarkup(html) {
-  if (!html.includes('<tab-panels') && !html.includes('class="chartjs"') && !html.includes('::: tabs')) {
+  if (!html.includes('<tab-panels') && !html.includes('class="chartjs"') && !html.includes('::: tabs') && !html.includes('::: carousel')) {
     return html;
   }
 
   const dom = new JSDOM(`<body>${html}</body>`);
   const { document } = dom.window;
 
+  convertCarouselFenceMarkup(document.body);
   convertTabsFenceMarkup(document.body);
   convertLegacyTabPanels(document);
   convertLegacyCharts(document);
@@ -435,7 +536,17 @@ function formatProgressValue(value) {
   return Number.isInteger(value) ? String(value) : String(value).replace(/(?:\.0+|(\.\d+?)0+)$/, '$1');
 }
 
-function renderProgress(type, value, label) {
+function normalizeProgressSize(size) {
+  const normalizedSize = String(size || '').trim();
+
+  if (!normalizedSize) {
+    return '';
+  }
+
+  return /^(?:0|(?:\d+|\d*\.\d+)(?:%|[a-z]+))$/i.test(normalizedSize) ? normalizedSize : '';
+}
+
+function renderProgress(type, value, sizeOrLabel, label) {
   const tagName = PROGRESS_COMPONENTS[String(type || '').trim().toLowerCase()];
   const parsedValue = Number.parseFloat(String(value || '').trim());
 
@@ -444,9 +555,63 @@ function renderProgress(type, value, label) {
   }
 
   const normalizedValue = formatProgressValue(Math.max(0, Math.min(100, parsedValue)));
-  const normalizedLabel = String(label || '').trim() || normalizedValue;
+  const defaultLabel = `${normalizedValue}%`;
+  const normalizedSize = normalizeProgressSize(sizeOrLabel);
+  const labelSource = label === undefined && !normalizedSize ? sizeOrLabel : label;
+  const normalizedLabel = (labelSource == null ? '' : String(labelSource)).trim() || defaultLabel;
+  const styleAttribute = normalizedSize
+    ? tagName === 'wa-progress-ring'
+      ? ` style="--size: ${escapeHtml(normalizedSize)};"`
+      : ` style="width: ${escapeHtml(normalizedSize)};"`
+    : '';
 
-  return `<${tagName} value="${escapeHtml(normalizedValue)}">${escapeHtml(normalizedLabel)}</${tagName}>`;
+  return `<${tagName} value="${escapeHtml(normalizedValue)}"${styleAttribute}>${escapeHtml(normalizedLabel)}</${tagName}>`;
+}
+
+function renderRelativeTime(date, format) {
+  const normalizedDate = String(date || '').trim();
+  const normalizedFormat = String(format || '').trim().toLowerCase();
+
+  if (!normalizedDate) {
+    return '';
+  }
+
+  const formatAttribute = RELATIVE_TIME_FORMATS.has(normalizedFormat)
+    ? ` format="${escapeHtml(normalizedFormat)}"`
+    : '';
+
+  return `<wa-relative-time date="${escapeHtml(normalizedDate)}"${formatAttribute}></wa-relative-time>`;
+}
+
+function renderCopyLine(text, state) {
+  const normalizedText = String(text || '').trim();
+
+  if (!normalizedText) {
+    return '';
+  }
+
+  const nextIndex = (state.copyLineCount || 0) + 1;
+  const copyTargetId = `spec-up-copy-target-${nextIndex}`;
+
+  state.copyLineCount = nextIndex;
+
+  return `<span class="spec-up-copy-line"><span class="spec-up-copy-text" id="${copyTargetId}">${escapeHtml(normalizedText)}</span><wa-copy-button class="spec-up-copy-button" from="${copyTargetId}" copy-label="Copy" success-label="Copied" error-label="Copy failed"></wa-copy-button></span>`;
+}
+
+function renderQrCode(value, size) {
+  const normalizedValue = String(value || '').trim();
+  const normalizedSize = String(size || '').trim();
+  const parsedSize = Number.parseInt(normalizedSize, 10);
+
+  if (!normalizedValue) {
+    return '';
+  }
+
+  const sizeAttribute = Number.isFinite(parsedSize) && parsedSize > 0
+    ? ` size="${escapeHtml(String(parsedSize))}"`
+    : '';
+
+  return `<wa-qr-code value="${escapeHtml(normalizedValue)}"${sizeAttribute}></wa-qr-code>`;
 }
 
 function createCoreMarkdownPlugin() {
@@ -470,8 +635,11 @@ function createCoreMarkdownPlugin() {
           4: 0
         }
       };
+      state.copyLineCount = 0;
     },
-    markdownTemplates() {
+    markdownTemplates({ state } = {}) {
+      const copyState = state || { copyLineCount: 0 };
+
       return [
         {
           filter(type) {
@@ -485,8 +653,32 @@ function createCoreMarkdownPlugin() {
           filter(type) {
             return type === 'progress';
           },
-          render(token, type, progressType, value, label) {
-            return renderProgress(progressType, value, label);
+          render(token, type, progressType, value, size, label) {
+            return renderProgress(progressType, value, size, label);
+          }
+        },
+        {
+          filter(type) {
+            return type === 'time';
+          },
+          render(token, type, date, format) {
+            return renderRelativeTime(date, format);
+          }
+        },
+        {
+          filter(type) {
+            return type === 'copy';
+          },
+          render(token, type, text) {
+            return renderCopyLine(text, copyState);
+          }
+        },
+        {
+          filter(type) {
+            return type === 'qr';
+          },
+          render(token, type, value, size) {
+            return renderQrCode(value, size);
           }
         }
       ];

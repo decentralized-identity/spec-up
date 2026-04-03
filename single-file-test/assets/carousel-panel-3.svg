@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="720" viewBox="0 0 1200 720" role="img" aria-labelledby="title desc">
+  <title id="title">Carousel Panel Three</title>
+  <desc id="desc">A green and cream test image with layered arcs.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="100%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#14532d" />
+      <stop offset="55%" stop-color="#22c55e" />
+      <stop offset="100%" stop-color="#fef3c7" />
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="720" fill="url(#bg)" rx="36" />
+  <path d="M0 560 C180 420 320 390 470 430 C650 478 790 630 1200 500 L1200 720 L0 720 Z" fill="rgba(255,255,255,0.28)" />
+  <path d="M0 470 C160 360 360 320 560 380 C780 446 930 598 1200 520" fill="none" stroke="rgba(255,255,255,0.36)" stroke-width="24" stroke-linecap="round" />
+  <text x="94" y="122" fill="#0f172a" font-family="Arial, sans-serif" font-size="58" font-weight="700">Spec-Up Carousel Demo 03</text>
+  <text x="94" y="168" fill="#163020" font-family="Arial, sans-serif" font-size="28">Layered arc panel rendered from markdown image syntax.</text>
+</svg>

@@ -36,10 +36,14 @@ test('sidebar layout removes drawer body padding and resets toc item offsets', (
   assert.match(css, /wa-page\.spec-up-shell::part\(drawer__body\)\s*\{[^}]*padding:\s*0;/s);
   assert.match(css, /wa-page\.spec-up-shell\[view='desktop'\]::part\(navigation\)\s*\{[^}]*display:\s*flex;/s);
   assert.match(css, /#toc\s*\{[^}]*padding:\s*1\.1rem 1\.1rem 0;/s);
-  assert.match(css, /wa-page\.spec-up-shell\[view='desktop'\] #toc\s*\{[^}]*background-color:\s*rgba\(255 255 255 \/ 0\.03\);/s);
+  assert.match(css, /wa-page\.spec-up-shell::part\(menu\)\s*\{[^}]*background-color:\s*rgba\(255 255 255 \/ 0\.03\);/s);
   assert.match(css, /\.spec-up-navigation-title\s*\{[^}]*padding:\s*0 !important;/s);
   assert.match(css, /\.toc li\s*\{[^}]*margin:\s*0;[^}]*padding:\s*0;/s);
   assert.match(css, /\.spec-up-tab-group wa-tab-panel::part\(base\)\s*\{[^}]*padding:\s*0;/s);
+  assert.match(css, /\.spec-up-copy-line\s*\{[^}]*display:\s*inline-flex;[^}]*gap:\s*0\.45rem;[^}]*max-width:\s*100%;/s);
+  assert.match(css, /\.spec-up-copy-text\s*\{[^}]*padding:\s*0\.15rem 0\.35rem;[^}]*transition:\s*background-color 180ms ease, box-shadow 180ms ease;/s);
+  assert.match(css, /\.spec-up-copy-line:has\(wa-copy-button:hover\) \.spec-up-copy-text,\s*\.spec-up-copy-line:has\(wa-copy-button:focus-within\) \.spec-up-copy-text\s*\{[^}]*background-color:\s*color-mix\(in srgb, var\(--wa-color-brand-fill-quiet\) 55%, transparent\);/s);
+  assert.match(css, /wa-progress-ring::part\(label\)\s*\{[^}]*font-size:\s*clamp\(0\.65rem,\s*calc\(var\(--size\)\s*\/\s*5\),\s*1\.25rem\);/s);
   assert.match(css, /wa-page\.spec-up-shell\[view='mobile'\]\s*\{[^}]*--menu-width:\s*0;/s);
   assert.match(css, /wa-page\.spec-up-shell\[view='mobile'\]::part\(navigation\)\s*\{[^}]*padding-top:\s*0;[^}]*background-color:\s*transparent;/s);
 });

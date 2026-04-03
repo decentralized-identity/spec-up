@@ -110,7 +110,7 @@
           </div>
 
           <nav id="toc" slot="navigation" aria-label="Table of contents">
-            <ul class="toc"><li><a href="#abstract">Abstract</a></li><li><a href="#getting-started">Getting Started</a></li><li><a href="#table-of-contents">Table of Contents</a></li><li><a href="#term-references">Term References</a><ul><li><a href="#definition-lists">Definition Lists</a></li><li><a href="#table-defined-terms">Table-defined Terms</a></li><li><a href="#external-term-references">External Term References</a></li></ul></li><li><a href="#blockquote">Blockquote</a></li><li><a href="#notices">Notices</a></li><li><a href="#content-insertion">Content Insertion</a></li><li><a href="#tables">Tables</a></li><li><a href="#sequence-diagrams">Sequence Diagrams</a></li><li><a href="#flows">Flows</a></li><li><a href="#charts">Charts</a></li><li><a href="#syntax-highlighting">Syntax Highlighting</a></li><li><a href="#tex-math-equations">TeX Math Equations</a></li><li><a href="#tab-panels">Tab Panels</a></li><li><a href="#summary-blocks">Summary Blocks</a></li><li><a href="#badges">Badges</a></li><li><a href="#progress">Progress</a></li><li><a href="#fancy-links">Fancy Links</a><ul><li><a href="#github">GitHub</a></li></ul></li><li><a href="#external-spec-references">External Spec References</a><ul><li><a href="#default-references">Default References</a></li><li><a href="#normative-references">Normative References</a></li><li><a href="#informative-references">Informative References</a></li></ul></li></ul>
+            <ul class="toc"><li><a href="#abstract">Abstract</a></li><li><a href="#getting-started">Getting Started</a></li><li><a href="#table-of-contents">Table of Contents</a></li><li><a href="#term-references">Term References</a><ul><li><a href="#definition-lists">Definition Lists</a></li><li><a href="#table-defined-terms">Table-defined Terms</a></li><li><a href="#external-term-references">External Term References</a></li></ul></li><li><a href="#blockquote">Blockquote</a></li><li><a href="#notices">Notices</a></li><li><a href="#content-insertion">Content Insertion</a></li><li><a href="#tables">Tables</a></li><li><a href="#sequence-diagrams">Sequence Diagrams</a></li><li><a href="#flows">Flows</a></li><li><a href="#charts">Charts</a></li><li><a href="#syntax-highlighting">Syntax Highlighting</a></li><li><a href="#tex-math-equations">TeX Math Equations</a></li><li><a href="#tab-panels">Tab Panels</a></li><li><a href="#summary-blocks">Summary Blocks</a></li><li><a href="#badges">Badges</a></li><li><a href="#progress">Progress</a></li><li><a href="#relative-time">Relative Time</a></li><li><a href="#copy">Copy</a></li><li><a href="#qr-codes">QR Codes</a></li><li><a href="#carousel">Carousel</a></li><li><a href="#fancy-links">Fancy Links</a><ul><li><a href="#github">GitHub</a></li></ul></li><li><a href="#external-spec-references">External Spec References</a><ul><li><a href="#default-references">Default References</a></li><li><a href="#normative-references">Normative References</a></li><li><a href="#informative-references">Informative References</a></li></ul></li></ul>
           </nav>
 
           <main class="spec-up-main">
@@ -683,9 +683,58 @@ Details of what I want to show here.
 <pre class="language-markdown"><code class="language-markdown">[[progress: bar, 50]]
 
 [[progress: ring, 75]]
+
+[[progress: bar, 50, 50%]]
+
+[[progress: ring, 75, 3rem]]
 </code></pre>
-<p><wa-progress-bar value="50">50</wa-progress-bar></p>
-<p><wa-progress-ring value="75">75</wa-progress-ring></p>
+<p><wa-progress-bar value="50">50%</wa-progress-bar></p>
+<p><wa-progress-ring value="75">75%</wa-progress-ring></p>
+<p><wa-progress-bar value="50" style="width: 50%;">50%</wa-progress-bar></p>
+<p><wa-progress-ring value="75" style="--size: 3rem;">75%</wa-progress-ring></p>
+<h2 id="relative-time"><span class="spec-up-heading-text">Relative Time</span><a class="toc-anchor" href="#relative-time">§</a></h2>
+<pre class="language-markdown"><code class="language-markdown">[[time: 2020-07-15T09:17:00-04:00, long]]
+
+[[time: 2020-07-15T09:17:00-04:00, short]]
+</code></pre>
+<p><wa-relative-time date="2020-07-15T09:17:00-04:00" format="long"></wa-relative-time></p>
+<p><wa-relative-time date="2020-07-15T09:17:00-04:00" format="short"></wa-relative-time></p>
+<h2 id="copy"><span class="spec-up-heading-text">Copy</span><a class="toc-anchor" href="#copy">§</a></h2>
+<pre class="language-markdown"><code class="language-markdown">[[copy: did:key:z6Mkf4XhsxVYQ1nQ6V6k4Q9j7xVjQm1Qw9Yk6B8JfP3L2mN4]]
+
+[[copy: https://github.com/decentralized-identity/spec-up]]
+</code></pre>
+<p><span class="spec-up-copy-line"><span class="spec-up-copy-text" id="spec-up-copy-target-1">did:key:z6Mkf4XhsxVYQ1nQ6V6k4Q9j7xVjQm1Qw9Yk6B8JfP3L2mN4</span><wa-copy-button class="spec-up-copy-button" from="spec-up-copy-target-1" copy-label="Copy" success-label="Copied" error-label="Copy failed"></wa-copy-button></span></p>
+<p><span class="spec-up-copy-line"><span class="spec-up-copy-text" id="spec-up-copy-target-2">https://github.com/decentralized-identity/spec-up</span><wa-copy-button class="spec-up-copy-button" from="spec-up-copy-target-2" copy-label="Copy" success-label="Copied" error-label="Copy failed"></wa-copy-button></span></p>
+<h2 id="qr-codes"><span class="spec-up-heading-text">QR Codes</span><a class="toc-anchor" href="#qr-codes">§</a></h2>
+<pre class="language-markdown"><code class="language-markdown">[[qr: github.com/csuwildcat]]
+
+[[qr: github.com/csuwildcat, 200]]
+</code></pre>
+<p><wa-qr-code value="github.com/csuwildcat"></wa-qr-code></p>
+<p><wa-qr-code value="github.com/csuwildcat" size="200"></wa-qr-code></p>
+<h2 id="carousel"><span class="spec-up-heading-text">Carousel</span><a class="toc-anchor" href="#carousel">§</a></h2>
+<pre class="language-markdown"><code class="language-markdown">::: carousel
+
+<span class="token url"><span class="token operator">!</span>[<span class="token content">Carousel panel one</span>](<span class="token url">single-file-test/assets/carousel-panel-1.svg</span> <span class="token string">"Carousel Panel One"</span>)</span>
+
+::
+
+<span class="token url"><span class="token operator">!</span>[<span class="token content">Carousel panel two</span>](<span class="token url">single-file-test/assets/carousel-panel-2.svg</span> <span class="token string">"Carousel Panel Two"</span>)</span>
+
+::
+
+<span class="token url"><span class="token operator">!</span>[<span class="token content">Carousel panel three</span>](<span class="token url">single-file-test/assets/carousel-panel-3.svg</span> <span class="token string">"Carousel Panel Three"</span>)</span>
+
+:::
+</code></pre>
+<wa-carousel class="spec-up-carousel" navigation="" pagination="" mouse-dragging=""><wa-carousel-item><p><img src="single-file-test/assets/carousel-panel-1.svg" alt="Carousel panel one" title="Carousel Panel One"></p></wa-carousel-item><wa-carousel-item><p><img src="single-file-test/assets/carousel-panel-2.svg" alt="Carousel panel two" title="Carousel Panel Two"></p></wa-carousel-item><wa-carousel-item><p><img src="single-file-test/assets/carousel-panel-3.svg" alt="Carousel panel three" title="Carousel Panel Three"></p></wa-carousel-item></wa-carousel>
+
+
+
+
+
+
 <h2 id="fancy-links"><span class="spec-up-heading-text">Fancy Links</span><a class="toc-anchor" href="#fancy-links">§</a></h2>
 <p>Spec-Up automatically upgrades the links of certain sites, like GitHub. GitHub is the only supported site with Fancy Links right now, but we’ll be adding more as we go.</p>
 <h3 id="github"><span class="spec-up-heading-text">GitHub</span><a class="toc-anchor" href="#github">§</a></h3>

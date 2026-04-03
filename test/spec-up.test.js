@@ -272,6 +272,43 @@ Bar test
   assert.doesNotMatch(html, /<p>:: Tab Title 1<\/p>/);
 });
 
+test('core markdown renders ::: carousel blocks as Web Awesome carousels with markdown content in each panel', async () => {
+  const plugin = createCoreMarkdownPlugin();
+  const state = {};
+  const md = new MarkdownIt({
+    html: true,
+    linkify: true,
+    typographer: true
+  });
+
+  await plugin.beforeRender({ state });
+  plugin.configureMarkdownIt({ md, state });
+
+  const rendered = md.render(`
+::: carousel
+
+First panel *content*
+
+::
+
+![The Spec-Up logo](logo.svg "Spec-Up Logo")
+
+::
+
+Third panel **content**
+
+:::
+`);
+  const html = plugin.transformRenderedHtml({ html: rendered });
+
+  assert.match(html, /<wa-carousel class="spec-up-carousel" navigation="" pagination="" mouse-dragging="">/);
+  assert.match(html, /<wa-carousel-item><p>First panel <em>content<\/em><\/p><\/wa-carousel-item>/);
+  assert.match(html, /<wa-carousel-item><p><img src="logo\.svg" alt="The Spec-Up logo" title="Spec-Up Logo"><\/p><\/wa-carousel-item>/);
+  assert.match(html, /<wa-carousel-item><p>Third panel <strong>content<\/strong><\/p><\/wa-carousel-item>/);
+  assert.doesNotMatch(html, /<p>::: carousel<\/p>/);
+  assert.doesNotMatch(html, /<p>::<\/p>/);
+});
+
 test('core markdown renders ::: summary blocks as Web Awesome details components', async () => {
   const plugin = createCoreMarkdownPlugin();
   const state = {};
@@ -326,7 +363,7 @@ Explicit: [[badge: Needs Attention, warning]]
   assert.match(html, /<wa-badge variant="warning">Needs Attention<\/wa-badge>/);
 });
 
-test('core markdown renders [[progress: ...]] tokens as Web Awesome progress bars and rings', async () => {
+test('core markdown renders [[progress: ...]] tokens as Web Awesome progress elements with percentage labels and optional sizing', async () => {
   const plugin = createCoreMarkdownPlugin();
   const state = {};
   const md = new MarkdownIt({
@@ -343,9 +380,89 @@ test('core markdown renders [[progress: ...]] tokens as Web Awesome progress bar
 Bar: [[progress: bar, 50]]
 
 Ring: [[progress: ring, 75]]
+
+Sized bar: [[progress: bar, 50, 50%]]
+
+Sized ring: [[progress: ring, 75, 3rem]]
 `);
   const html = plugin.transformRenderedHtml({ html: rendered });
 
-  assert.match(html, /<wa-progress-bar value="50">50<\/wa-progress-bar>/);
-  assert.match(html, /<wa-progress-ring value="75">75<\/wa-progress-ring>/);
+  assert.match(html, /<wa-progress-bar value="50">50%<\/wa-progress-bar>/);
+  assert.match(html, /<wa-progress-ring value="75">75%<\/wa-progress-ring>/);
+  assert.match(html, /<wa-progress-bar value="50" style="width: 50%;">50%<\/wa-progress-bar>/);
+  assert.match(html, /<wa-progress-ring value="75" style="--size: 3rem;">75%<\/wa-progress-ring>/);
+});
+
+test('core markdown renders [[time: ...]] tokens as Web Awesome relative time elements', async () => {
+  const plugin = createCoreMarkdownPlugin();
+  const state = {};
+  const md = new MarkdownIt({
+    html: true,
+    linkify: true,
+    typographer: true
+  });
+
+  await plugin.beforeRender({ state });
+  md.use(markdownItExtensions, plugin.markdownTemplates({ state }));
+  plugin.configureMarkdownIt({ md, state });
+
+  const rendered = md.render(`
+Long: [[time: 2020-07-15T09:17:00-04:00, long]]
+
+Short: [[time: 2020-07-15T09:17:00-04:00, short]]
+
+Default: [[time: 2020-07-15T09:17:00-04:00]]
+`);
+  const html = plugin.transformRenderedHtml({ html: rendered });
+
+  assert.match(html, /<wa-relative-time date="2020-07-15T09:17:00-04:00" format="long"><\/wa-relative-time>/);
+  assert.match(html, /<wa-relative-time date="2020-07-15T09:17:00-04:00" format="short"><\/wa-relative-time>/);
+  assert.match(html, /<wa-relative-time date="2020-07-15T09:17:00-04:00"><\/wa-relative-time>/);
+});
+
+test('core markdown renders [[copy: ...]] tokens as copy lines with Web Awesome copy buttons', async () => {
+  const plugin = createCoreMarkdownPlugin();
+  const state = {};
+  const md = new MarkdownIt({
+    html: true,
+    linkify: true,
+    typographer: true
+  });
+
+  await plugin.beforeRender({ state });
+  md.use(markdownItExtensions, plugin.markdownTemplates({ state }));
+  plugin.configureMarkdownIt({ md, state });
+
+  const rendered = md.render(`
+Copy this: [[copy: did:key:z6Mkf4XhsxVYQ1nQ6V6k4Q9j7xVjQm1Qw9Yk6B8JfP3L2mN4]]
+`);
+  const html = plugin.transformRenderedHtml({ html: rendered });
+
+  assert.match(html, /<span class="spec-up-copy-line">/);
+  assert.match(html, /<span class="spec-up-copy-text" id="spec-up-copy-target-1">did:key:z6Mkf4XhsxVYQ1nQ6V6k4Q9j7xVjQm1Qw9Yk6B8JfP3L2mN4<\/span>/);
+  assert.match(html, /<wa-copy-button class="spec-up-copy-button" from="spec-up-copy-target-1" copy-label="Copy" success-label="Copied" error-label="Copy failed"><\/wa-copy-button>/);
+});
+
+test('core markdown renders [[qr: ...]] tokens as Web Awesome qr codes with optional size', async () => {
+  const plugin = createCoreMarkdownPlugin();
+  const state = {};
+  const md = new MarkdownIt({
+    html: true,
+    linkify: true,
+    typographer: true
+  });
+
+  await plugin.beforeRender({ state });
+  md.use(markdownItExtensions, plugin.markdownTemplates({ state }));
+  plugin.configureMarkdownIt({ md, state });
+
+  const rendered = md.render(`
+Default: [[qr: github.com/csuwildcat]]
+
+Sized: [[qr: github.com/csuwildcat, 128]]
+`);
+  const html = plugin.transformRenderedHtml({ html: rendered });
+
+  assert.match(html, /<wa-qr-code value="github\.com\/csuwildcat"><\/wa-qr-code>/);
+  assert.match(html, /<wa-qr-code value="github\.com\/csuwildcat" size="128"><\/wa-qr-code>/);
 });

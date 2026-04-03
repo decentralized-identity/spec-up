@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="720" viewBox="0 0 1200 720" role="img" aria-labelledby="title desc">
+  <title id="title">Carousel Panel Two</title>
+  <desc id="desc">A cool gradient test image with a grid overlay.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#0f172a" />
+      <stop offset="50%" stop-color="#2563eb" />
+      <stop offset="100%" stop-color="#38bdf8" />
+    </linearGradient>
+    <pattern id="grid" width="48" height="48" patternUnits="userSpaceOnUse">
+      <path d="M 48 0 L 0 0 0 48" fill="none" stroke="rgba(255,255,255,0.18)" stroke-width="1" />
+    </pattern>
+  </defs>
+  <rect width="1200" height="720" fill="url(#bg)" rx="36" />
+  <rect width="1200" height="720" fill="url(#grid)" rx="36" />
+  <rect x="96" y="92" width="360" height="220" rx="28" fill="rgba(255,255,255,0.12)" />
+  <rect x="744" y="408" width="360" height="220" rx="28" fill="rgba(15,23,42,0.22)" />
+  <text x="96" y="510" fill="#ffffff" font-family="Arial, sans-serif" font-size="58" font-weight="700">Spec-Up Carousel Demo 02</text>
+  <text x="96" y="556" fill="#dbeafe" font-family="Arial, sans-serif" font-size="28">Cool-toned grid panel rendered from markdown image syntax.</text>
+</svg>
