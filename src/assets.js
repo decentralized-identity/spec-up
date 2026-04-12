@@ -8,6 +8,7 @@ const COMPILED_ASSET_DIRECTORY = path.join('assets', 'compiled');
 const COMPILED_BODY_PATH = path.join(COMPILED_ASSET_DIRECTORY, 'body.js');
 const COMPILED_HEAD_CSS_PATH = path.join(COMPILED_ASSET_DIRECTORY, 'head.css');
 const COMPILED_HEAD_PATH = path.join(COMPILED_ASSET_DIRECTORY, 'head.js');
+const COMPILED_ICON_LIBRARY_DIRECTORY = path.join(COMPILED_ASSET_DIRECTORY, 'icon-library');
 const COMPILED_THEME_PATH = path.join(COMPILED_ASSET_DIRECTORY, 'theme.js');
 
 function buildCustomAssetTags(spec) {
@@ -50,7 +51,15 @@ function buildCompiledTags(packageRoot) {
 }
 
 async function ensureCompiledAssetsForSpec(packageRoot, spec) {
-  const compiledFiles = [COMPILED_BODY_PATH, COMPILED_HEAD_CSS_PATH, COMPILED_HEAD_PATH, COMPILED_THEME_PATH];
+  const compiledFiles = [
+    COMPILED_BODY_PATH,
+    COMPILED_HEAD_CSS_PATH,
+    COMPILED_HEAD_PATH,
+    COMPILED_THEME_PATH
+  ];
+  const compiledDirectories = [
+    COMPILED_ICON_LIBRARY_DIRECTORY
+  ];
 
   await Promise.all(compiledFiles.map(async relativePath => {
     const sourcePath = path.resolve(packageRoot, relativePath);
@@ -62,6 +71,18 @@ async function ensureCompiledAssetsForSpec(packageRoot, spec) {
 
     await fsp.mkdir(path.dirname(destinationPath), { recursive: true });
     await fsp.copyFile(sourcePath, destinationPath);
+  }));
+
+  await Promise.all(compiledDirectories.map(async relativePath => {
+    const sourcePath = path.resolve(packageRoot, relativePath);
+    const destinationPath = path.resolve(spec.destination, relativePath);
+
+    if (sourcePath === destinationPath) {
+      return;
+    }
+
+    await fsp.mkdir(path.dirname(destinationPath), { recursive: true });
+    await fsp.cp(sourcePath, destinationPath, { force: true, recursive: true });
   }));
 }
 

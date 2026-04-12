@@ -149,7 +149,7 @@ function buildPageHtml({
           </div>
           <div class="spec-up-issues-search-row">
             <wa-input id="repo_issue_search" type="search" placeholder="Search open issues" autocomplete="off" spellcheck="false" size="small">
-              <wa-icon slot="start" name="search" label="Search GitHub issues"></wa-icon>
+              <wa-icon library="spec-up" slot="start" name="search" label="Search GitHub issues"></wa-icon>
               <span slot="end" class="spec-up-issues-search-end">
                 <span id="repo_issue_search_spinner" class="spec-up-issues-search-spinner" hidden aria-hidden="true">
                   <wa-spinner></wa-spinner>
@@ -173,7 +173,7 @@ function buildPageHtml({
   const issuesButtonMarkup = githubUrls
     ? `
         <wa-button class="spec-up-issues-trigger" size="small" appearance="outlined" variant="neutral" data-drawer="open repo_issues_drawer">
-          <wa-icon family="brands" name="github"></wa-icon>
+          <wa-icon library="spec-up" name="github"></wa-icon>
           Issues
         </wa-button>
     `
@@ -190,21 +190,21 @@ function buildPageHtml({
             variant="neutral"
             size="small"
           >
-            <wa-icon family="classic" name="sun" class="icon-embiggen only-light" aria-hidden="true"></wa-icon>
-            <wa-icon family="classic" name="moon" class="icon-embiggen only-dark" aria-hidden="true"></wa-icon>
+            <wa-icon library="spec-up" name="sun" class="icon-embiggen only-light" aria-hidden="true"></wa-icon>
+            <wa-icon library="spec-up" name="moon" class="icon-embiggen only-dark" aria-hidden="true"></wa-icon>
           </wa-button>
           <wa-dropdown-item value="light">
-            <wa-icon slot="icon" family="classic" name="sun" class="icon-embiggen" aria-hidden="true"></wa-icon>
+            <wa-icon library="spec-up" slot="icon" name="sun" class="icon-embiggen" aria-hidden="true"></wa-icon>
             Light
           </wa-dropdown-item>
           <wa-dropdown-item value="dark">
-            <wa-icon slot="icon" family="classic" name="moon" class="icon-embiggen" aria-hidden="true"></wa-icon>
+            <wa-icon library="spec-up" slot="icon" name="moon" class="icon-embiggen" aria-hidden="true"></wa-icon>
             Dark
           </wa-dropdown-item>
           <wa-divider></wa-divider>
           <wa-dropdown-item value="auto">
-            <wa-icon slot="icon" family="classic" name="sun" class="only-light icon-embiggen" aria-hidden="true"></wa-icon>
-            <wa-icon slot="icon" family="classic" name="moon" class="only-dark icon-embiggen" aria-hidden="true"></wa-icon>
+            <wa-icon library="spec-up" slot="icon" name="sun" class="only-light icon-embiggen" aria-hidden="true"></wa-icon>
+            <wa-icon library="spec-up" slot="icon" name="moon" class="only-dark icon-embiggen" aria-hidden="true"></wa-icon>
             System
           </wa-dropdown-item>
         </wa-dropdown>
@@ -237,7 +237,7 @@ function buildPageHtml({
           <header slot="header" id="app_header">
             <div class="spec-up-brand">
               <wa-button data-toggle-nav size="small" appearance="plain" variant="neutral" class="spec-up-nav-toggle" aria-label="Open table of contents">
-                <wa-icon name="bars"></wa-icon>
+                <wa-icon library="spec-up" name="bars"></wa-icon>
               </wa-button>
               ${logoMarkup}
               <div class="spec-up-brand-copy">

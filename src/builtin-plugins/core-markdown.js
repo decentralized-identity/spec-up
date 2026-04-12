@@ -493,7 +493,7 @@ function renderNoticeOpenTag(matches, state) {
     ? `<span class="spec-up-notice-title">${escapeHtml(title)}</span>`
     : '';
   const iconMarkup = config.icon
-    ? `<wa-icon slot="icon" name="${config.icon}" label="${escapeHtml(type)}"></wa-icon>`
+    ? `<wa-icon library="spec-up" slot="icon" name="${config.icon}" label="${escapeHtml(type)}"></wa-icon>`
     : '';
   let id;
 

@@ -164,18 +164,18 @@ test('renders github issues as a searchable drawer and moves the spec title into
   assert.match(html, /<wa-dropdown-item value="dark">/);
   assert.match(html, /<wa-dropdown-item value="auto">/);
   assert.match(html, /<wa-divider><\/wa-divider>/);
-  assert.match(html, /family="classic" name="sun" class="icon-embiggen only-light"/);
-  assert.match(html, /family="classic" name="moon" class="icon-embiggen only-dark"/);
+  assert.match(html, /library="spec-up" name="sun" class="icon-embiggen only-light"/);
+  assert.match(html, /library="spec-up" name="moon" class="icon-embiggen only-dark"/);
   assert.match(html, /<wa-drawer id="repo_issues_drawer"/);
   assert.match(html, /data-drawer="open repo_issues_drawer"/);
-  assert.match(html, /<wa-icon family="brands" name="github"><\/wa-icon>\s*Issues/);
-  assert.match(html, /<wa-button[^>]*data-toggle-nav[^>]*>\s*<wa-icon name="bars"><\/wa-icon>\s*<\/wa-button>/);
+  assert.match(html, /<wa-icon library="spec-up" name="github"><\/wa-icon>\s*Issues/);
+  assert.match(html, /<wa-button[^>]*data-toggle-nav[^>]*>\s*<wa-icon library="spec-up" name="bars"><\/wa-icon>\s*<\/wa-button>/);
   assert.match(html, /<div slot="navigation-header" class="spec-up-navigation-title">\s*<strong>Drawer Test<\/strong>/);
   assert.match(html, /<div class="spec-up-drawer-title-row">/);
   assert.match(html, /<div class="spec-up-drawer-title-row">[\s\S]*<div class="spec-up-drawer-title-actions"><\/div>\s*<\/div>\s*<div class="spec-up-issues-search-row">/);
   assert.match(html, /<div class="spec-up-issues-search-row">/);
   assert.match(html, /<wa-input id="repo_issue_search" type="search" placeholder="Search open issues"/);
-  assert.match(html, /<wa-icon slot="start" name="search" label="Search GitHub issues"><\/wa-icon>/);
+  assert.match(html, /<wa-icon library="spec-up" slot="start" name="search" label="Search GitHub issues"><\/wa-icon>/);
   assert.match(html, /<span slot="end" class="spec-up-issues-search-end">/);
   assert.match(html, /<span id="repo_issue_search_spinner" class="spec-up-issues-search-spinner" hidden aria-hidden="true">\s*<wa-spinner><\/wa-spinner>\s*<\/span>/);
   assert.match(html, /<button id="repo_issue_search_clear" type="button" aria-label="Clear issue search" disabled>Clear<\/button>/);
@@ -295,7 +295,7 @@ Check this out.
   const html = plugin.transformRenderedHtml({ html: rendered });
 
   assert.match(html, /<wa-callout id="basic-note" class="spec-up-notice spec-up-notice--note" variant="brand" appearance="filled-outlined">/);
-  assert.match(html, /<wa-icon slot="icon" name="circle-info" label="note"><\/wa-icon>/);
+  assert.match(html, /<wa-icon library="spec-up" slot="icon" name="circle-info" label="note"><\/wa-icon>/);
   assert.doesNotMatch(html, /<span class="spec-up-notice-title">Basic Note<\/span>/);
   assert.match(html, /<wa-callout id="code-example" class="spec-up-notice spec-up-notice--example" variant="neutral" appearance="filled-outlined"><div class="spec-up-notice-heading"><a class="notice-link" href="#code-example">EXAMPLE<\/a><span class="spec-up-notice-title">Code Example<\/span><\/div>/);
   assert.doesNotMatch(html, /spec-up-notice--example"[^>]*><wa-icon/s);

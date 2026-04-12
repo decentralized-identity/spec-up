@@ -7,6 +7,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const rootDirectory = path.resolve(__dirname, '..');
 const outputDirectory = path.join(rootDirectory, 'assets', 'compiled');
+const ICON_LIBRARY_DIRECTORY_NAME = 'icon-library';
 const HEAD_CSS_SOURCES = [
   path.join(rootDirectory, 'assets', 'css', 'prism.css'),
   path.join(rootDirectory, 'src', 'web-awesome', 'dist-cdn', 'styles', 'native.css'),
@@ -17,6 +18,7 @@ const HEAD_CSS_SOURCES = [
 ];
 const KATEX_CSS_SOURCE = path.join(rootDirectory, 'node_modules', 'katex', 'dist', 'katex.min.css');
 const KATEX_FONTS_SOURCE = path.join(rootDirectory, 'node_modules', 'katex', 'dist', 'fonts');
+const SPEC_UP_ICON_SYMBOL_PATTERN = /<symbol id="spec-up-icon-([^"]+)" viewBox="([^"]+)">([\s\S]*?)<\/symbol>/g;
 
 function createBundleConfig({
   assetsInlineLimit,
@@ -69,6 +71,44 @@ async function writeMergedCss(outputPath, sourcePaths) {
   await writeFile(outputPath, `${sections.join('\n\n')}\n`);
 }
 
+async function writeSpecUpIconLibrary(resolvedRoot, resolvedOutputDirectory) {
+  const iconSource = await readFile(path.join(resolvedRoot, 'assets', 'icons.svg'), 'utf8');
+  const outputDirectory = path.join(resolvedOutputDirectory, ICON_LIBRARY_DIRECTORY_NAME, 'spec-up');
+  const writeOperations = [];
+
+  await mkdir(outputDirectory, { recursive: true });
+
+  for (const match of iconSource.matchAll(SPEC_UP_ICON_SYMBOL_PATTERN)) {
+    const [, name, viewBox, content] = match;
+    const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="${viewBox}">${content}</svg>\n`;
+
+    writeOperations.push(writeFile(path.join(outputDirectory, `${name}.svg`), svg));
+  }
+
+  await Promise.all(writeOperations);
+}
+
+async function writeSystemIconLibrary(resolvedRoot, resolvedOutputDirectory) {
+  const outputDirectory = path.join(resolvedOutputDirectory, ICON_LIBRARY_DIRECTORY_NAME, 'system');
+  const systemIconModuleUrl = new URL(
+    `${pathToFileURL(path.join(resolvedRoot, 'src', 'web-awesome', 'dist-cdn', 'chunks', 'chunk.DSSPBSBT.js')).href}?t=${Date.now()}`
+  );
+  const { icons } = await import(systemIconModuleUrl.href);
+  const writeOperations = [];
+
+  for (const [variant, variantIcons] of Object.entries(icons)) {
+    const variantDirectory = path.join(outputDirectory, variant);
+
+    await mkdir(variantDirectory, { recursive: true });
+
+    for (const [name, svg] of Object.entries(variantIcons)) {
+      writeOperations.push(writeFile(path.join(variantDirectory, `${name}.svg`), `${svg}\n`));
+    }
+  }
+
+  await Promise.all(writeOperations);
+}
+
 export async function buildCompiledAssets({
   minify = true,
   reportCompressedSize = true,
@@ -81,6 +121,9 @@ export async function buildCompiledAssets({
     rm(path.join(resolvedOutputDirectory, 'head.js'), { force: true }),
     rm(path.join(resolvedOutputDirectory, 'head.css'), { force: true }),
     rm(path.join(resolvedOutputDirectory, 'body.js'), { force: true }),
+    rm(path.join(resolvedOutputDirectory, 'icons.svg'), { force: true }),
+    rm(path.join(resolvedOutputDirectory, 'system-icons.svg'), { force: true }),
+    rm(path.join(resolvedOutputDirectory, ICON_LIBRARY_DIRECTORY_NAME), { force: true, recursive: true }),
     rm(path.join(resolvedOutputDirectory, 'theme.js'), { force: true }),
     rm(path.join(resolvedOutputDirectory, 'katex.js'), { force: true }),
     rm(path.join(resolvedOutputDirectory, 'katex.css'), { force: true }),
@@ -88,6 +131,10 @@ export async function buildCompiledAssets({
   ]);
 
   await writeMergedCss(path.join(resolvedOutputDirectory, 'head.css'), HEAD_CSS_SOURCES);
+  await Promise.all([
+    writeSpecUpIconLibrary(resolvedRoot, resolvedOutputDirectory),
+    writeSystemIconLibrary(resolvedRoot, resolvedOutputDirectory)
+  ]);
 
   await build(createBundleConfig({
     assetsInlineLimit: undefined,
