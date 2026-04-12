@@ -1,3 +1,4 @@
+import fs from 'node:fs';
 import path from 'node:path';
 import { createRequire } from 'node:module';
 import { defineConfig } from 'vite';
@@ -41,11 +42,44 @@ function createBuildWatchExclude(rootDirectory = process.cwd()) {
   return excludes;
 }
 
+function createServerConfig(rootDirectory = process.cwd()) {
+  const host = process.env.SPEC_UP_DEV_HOST || '127.0.0.1';
+  const port = Number.parseInt(process.env.SPEC_UP_DEV_PORT || '5173', 10);
+  const config = {
+    host,
+    port: Number.isFinite(port) ? port : 5173,
+    strictPort: true
+  };
+
+  if (process.env.SPEC_UP_DEV_HTTPS !== '1') {
+    return config;
+  }
+
+  const tlsDirectory = path.resolve(rootDirectory, '.local-dev', 'tls');
+  const certPath = path.resolve(
+    rootDirectory,
+    process.env.SPEC_UP_DEV_TLS_CERT || path.join(tlsDirectory, `${host}.crt`)
+  );
+  const keyPath = path.resolve(
+    rootDirectory,
+    process.env.SPEC_UP_DEV_TLS_KEY || path.join(tlsDirectory, `${host}.key`)
+  );
+
+  config.https = {
+    cert: fs.readFileSync(certPath),
+    key: fs.readFileSync(keyPath)
+  };
+
+  return config;
+}
+
 export default defineConfig(() => {
   const isWatchBuild = process.argv.includes('--watch');
+  const rootDirectory = process.cwd();
 
   return {
     appType: 'mpa',
+    server: createServerConfig(rootDirectory),
     build: {
       chunkSizeWarningLimit: 1500,
       emptyOutDir: true,

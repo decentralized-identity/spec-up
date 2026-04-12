@@ -59,6 +59,25 @@ If your `specs.json`, `package.json`, and `vite.config.mjs` files are in the pro
 |`npm run edit`|runs `vite build --watch` so spec markdown, injected assets, plugin files, and frontend source are watched in one Vite-hosted loop.|
 |`npm run render`|alias for `vite build` if you prefer the old command name.|
 |`npm run dev`|runs the Vite dev server; Spec-Up renders through a Vite plugin and triggers reloads when your spec sources change.|
+|`npm run dev:dns`|creates a local TLS cert if needed and starts the Vite dev server at `https://specup.localhost:5173` so the browser sees a hostname-based HTTPS origin instead of `127.0.0.1`.|
+
+### Local DNS-style HTTPS dev
+
+If you need browser behavior that is closer to production CORS/origin handling, run:
+
+```bash
+npm run dev:dns
+```
+
+This starts Spec-Up at `https://specup.localhost:5173` with a generated self-signed certificate stored under `.local-dev/tls/`.
+
+- `specup.localhost` resolves locally without editing `/etc/hosts` on modern systems.
+- The certificate is self-signed, so your browser may warn until you trust it.
+- Override the hostname or port if needed with `SPEC_UP_DEV_HOST` and `SPEC_UP_DEV_PORT`, for example:
+
+```bash
+SPEC_UP_DEV_HOST=docs.localhost SPEC_UP_DEV_PORT=4443 npm run dev:dns
+```
 
 ## Plugins
 

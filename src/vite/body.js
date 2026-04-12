@@ -1,3 +1,4 @@
+import './head-runtime.js';
 import './legacy-globals.js';
 import '../web-awesome/dist-cdn/components/page/page.js';
 import '../web-awesome/dist-cdn/components/button/button.js';

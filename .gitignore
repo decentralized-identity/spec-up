@@ -1,5 +1,6 @@
 fonts
 .vite
+.local-dev
 
 # Logs
 logs

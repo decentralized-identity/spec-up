@@ -10,6 +10,8 @@
   "scripts": {
     "build": "vite build",
     "dev": "vite --host 127.0.0.1 --port 5173 --strictPort",
+    "dev:cert": "node ./scripts/dev-cert.mjs",
+    "dev:dns": "node ./scripts/dev-dns.mjs",
     "edit": "vite build --watch",
     "refs": "node ./scripts/fetch-spec-refs.js",
     "render": "vite build",
