@@ -118,6 +118,7 @@ function createCarousel(document, slides) {
   const carousel = document.createElement('wa-carousel');
 
   carousel.className = 'spec-up-carousel';
+  carousel.setAttribute('loop', '');
   carousel.setAttribute('navigation', '');
   carousel.setAttribute('pagination', '');
   carousel.setAttribute('mouse-dragging', '');
