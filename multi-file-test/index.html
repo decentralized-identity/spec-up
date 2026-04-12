@@ -12,36 +12,7 @@
 
         <link rel="icon" href="../logo.svg">
 
-        
-    <script>
-      (() => {
-        const storageKey = 'spec-up-color-scheme';
-        const root = document.documentElement;
-        const media = window.matchMedia ? window.matchMedia('(prefers-color-scheme: dark)') : null;
-        let themePreference = 'auto';
-
-        try {
-          const storedThemePreference = window.localStorage.getItem(storageKey);
-
-          if (storedThemePreference === 'light' || storedThemePreference === 'dark' || storedThemePreference === 'auto') {
-            themePreference = storedThemePreference;
-          }
-        }
-        catch {}
-
-        const theme = themePreference === 'auto'
-          ? (media && media.matches ? 'dark' : 'light')
-          : themePreference;
-
-        root.classList.remove('wa-light', 'wa-dark');
-        root.classList.add(theme === 'dark' ? 'wa-dark' : 'wa-light');
-        root.dataset.theme = theme;
-        root.dataset.themePreference = themePreference;
-        root.style.colorScheme = theme;
-      })();
-    </script>
-  
-        <script src="assets/compiled/head.js"></script>
+        <script type="module" src="http://127.0.0.1:5173/src/vite/theme.js"></script><script type="module" src="http://127.0.0.1:5173/@vite/client"></script><script type="module" src="http://127.0.0.1:5173/src/vite/head.js"></script>
       </head>
       <body features="logo source">
         <svg id="svg" version="1.1" xmlns="http://www.w3.org/2000/svg">
@@ -332,8 +303,8 @@ sequenceDiagram
     
 
         
-        <script>window.specConfig = {"title":"Spec-Up Multi-File Example","spec_directory":"./multi-file-test","markdown_paths":["header.md","abstract.md","getting-started.md","features.md"],"logo":"../logo.svg","logo_link":"https://github.com/decentralized-identity/spec-up","source":{"host":"github","account":"decentralized-identity","repo":"spec-up"}}</script>
-        <script src="assets/compiled/body.js"></script>
+        <template id="spec_up_config">{&quot;title&quot;:&quot;Spec-Up Multi-File Example&quot;,&quot;spec_directory&quot;:&quot;./multi-file-test&quot;,&quot;markdown_paths&quot;:[&quot;header.md&quot;,&quot;abstract.md&quot;,&quot;getting-started.md&quot;,&quot;features.md&quot;],&quot;logo&quot;:&quot;../logo.svg&quot;,&quot;logo_link&quot;:&quot;https://github.com/decentralized-identity/spec-up&quot;,&quot;source&quot;:{&quot;host&quot;:&quot;github&quot;,&quot;account&quot;:&quot;decentralized-identity&quot;,&quot;repo&quot;:&quot;spec-up&quot;}}</template>
+        <script type="module" src="http://127.0.0.1:5173/src/vite/body.js"></script>
       </body>
     </html>
   

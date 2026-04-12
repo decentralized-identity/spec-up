@@ -5,16 +5,17 @@ const path = require('node:path');
 const katex = require('katex');
 const { unwrapDefault } = require('../utils');
 
-const KATEX_OUTPUT_PATH = 'assets/compiled/katex.js';
+const KATEX_OUTPUT_PATH = 'assets/compiled/katex.css';
+const KATEX_FONTS_OUTPUT_PATH = 'assets/compiled/fonts';
 
-function buildKatexScriptTag({ devServerUrl }) {
+function buildKatexAssetTag({ devServerUrl }) {
   if (devServerUrl) {
     const normalizedUrl = String(devServerUrl).replace(/\/+$/, '');
 
     return `<script type="module" src="${normalizedUrl}/src/vite/katex.js"></script>`;
   }
 
-  return `<script src="${KATEX_OUTPUT_PATH}"></script>`;
+  return `<link href="${KATEX_OUTPUT_PATH}" rel="stylesheet"/>`;
 }
 
 function createKatexPlugin() {
@@ -29,6 +30,8 @@ function createKatexPlugin() {
 
       const sourcePath = path.join(packageRoot, KATEX_OUTPUT_PATH);
       const destinationPath = path.join(spec.destination, KATEX_OUTPUT_PATH);
+      const sourceFontsPath = path.join(packageRoot, KATEX_FONTS_OUTPUT_PATH);
+      const destinationFontsPath = path.join(spec.destination, KATEX_FONTS_OUTPUT_PATH);
 
       if (sourcePath === destinationPath) {
         return;
@@ -36,6 +39,8 @@ function createKatexPlugin() {
 
       await fsp.mkdir(path.dirname(destinationPath), { recursive: true });
       await fsp.copyFile(sourcePath, destinationPath);
+      await fsp.mkdir(path.dirname(destinationFontsPath), { recursive: true });
+      await fsp.cp(sourceFontsPath, destinationFontsPath, { recursive: true });
     },
     configureMarkdownIt({ md, spec }) {
       if (!spec.katex) {
@@ -51,7 +56,7 @@ function createKatexPlugin() {
 
       return {
         ...assetTags,
-        head: `${assetTags.head}${buildKatexScriptTag({
+        head: `${assetTags.head}${buildKatexAssetTag({
           devServerUrl: options.devServerUrl
         })}`
       };

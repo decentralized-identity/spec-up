@@ -6,7 +6,9 @@ const path = require('node:path');
 
 const COMPILED_ASSET_DIRECTORY = path.join('assets', 'compiled');
 const COMPILED_BODY_PATH = path.join(COMPILED_ASSET_DIRECTORY, 'body.js');
+const COMPILED_HEAD_CSS_PATH = path.join(COMPILED_ASSET_DIRECTORY, 'head.css');
 const COMPILED_HEAD_PATH = path.join(COMPILED_ASSET_DIRECTORY, 'head.js');
+const COMPILED_THEME_PATH = path.join(COMPILED_ASSET_DIRECTORY, 'theme.js');
 
 function buildCustomAssetTags(spec) {
   return (spec.assets || []).reduce((assets, asset) => {
@@ -36,19 +38,19 @@ function buildViteDevTags(devServerUrl) {
 
   return {
     body: `<script type="module" src="${normalizedUrl}/src/vite/body.js"></script>`,
-    head: `<script type="module" src="${normalizedUrl}/@vite/client"></script><script type="module" src="${normalizedUrl}/src/vite/head.js"></script>`
+    head: `<script type="module" src="${normalizedUrl}/src/vite/theme.js"></script><script type="module" src="${normalizedUrl}/@vite/client"></script><script type="module" src="${normalizedUrl}/src/vite/head.js"></script>`
   };
 }
 
 function buildCompiledTags(packageRoot) {
   return {
     body: `<script src="${COMPILED_BODY_PATH}"></script>`,
-    head: `<script src="${COMPILED_HEAD_PATH}"></script>`
+    head: `<script src="${COMPILED_THEME_PATH}"></script><link href="${COMPILED_HEAD_CSS_PATH}" rel="stylesheet"/><script src="${COMPILED_HEAD_PATH}"></script>`
   };
 }
 
 async function ensureCompiledAssetsForSpec(packageRoot, spec) {
-  const compiledFiles = [COMPILED_BODY_PATH, COMPILED_HEAD_PATH];
+  const compiledFiles = [COMPILED_BODY_PATH, COMPILED_HEAD_CSS_PATH, COMPILED_HEAD_PATH, COMPILED_THEME_PATH];
 
   await Promise.all(compiledFiles.map(async relativePath => {
     const sourcePath = path.resolve(packageRoot, relativePath);

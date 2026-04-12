@@ -115,11 +115,17 @@ $x^2$
   assert.match(html, /<wa-page class="spec-up-shell"/);
   assert.match(html, /id="spec_up_theme_selector"/);
   assert.match(html, /class="toc-anchor" href="#terms"/);
+  assert.match(html, /<script src="assets\/compiled\/theme\.js"><\/script>/);
+  assert.match(html, /<link href="assets\/compiled\/head\.css" rel="stylesheet"\/>/);
   assert.match(html, /<script src="assets\/compiled\/head\.js"><\/script>/);
   assert.match(html, /<script src="assets\/compiled\/body\.js"><\/script>/);
-  assert.match(html, /<script src="assets\/compiled\/katex\.js"><\/script>/);
+  assert.match(html, /<link href="assets\/compiled\/katex\.css" rel="stylesheet"\/>/);
+  assert.match(html, /<template id="spec_up_config">/);
   await assert.doesNotReject(() => fsp.access(path.join(outputDirectory, 'assets', 'compiled', 'head.js')));
+  await assert.doesNotReject(() => fsp.access(path.join(outputDirectory, 'assets', 'compiled', 'head.css')));
   await assert.doesNotReject(() => fsp.access(path.join(outputDirectory, 'assets', 'compiled', 'body.js')));
+  await assert.doesNotReject(() => fsp.access(path.join(outputDirectory, 'assets', 'compiled', 'theme.js')));
+  await assert.doesNotReject(() => fsp.access(path.join(outputDirectory, 'assets', 'compiled', 'katex.css')));
   assert.deepEqual(messages, ['Rendering: Plugin Test']);
 });
 
@@ -150,7 +156,7 @@ test('renders github issues as a searchable drawer and moves the spec title into
 
   assert.match(html, /class="wa-theme-default"/);
   assert.match(html, /<meta name="color-scheme" content="light dark">/);
-  assert.match(html, /const storageKey = 'spec-up-color-scheme';/);
+  assert.match(html, /<template id="spec_up_config">\{\}<\/template>/);
   assert.doesNotMatch(html, /<meta http-equiv="Content-Security-Policy"/);
   assert.match(html, /id="spec_up_theme_selector"/);
   assert.match(html, /id="color-scheme-selector-trigger"/);

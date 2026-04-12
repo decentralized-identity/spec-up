@@ -3,6 +3,26 @@ import mermaid from 'mermaid';
 (function() {
   const page = document.querySelector('wa-page');
   const ISSUE_PAGE_SIZE = 20;
+  const specConfig = (() => {
+    const configNode = document.getElementById('spec_up_config');
+
+    if (configNode) {
+      try {
+        const parsed = JSON.parse(configNode.textContent || '{}');
+
+        if (parsed && typeof parsed === 'object') {
+          return parsed;
+        }
+      }
+      catch {}
+    }
+
+    if (globalThis.specConfig && typeof globalThis.specConfig === 'object') {
+      return globalThis.specConfig;
+    }
+
+    return {};
+  })();
   const THEME_STORAGE_KEY = 'spec-up-color-scheme';
   const THEME_MEDIA_QUERY = '(prefers-color-scheme: dark)';
   const THEME_AUTO_PREFERENCE = 'auto';

@@ -1,7 +1,6 @@
 'use strict';
 
 const { escapeHtml, unique } = require('./utils');
-const THEME_STORAGE_KEY = 'spec-up-color-scheme';
 const DEFAULT_CSP_DIRECTIVES = Object.freeze({
   'default-src': ["'self'"],
   'base-uri': ["'self'"],
@@ -123,38 +122,6 @@ function buildGithubUrls(source) {
   };
 }
 
-function buildThemeBootstrapScript() {
-  return `
-    <script>
-      (() => {
-        const storageKey = '${THEME_STORAGE_KEY}';
-        const root = document.documentElement;
-        const media = window.matchMedia ? window.matchMedia('(prefers-color-scheme: dark)') : null;
-        let themePreference = 'auto';
-
-        try {
-          const storedThemePreference = window.localStorage.getItem(storageKey);
-
-          if (storedThemePreference === 'light' || storedThemePreference === 'dark' || storedThemePreference === 'auto') {
-            themePreference = storedThemePreference;
-          }
-        }
-        catch {}
-
-        const theme = themePreference === 'auto'
-          ? (media && media.matches ? 'dark' : 'light')
-          : themePreference;
-
-        root.classList.remove('wa-light', 'wa-dark');
-        root.classList.add(theme === 'dark' ? 'wa-dark' : 'wa-light');
-        root.dataset.theme = theme;
-        root.dataset.themePreference = themePreference;
-        root.style.colorScheme = theme;
-      })();
-    </script>
-  `;
-}
-
 function buildPageHtml({
   articleHtml,
   assetTags,
@@ -259,7 +226,6 @@ function buildPageHtml({
 
         ${spec.logo ? `<link rel="icon" href="${spec.logo}">` : ''}
 
-        ${buildThemeBootstrapScript()}
         ${assetTags.head}
       </head>
       <body features="${features}">
@@ -299,7 +265,7 @@ function buildPageHtml({
         ${issuesDrawerMarkup}
 
         ${externalMarkup}
-        <script>window.specConfig = ${JSON.stringify(spec.config)}</script>
+        <template id="spec_up_config">${escapeHtml(JSON.stringify(spec.config || {}))}</template>
         ${assetTags.body}
       </body>
     </html>
