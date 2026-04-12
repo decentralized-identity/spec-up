@@ -130,6 +130,10 @@ $x^2$
   await assert.doesNotReject(() => fsp.access(path.join(outputDirectory, 'assets', 'compiled', 'icon-library', 'default', 'solid', 'bars.svg')));
   await assert.doesNotReject(() => fsp.access(path.join(outputDirectory, 'assets', 'compiled', 'icon-library', 'default', 'solid', 'check.svg')));
   await assert.doesNotReject(() => fsp.access(path.join(outputDirectory, 'assets', 'compiled', 'icon-library', 'system', 'solid', 'check.svg')));
+  const headCss = await fsp.readFile(path.join(outputDirectory, 'assets', 'compiled', 'head.css'), 'utf8');
+  assert.doesNotMatch(headCss, /@import\s+url\((['"])?(?:\.{1,2}\/)?(?:layers|native|utilities|themes\/default|color\/palettes\/default|color\/variants)\.css\1\)/);
+  assert.match(headCss, /spec-up-shell/);
+  assert.match(headCss, /wa-theme-default|--wa-color-brand-95/);
   assert.deepEqual(messages, ['Rendering: Plugin Test']);
 });
 

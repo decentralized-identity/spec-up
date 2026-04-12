@@ -10,15 +10,13 @@ const outputDirectory = path.join(rootDirectory, 'assets', 'compiled');
 const ICON_LIBRARY_DIRECTORY_NAME = 'icon-library';
 const HEAD_CSS_SOURCES = [
   path.join(rootDirectory, 'assets', 'css', 'prism.css'),
-  path.join(rootDirectory, 'src', 'web-awesome', 'dist-cdn', 'styles', 'native.css'),
-  path.join(rootDirectory, 'src', 'web-awesome', 'dist-cdn', 'styles', 'utilities.css'),
-  path.join(rootDirectory, 'src', 'web-awesome', 'dist-cdn', 'styles', 'themes', 'default.css'),
-  path.join(rootDirectory, 'src', 'web-awesome', 'dist-cdn', 'styles', 'color', 'variants', 'brand.css'),
+  path.join(rootDirectory, 'src', 'web-awesome', 'dist-cdn', 'styles', 'webawesome.css'),
   path.join(rootDirectory, 'assets', 'css', 'index.css')
 ];
 const KATEX_CSS_SOURCE = path.join(rootDirectory, 'node_modules', 'katex', 'dist', 'katex.min.css');
 const KATEX_FONTS_SOURCE = path.join(rootDirectory, 'node_modules', 'katex', 'dist', 'fonts');
 const SPEC_UP_ICON_SYMBOL_PATTERN = /<symbol id="spec-up-icon-([^"]+)" viewBox="([^"]+)">([\s\S]*?)<\/symbol>/g;
+const CSS_IMPORT_PATTERN = /(^|\n)(\s*@import\s+(?:url\(\s*)?(['"]?)([^'")\s]+)\3\s*\)?\s*;[^\n]*(?=\n|$))/g;
 const DEFAULT_ICON_OVERRIDES = Object.freeze({
   solid: new Set(['bars'])
 });
@@ -67,11 +65,73 @@ function createBundleConfig({
   };
 }
 
+function isExternalCssImport(importPath) {
+  return /^(?:[a-z]+:|\/\/)/i.test(importPath);
+}
+
+async function resolveCssSource(sourcePath, stack = []) {
+  const resolvedSourcePath = path.resolve(sourcePath);
+
+  if (stack.includes(resolvedSourcePath)) {
+    throw new Error(`Circular CSS import detected: ${[...stack, resolvedSourcePath].join(' -> ')}`);
+  }
+
+  const source = await readFile(resolvedSourcePath, 'utf8');
+  const imports = [];
+  const contentParts = [];
+  let lastIndex = 0;
+
+  for (const match of source.matchAll(CSS_IMPORT_PATTERN)) {
+    const fullMatch = match[2];
+    const importPath = match[4];
+    const matchIndex = match.index + match[1].length;
+
+    contentParts.push(source.slice(lastIndex, matchIndex));
+    lastIndex = matchIndex + fullMatch.length;
+
+    if (isExternalCssImport(importPath)) {
+      imports.push(fullMatch.trim());
+      continue;
+    }
+
+    const childResult = await resolveCssSource(
+      path.resolve(path.dirname(resolvedSourcePath), importPath),
+      [...stack, resolvedSourcePath]
+    );
+    imports.push(...childResult.imports);
+    contentParts.push(childResult.content);
+  }
+
+  contentParts.push(source.slice(lastIndex));
+
+  return {
+    content: contentParts.join('').trim(),
+    imports
+  };
+}
+
 async function writeMergedCss(outputPath, sourcePaths) {
-  const sections = await Promise.all(sourcePaths.map(sourcePath => readFile(sourcePath, 'utf8')));
+  const sections = await Promise.all(sourcePaths.map(sourcePath => resolveCssSource(sourcePath)));
+  const imports = [];
+  const seenImports = new Set();
+
+  for (const section of sections) {
+    for (const importRule of section.imports) {
+      if (!seenImports.has(importRule)) {
+        seenImports.add(importRule);
+        imports.push(importRule);
+      }
+    }
+  }
+
+  const content = sections
+    .map(section => section.content)
+    .filter(Boolean)
+    .join('\n\n');
+  const outputSections = [...imports, content].filter(Boolean);
 
   await mkdir(path.dirname(outputPath), { recursive: true });
-  await writeFile(outputPath, `${sections.join('\n\n')}\n`);
+  await writeFile(outputPath, `${outputSections.join('\n\n')}\n`);
 }
 
 function parseSpecUpIcons(iconSource) {
