@@ -19,6 +19,9 @@ const HEAD_CSS_SOURCES = [
 const KATEX_CSS_SOURCE = path.join(rootDirectory, 'node_modules', 'katex', 'dist', 'katex.min.css');
 const KATEX_FONTS_SOURCE = path.join(rootDirectory, 'node_modules', 'katex', 'dist', 'fonts');
 const SPEC_UP_ICON_SYMBOL_PATTERN = /<symbol id="spec-up-icon-([^"]+)" viewBox="([^"]+)">([\s\S]*?)<\/symbol>/g;
+const DEFAULT_ICON_OVERRIDES = Object.freeze({
+  solid: new Set(['bars'])
+});
 
 function createBundleConfig({
   assetsInlineLimit,
@@ -71,42 +74,80 @@ async function writeMergedCss(outputPath, sourcePaths) {
   await writeFile(outputPath, `${sections.join('\n\n')}\n`);
 }
 
-async function writeSpecUpIconLibrary(resolvedRoot, resolvedOutputDirectory) {
-  const iconSource = await readFile(path.join(resolvedRoot, 'assets', 'icons.svg'), 'utf8');
-  const outputDirectory = path.join(resolvedOutputDirectory, ICON_LIBRARY_DIRECTORY_NAME, 'spec-up');
-  const writeOperations = [];
-
-  await mkdir(outputDirectory, { recursive: true });
+function parseSpecUpIcons(iconSource) {
+  const icons = new Map();
 
   for (const match of iconSource.matchAll(SPEC_UP_ICON_SYMBOL_PATTERN)) {
     const [, name, viewBox, content] = match;
-    const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="${viewBox}">${content}</svg>\n`;
-
-    writeOperations.push(writeFile(path.join(outputDirectory, `${name}.svg`), svg));
+    icons.set(name, `<svg xmlns="http://www.w3.org/2000/svg" viewBox="${viewBox}">${content}</svg>\n`);
   }
 
-  await Promise.all(writeOperations);
+  return icons;
 }
 
-async function writeSystemIconLibrary(resolvedRoot, resolvedOutputDirectory) {
-  const outputDirectory = path.join(resolvedOutputDirectory, ICON_LIBRARY_DIRECTORY_NAME, 'system');
-  const systemIconModuleUrl = new URL(
-    `${pathToFileURL(path.join(resolvedRoot, 'src', 'web-awesome', 'dist-cdn', 'chunks', 'chunk.DSSPBSBT.js')).href}?t=${Date.now()}`
-  );
-  const { icons } = await import(systemIconModuleUrl.href);
+async function writeIconLibrary(outputDirectory, iconsByVariant) {
   const writeOperations = [];
 
-  for (const [variant, variantIcons] of Object.entries(icons)) {
+  for (const [variant, variantIcons] of Object.entries(iconsByVariant)) {
     const variantDirectory = path.join(outputDirectory, variant);
 
     await mkdir(variantDirectory, { recursive: true });
 
     for (const [name, svg] of Object.entries(variantIcons)) {
-      writeOperations.push(writeFile(path.join(variantDirectory, `${name}.svg`), `${svg}\n`));
+      writeOperations.push(writeFile(path.join(variantDirectory, `${name}.svg`), `${svg.trim()}\n`));
     }
   }
 
   await Promise.all(writeOperations);
+}
+
+async function writeSpecUpIconLibrary(resolvedRoot, resolvedOutputDirectory) {
+  const iconSource = await readFile(path.join(resolvedRoot, 'assets', 'icons.svg'), 'utf8');
+  const specUpIcons = parseSpecUpIcons(iconSource);
+  const outputDirectory = path.join(resolvedOutputDirectory, ICON_LIBRARY_DIRECTORY_NAME, 'spec-up');
+
+  await mkdir(outputDirectory, { recursive: true });
+
+  await Promise.all(
+    [...specUpIcons.entries()].map(([name, svg]) => writeFile(path.join(outputDirectory, `${name}.svg`), svg))
+  );
+}
+
+async function loadSystemIcons(resolvedRoot) {
+  const systemIconModuleUrl = new URL(
+    `${pathToFileURL(path.join(resolvedRoot, 'src', 'web-awesome', 'dist-cdn', 'chunks', 'chunk.DSSPBSBT.js')).href}?t=${Date.now()}`
+  );
+  const { icons } = await import(systemIconModuleUrl.href);
+
+  return icons;
+}
+
+async function writeDefaultIconLibrary(resolvedRoot, resolvedOutputDirectory) {
+  const outputDirectory = path.join(resolvedOutputDirectory, ICON_LIBRARY_DIRECTORY_NAME, 'default');
+  const iconSource = await readFile(path.join(resolvedRoot, 'assets', 'icons.svg'), 'utf8');
+  const specUpIcons = parseSpecUpIcons(iconSource);
+  const systemIcons = await loadSystemIcons(resolvedRoot);
+  const defaultIcons = {
+    ...systemIcons,
+    solid: {
+      ...systemIcons.solid
+    }
+  };
+
+  for (const iconName of DEFAULT_ICON_OVERRIDES.solid) {
+    if (specUpIcons.has(iconName)) {
+      defaultIcons.solid[iconName] = specUpIcons.get(iconName).trim();
+    }
+  }
+
+  await writeIconLibrary(outputDirectory, defaultIcons);
+}
+
+async function writeSystemIconLibrary(resolvedRoot, resolvedOutputDirectory) {
+  const outputDirectory = path.join(resolvedOutputDirectory, ICON_LIBRARY_DIRECTORY_NAME, 'system');
+  const systemIcons = await loadSystemIcons(resolvedRoot);
+
+  await writeIconLibrary(outputDirectory, systemIcons);
 }
 
 export async function buildCompiledAssets({
@@ -132,6 +173,7 @@ export async function buildCompiledAssets({
 
   await writeMergedCss(path.join(resolvedOutputDirectory, 'head.css'), HEAD_CSS_SOURCES);
   await Promise.all([
+    writeDefaultIconLibrary(resolvedRoot, resolvedOutputDirectory),
     writeSpecUpIconLibrary(resolvedRoot, resolvedOutputDirectory),
     writeSystemIconLibrary(resolvedRoot, resolvedOutputDirectory)
   ]);

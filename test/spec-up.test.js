@@ -126,6 +126,9 @@ $x^2$
   await assert.doesNotReject(() => fsp.access(path.join(outputDirectory, 'assets', 'compiled', 'body.js')));
   await assert.doesNotReject(() => fsp.access(path.join(outputDirectory, 'assets', 'compiled', 'theme.js')));
   await assert.doesNotReject(() => fsp.access(path.join(outputDirectory, 'assets', 'compiled', 'katex.css')));
+  await assert.doesNotReject(() => fsp.access(path.join(outputDirectory, 'assets', 'compiled', 'icon-library', 'default', 'solid', 'bars.svg')));
+  await assert.doesNotReject(() => fsp.access(path.join(outputDirectory, 'assets', 'compiled', 'icon-library', 'default', 'solid', 'check.svg')));
+  await assert.doesNotReject(() => fsp.access(path.join(outputDirectory, 'assets', 'compiled', 'icon-library', 'system', 'solid', 'check.svg')));
   assert.deepEqual(messages, ['Rendering: Plugin Test']);
 });
 
