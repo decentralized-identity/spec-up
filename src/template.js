@@ -140,24 +140,16 @@ function buildPageHtml({
   const issuesDrawerMarkup = githubUrls
     ? `
       <wa-drawer id="repo_issues_drawer" class="spec-up-issues-drawer" label="GitHub Issues" placement="end" light-dismiss>
-        <div slot="label" class="spec-up-drawer-title">
-          <div class="spec-up-drawer-title-row">
-            <div class="spec-up-drawer-heading">
-              <span>GitHub Issues</span>
-            </div>
-            <div class="spec-up-drawer-title-actions"></div>
-          </div>
-          <div class="spec-up-issues-search-row">
-            <wa-input id="repo_issue_search" type="search" placeholder="Search open issues" autocomplete="off" spellcheck="false" size="small">
-              <wa-icon library="spec-up" slot="start" name="search" label="Search GitHub issues"></wa-icon>
-              <span slot="end" class="spec-up-issues-search-end">
-                <span id="repo_issue_search_spinner" class="spec-up-issues-search-spinner" hidden aria-hidden="true">
-                  <wa-spinner></wa-spinner>
-                </span>
-                <button id="repo_issue_search_clear" type="button" aria-label="Clear issue search" disabled>Clear</button>
+        <div class="spec-up-issues-search-row">
+          <wa-input id="repo_issue_search" type="search" placeholder="Search open issues" autocomplete="off" spellcheck="false" size="small">
+            <wa-icon library="spec-up" slot="start" name="search" label="Search GitHub issues"></wa-icon>
+            <span slot="end" class="spec-up-issues-search-end">
+              <span id="repo_issue_search_spinner" class="spec-up-issues-search-spinner" hidden aria-hidden="true">
+                <wa-spinner></wa-spinner>
               </span>
-            </wa-input>
-          </div>
+              <button id="repo_issue_search_clear" type="button" aria-label="Clear issue search" disabled>Clear</button>
+            </span>
+          </wa-input>
         </div>
         <div id="repo_issue_panel" class="spec-up-issues-panel">
           <p id="repo_issue_status">Loading open GitHub issues…</p>

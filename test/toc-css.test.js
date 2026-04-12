@@ -48,6 +48,15 @@ test('sidebar layout removes drawer body padding and resets toc item offsets', (
   assert.match(css, /wa-page\.spec-up-shell\[view='mobile'\]::part\(navigation\)\s*\{[^}]*padding-top:\s*0;[^}]*background-color:\s*transparent;/s);
 });
 
+test('github issues drawer keeps the built-in header inline and moves search into the body', () => {
+  const css = fs.readFileSync(path.join(__dirname, '..', 'assets', 'css', 'index.css'), 'utf8');
+
+  assert.match(css, /wa-drawer\.spec-up-issues-drawer::part\(body\)\s*\{[^}]*display:\s*flex;[^}]*flex-direction:\s*column;[^}]*gap:\s*0\.75rem;[^}]*padding:\s*0\.75rem 1rem 1rem;/s);
+  assert.match(css, /\.spec-up-issues-search-row\s*\{[^}]*width:\s*100%;[^}]*flex:\s*none;/s);
+  assert.match(css, /#repo_issue_panel\s*\{[^}]*flex:\s*1 1 auto;[^}]*overflow-y:\s*auto;[^}]*padding:\s*0 0\.5rem 0 0;/s);
+  assert.doesNotMatch(css, /wa-drawer\.spec-up-issues-drawer::part\(header\)\s*\{[^}]*display:\s*grid;/s);
+});
+
 test('header layout keeps actions inline and truncates the title instead of wrapping', () => {
   const css = fs.readFileSync(path.join(__dirname, '..', 'assets', 'css', 'index.css'), 'utf8');
 

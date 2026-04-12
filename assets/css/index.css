@@ -622,57 +622,13 @@ wa-drawer.spec-up-issues-drawer::part(dialog) {
   max-height: 100vh;
 }
 
-wa-drawer.spec-up-issues-drawer::part(header) {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr);
-  row-gap: 0.75rem;
-}
-
-wa-drawer.spec-up-issues-drawer::part(title) {
-  display: block;
-  min-width: 0;
-}
-
 wa-drawer.spec-up-issues-drawer::part(body) {
   display: flex;
   flex-direction: column;
   min-height: 0;
-  gap: 1rem;
+  gap: 0.75rem;
   overflow: hidden;
-  padding-top: 0;
-  padding-bottom: 0.75rem;
-  padding-left: 0.5rem;
-  padding-right: 0;
-}
-
-.spec-up-drawer-title {
-  display: flex;
-  flex-direction: column;
-  min-width: 0;
-  width: 100%;
-}
-
-.spec-up-drawer-title-row {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  width: 100%;
-  margin-bottom: 0.5rem;
-}
-
-.spec-up-drawer-heading {
-  display: inline-flex;
-  align-items: center;
-  flex: none;
-  min-width: 0;
-}
-
-.spec-up-drawer-title-actions {
-  display: flex;
-  align-items: center;
-  gap: 0.35rem;
-  flex: none;
-  margin-left: auto;
+  padding: 0.75rem 1rem 1rem;
 }
 
 .spec-up-issues-search-row {
@@ -680,11 +636,11 @@ wa-drawer.spec-up-issues-drawer::part(body) {
   align-items: center;
   min-width: 0;
   width: 100%;
+  flex: none;
 }
 
 .spec-up-issues-search-row wa-input {
-  flex: 1 1 auto;
-  min-width: 0;
+  width: 100%;
 }
 
 .spec-up-issues-search-end {
@@ -762,16 +718,16 @@ wa-drawer.spec-up-issues-drawer::part(body) {
 }
 
 #repo_issue_status {
-  margin: 0.6rem 0.6rem 1rem;
+  margin: 0 0 1rem;
   color: var(--wa-color-text-quiet);
   font-size: 0.95rem;
 }
 
 #repo_issue_panel {
-  flex: 1;
+  flex: 1 1 auto;
   min-height: 0;
   overflow-y: auto;
-  padding: 0 1.5rem 1rem 1rem;
+  padding: 0 0.5rem 0 0;
   scrollbar-width: thin;
   scrollbar-color: color-mix(in srgb, rgb(var(--mid-color)) 42%, transparent) transparent;
   transition: opacity 0.22s ease;

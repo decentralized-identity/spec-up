@@ -5,6 +5,7 @@ const fsp = require('node:fs/promises');
 const os = require('node:os');
 const path = require('node:path');
 const test = require('node:test');
+const { JSDOM } = require('jsdom');
 const MarkdownIt = require('markdown-it');
 
 const specUp = require('../index');
@@ -174,26 +175,79 @@ test('renders github issues as a searchable drawer and moves the spec title into
   assert.match(html, /<wa-icon library="spec-up" name="github"><\/wa-icon>\s*Issues/);
   assert.match(html, /<wa-button[^>]*data-toggle-nav[^>]*>\s*<wa-icon library="spec-up" name="bars"><\/wa-icon>\s*<\/wa-button>/);
   assert.match(html, /<div slot="navigation-header" class="spec-up-navigation-title">\s*<strong>Drawer Test<\/strong>/);
-  assert.match(html, /<div class="spec-up-drawer-title-row">/);
-  assert.match(html, /<div class="spec-up-drawer-title-row">[\s\S]*<div class="spec-up-drawer-title-actions"><\/div>\s*<\/div>\s*<div class="spec-up-issues-search-row">/);
   assert.match(html, /<div class="spec-up-issues-search-row">/);
   assert.match(html, /<wa-input id="repo_issue_search" type="search" placeholder="Search open issues"/);
   assert.match(html, /<wa-icon library="spec-up" slot="start" name="search" label="Search GitHub issues"><\/wa-icon>/);
   assert.match(html, /<span slot="end" class="spec-up-issues-search-end">/);
   assert.match(html, /<span id="repo_issue_search_spinner" class="spec-up-issues-search-spinner" hidden aria-hidden="true">\s*<wa-spinner><\/wa-spinner>\s*<\/span>/);
   assert.match(html, /<button id="repo_issue_search_clear" type="button" aria-label="Clear issue search" disabled>Clear<\/button>/);
-  assert.match(html, /<div class="spec-up-drawer-title-actions"><\/div>/);
+  assert.match(html, /<div class="spec-up-issues-search-row">[\s\S]*<\/div>\s*<div id="repo_issue_panel" class="spec-up-issues-panel">/);
   assert.match(html, /<div id="repo_issue_load_more" class="spec-up-issues-loading" hidden>/);
   assert.doesNotMatch(html, /Spec-Up with Web Awesome/);
   assert.doesNotMatch(html, /class="spec-up-sidebar-title"/);
   assert.doesNotMatch(html, /Recent Issues/);
   assert.doesNotMatch(html, /spec-up-drawer-intro/);
   assert.doesNotMatch(html, /spec-up-drawer-view-link/);
+  assert.doesNotMatch(html, /slot="label"/);
   assert.doesNotMatch(html, /slot="header-actions"/);
   assert.doesNotMatch(html, /Source Repository|Commit History|Navigation|Table of Contents/);
   assert.doesNotMatch(html, /slot="footer"/);
   assert.doesNotMatch(html, /slot="main-header"/);
   assert.doesNotMatch(html, /spec-up-document-card/);
+});
+
+test('embedded spec config remains readable when rendered inside a template element', () => {
+  const html = buildPageHtml({
+    articleHtml: '<p>Spec body</p>',
+    assetTags: {
+      body: '',
+      head: '',
+      svg: ''
+    },
+    externalReferencesHtml: '',
+    spec: {
+      config: {
+        source: {
+          account: 'openai',
+          host: 'github',
+          repo: 'spec-up'
+        },
+        title: 'Template Config Test'
+      },
+      title: 'Template Config Test'
+    },
+    tocHtml: '',
+    tocMeta: {
+      count: 0,
+      levelCounts: { 2: 0, 3: 0, 4: 0 }
+    }
+  });
+  const dom = new JSDOM(html);
+  const configNode = dom.window.document.getElementById('spec_up_config');
+
+  assert.equal(configNode.textContent, '');
+  assert.deepEqual(JSON.parse(configNode.content.textContent), {
+    source: {
+      account: 'openai',
+      host: 'github',
+      repo: 'spec-up'
+    },
+    title: 'Template Config Test'
+  });
+});
+
+test('github issue drawer defers base issue loading until the drawer opens, reads template config, and avoids the close-button DOM hack', async () => {
+  const issueBrowser = await fsp.readFile(path.join(__dirname, '..', 'assets', 'js', 'index.js'), 'utf8');
+
+  assert.match(issueBrowser, /const ISSUE_REQUEST_TIMEOUT_MS = 12000;/);
+  assert.match(issueBrowser, /configNode\.tagName === 'TEMPLATE' && configNode\.content/);
+  assert.match(issueBrowser, /configNode\.content\.textContent/);
+  assert.match(issueBrowser, /'X-GitHub-Api-Version': '2022-11-28'/);
+  assert.match(issueBrowser, /searchInput\.addEventListener\('wa-input', handleSearchChange\);/);
+  assert.match(issueBrowser, /syncLoadingIndicators\(\);\s*syncSearchControls\(\);/);
+  assert.match(issueBrowser, /drawer\.addEventListener\('wa-after-show', \(\) => \{[\s\S]*ensureBaseIssuesLoaded\(\);/);
+  assert.doesNotMatch(issueBrowser, /moveDrawerCloseButtonIntoTitle/);
+  assert.doesNotMatch(issueBrowser, /issueBrowser\.loadBaseIssues\(\);/);
 });
 
 test('template emits CSP only when explicitly enabled', () => {

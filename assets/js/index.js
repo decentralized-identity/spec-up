@@ -3,12 +3,18 @@ import mermaid from 'mermaid';
 (function() {
   const page = document.querySelector('wa-page');
   const ISSUE_PAGE_SIZE = 20;
+  const ISSUE_REQUEST_TIMEOUT_MS = 12000;
   const specConfig = (() => {
     const configNode = document.getElementById('spec_up_config');
 
     if (configNode) {
       try {
-        const parsed = JSON.parse(configNode.textContent || '{}');
+        const rawConfig = (
+          configNode.tagName === 'TEMPLATE' && configNode.content
+            ? configNode.content.textContent
+            : configNode.textContent
+        ) || configNode.innerHTML || '{}';
+        const parsed = JSON.parse(rawConfig);
 
         if (parsed && typeof parsed === 'object') {
           return parsed;
@@ -401,29 +407,6 @@ import mermaid from 'mermaid';
       return null;
     }
 
-    async function moveDrawerCloseButtonIntoTitle() {
-      if (!drawer) {
-        return;
-      }
-
-      try {
-        if (drawer.updateComplete && typeof drawer.updateComplete.then === 'function') {
-          await drawer.updateComplete;
-        }
-      }
-      catch {
-        // Ignore component update timing issues and use best-effort DOM access below.
-      }
-
-      const shadowRoot = drawer.shadowRoot;
-      const closeButton = shadowRoot && shadowRoot.querySelector('[part="close-button"]');
-      const titleActions = drawer.querySelector('.spec-up-drawer-title-actions');
-
-      if (titleActions && closeButton && closeButton.parentElement !== titleActions) {
-        titleActions.append(closeButton);
-      }
-    }
-
     function getVisibleCollection() {
       return state.mode === 'search' ? state.search : state.base;
     }
@@ -531,6 +514,8 @@ import mermaid from 'mermaid';
       const endpoint = isSearch
         ? `https://api.github.com/search/issues?q=${encodeURIComponent(`repo:${repositoryPath} is:issue is:open ${query}`)}&sort=updated&order=desc&per_page=${ISSUE_PAGE_SIZE}&page=${pageNumber}`
         : `https://api.github.com/repos/${repositoryPath}/issues?state=open&sort=updated&direction=desc&per_page=${ISSUE_PAGE_SIZE}&page=${pageNumber}`;
+      let didTimeout = false;
+      let requestTimeout = null;
 
       abortActiveRequest();
       state.requestToken = token;
@@ -556,9 +541,18 @@ import mermaid from 'mermaid';
       }
 
       try {
+        requestTimeout = window.setTimeout(() => {
+          didTimeout = true;
+
+          if (token === state.requestToken && state.requestController) {
+            state.requestController.abort();
+          }
+        }, ISSUE_REQUEST_TIMEOUT_MS);
+
         const response = await fetch(endpoint, {
           headers: {
-            Accept: 'application/vnd.github+json'
+            Accept: 'application/vnd.github+json',
+            'X-GitHub-Api-Version': '2022-11-28'
           },
           signal: state.requestController.signal
         });
@@ -603,7 +597,7 @@ import mermaid from 'mermaid';
         scheduleLoadMoreCheck();
       }
       catch (error) {
-        if (error.name === 'AbortError') {
+        if (error.name === 'AbortError' && !didTimeout) {
           return;
         }
 
@@ -611,12 +605,18 @@ import mermaid from 'mermaid';
           return;
         }
 
-        setIssueStatus(isSearch
-          ? `GitHub issue search could not be completed for "${query}" right now.`
-          : 'GitHub issues could not be loaded right now.');
+        setIssueStatus(didTimeout
+          ? (isSearch
+              ? `GitHub issue search for "${query}" timed out. Try again.`
+              : 'GitHub issues took too long to load. Try opening the drawer again.')
+          : (isSearch
+              ? `GitHub issue search could not be completed for "${query}" right now.`
+              : 'GitHub issues could not be loaded right now.'));
         console.warn(error);
       }
       finally {
+        window.clearTimeout(requestTimeout);
+
         if (token === state.requestToken) {
           collection.loading = false;
           state.requestController = null;
@@ -632,6 +632,14 @@ import mermaid from 'mermaid';
 
     function loadBaseIssues(pageNumber = 1) {
       return fetchIssuePage('base', pageNumber, '');
+    }
+
+    function ensureBaseIssuesLoaded() {
+      if (!state.base.loaded && !state.base.loading) {
+        return loadBaseIssues();
+      }
+
+      return null;
     }
 
     function loadSearchIssues(query, pageNumber = 1) {
@@ -721,17 +729,18 @@ import mermaid from 'mermaid';
     }
 
     searchInput.addEventListener('input', handleSearchChange);
+    searchInput.addEventListener('wa-input', handleSearchChange);
     if (searchClearButton) {
       searchClearButton.addEventListener('click', clearSearch);
     }
     panel.addEventListener('scroll', maybeLoadMore, { passive: true });
     syncLoadingIndicators();
     syncSearchControls();
-    moveDrawerCloseButtonIntoTitle();
 
     if (drawer) {
       drawer.addEventListener('wa-after-show', () => {
-        moveDrawerCloseButtonIntoTitle();
+        ensureBaseIssuesLoaded();
+
         if (typeof searchInput.focus === 'function') {
           searchInput.focus();
         }
@@ -740,7 +749,7 @@ import mermaid from 'mermaid';
     }
 
     return {
-      loadBaseIssues
+      loadBaseIssues: ensureBaseIssuesLoaded
     };
   }
 
@@ -1012,11 +1021,7 @@ import mermaid from 'mermaid';
   const source = specConfig.source;
 
   if (source && source.host === 'github' && source.account && source.repo) {
-    const issueBrowser = createGithubIssueBrowser(source);
-
-    if (issueBrowser) {
-      issueBrowser.loadBaseIssues();
-    }
+    createGithubIssueBrowser(source);
   }
 
   const tipMap = new WeakMap();
