@@ -740,10 +740,6 @@ import mermaid from 'mermaid';
     if (drawer) {
       drawer.addEventListener('wa-after-show', () => {
         ensureBaseIssuesLoaded();
-
-        if (typeof searchInput.focus === 'function') {
-          searchInput.focus();
-        }
         scheduleLoadMoreCheck();
       });
     }
