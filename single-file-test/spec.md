@@ -1,7 +1,7 @@
 Spec-Up Example
 ==================
 
-**Specification Status:** Draft
+**Specification Status:** [[badge: Draft]]
 
 **Latest Draft:**
   [https://identity.foundation/spec-up](https://identity.foundation/spec-up)

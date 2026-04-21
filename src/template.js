@@ -16,9 +16,7 @@ const DEFAULT_CSP_DIRECTIVES = Object.freeze({
     "'self'",
     'data:',
     'blob:',
-    'https://api.github.com',
-    'https://ka-f.fontawesome.com',
-    'https://ka-p.fontawesome.com'
+    'https://api.github.com'
   ]
 });
 

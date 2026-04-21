@@ -36,11 +36,11 @@ function needsCompiledAssetBuild(changedPaths, rootDirectory) {
   const compiledAssetDirectories = [
     path.join(rootDirectory, 'assets', 'css'),
     path.join(rootDirectory, 'assets', 'js'),
-    path.join(rootDirectory, 'src', 'vite')
+    path.join(rootDirectory, 'src', 'vite'),
+    path.join(rootDirectory, 'src', 'web-awesome', 'dist')
   ];
   const compiledAssetFiles = new Set([
-    path.join(rootDirectory, 'assets', 'icons.svg'),
-    path.join(rootDirectory, 'src', 'web-awesome', 'dist-cdn', 'chunks', 'chunk.DSSPBSBT.js')
+    path.join(rootDirectory, 'assets', 'icons.svg')
   ]);
 
   if (!changedPaths.size) {

@@ -10,7 +10,7 @@ const outputDirectory = path.join(rootDirectory, 'assets', 'compiled');
 const ICON_LIBRARY_DIRECTORY_NAME = 'icon-library';
 const HEAD_CSS_SOURCES = [
   path.join(rootDirectory, 'assets', 'css', 'prism.css'),
-  path.join(rootDirectory, 'src', 'web-awesome', 'dist-cdn', 'styles', 'webawesome.css'),
+  path.join(rootDirectory, 'src', 'web-awesome', 'dist', 'styles', 'webawesome.css'),
   path.join(rootDirectory, 'assets', 'css', 'index.css')
 ];
 const KATEX_CSS_SOURCE = path.join(rootDirectory, 'node_modules', 'katex', 'dist', 'katex.min.css');
@@ -175,7 +175,7 @@ async function writeSpecUpIconLibrary(resolvedRoot, resolvedOutputDirectory) {
 
 async function loadSystemIcons(resolvedRoot) {
   const systemIconModuleUrl = new URL(
-    `${pathToFileURL(path.join(resolvedRoot, 'src', 'web-awesome', 'dist-cdn', 'chunks', 'chunk.DSSPBSBT.js')).href}?t=${Date.now()}`
+    `${pathToFileURL(path.join(resolvedRoot, 'src', 'web-awesome', 'dist', 'chunks', 'chunk.DSSPBSBT.js')).href}?t=${Date.now()}`
   );
   const { icons } = await import(systemIconModuleUrl.href);
 

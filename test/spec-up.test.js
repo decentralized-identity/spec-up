@@ -116,16 +116,18 @@ $x^2$
   assert.match(html, /<wa-page class="spec-up-shell"/);
   assert.match(html, /id="spec_up_theme_selector"/);
   assert.match(html, /class="toc-anchor" href="#terms"/);
-  assert.match(html, /<script src="assets\/compiled\/theme\.js"><\/script>/);
+  assert.match(html, /<script>\(function\(\)\s*\{/);
   assert.match(html, /<link href="assets\/compiled\/head\.css" rel="stylesheet"\/>/);
   assert.match(html, /<script src="assets\/compiled\/head\.js"><\/script>/);
   assert.match(html, /<script src="assets\/compiled\/body\.js"><\/script>/);
+  assert.doesNotMatch(html, /<script src="assets\/compiled\/theme\.js"><\/script>/);
+  assert.match(html, /<script>\(function\(\)\s*\{[\s\S]*<\/script><link href="assets\/compiled\/head\.css" rel="stylesheet"\/>/);
   assert.match(html, /<link href="assets\/compiled\/katex\.css" rel="stylesheet"\/>/);
   assert.match(html, /<template id="spec_up_config">/);
   await assert.doesNotReject(() => fsp.access(path.join(outputDirectory, 'assets', 'compiled', 'head.js')));
   await assert.doesNotReject(() => fsp.access(path.join(outputDirectory, 'assets', 'compiled', 'head.css')));
   await assert.doesNotReject(() => fsp.access(path.join(outputDirectory, 'assets', 'compiled', 'body.js')));
-  await assert.doesNotReject(() => fsp.access(path.join(outputDirectory, 'assets', 'compiled', 'theme.js')));
+  await assert.rejects(() => fsp.access(path.join(outputDirectory, 'assets', 'compiled', 'theme.js')), { code: 'ENOENT' });
   await assert.doesNotReject(() => fsp.access(path.join(outputDirectory, 'assets', 'compiled', 'katex.css')));
   await assert.doesNotReject(() => fsp.access(path.join(outputDirectory, 'assets', 'compiled', 'icon-library', 'default', 'solid', 'bars.svg')));
   await assert.doesNotReject(() => fsp.access(path.join(outputDirectory, 'assets', 'compiled', 'icon-library', 'default', 'solid', 'check.svg')));
@@ -278,7 +280,8 @@ test('template emits CSP only when explicitly enabled', () => {
   assert.match(csp, /default-src 'self'/);
   assert.match(csp, /script-src 'self' 'unsafe-inline' blob: data:/);
   assert.match(csp, /style-src 'self' 'unsafe-inline' data:/);
-  assert.match(csp, /connect-src 'self' data: blob: https:\/\/api\.github\.com https:\/\/ka-f\.fontawesome\.com https:\/\/ka-p\.fontawesome\.com/);
+  assert.match(csp, /connect-src 'self' data: blob: https:\/\/api\.github\.com/);
+  assert.doesNotMatch(csp, /fontawesome/);
 });
 
 test('template CSP allows remote asset origins and dev-server sockets', () => {
@@ -441,7 +444,7 @@ Third panel **content**
 `);
   const html = plugin.transformRenderedHtml({ html: rendered });
 
-  assert.match(html, /<wa-carousel class="spec-up-carousel" navigation="" pagination="" mouse-dragging="">/);
+  assert.match(html, /<wa-carousel class="spec-up-carousel" loop="" navigation="" pagination="" mouse-dragging="">/);
   assert.match(html, /<wa-carousel-item><p>First panel <em>content<\/em><\/p><\/wa-carousel-item>/);
   assert.match(html, /<wa-carousel-item><p><img src="logo\.svg" alt="The Spec-Up logo" title="Spec-Up Logo"><\/p><\/wa-carousel-item>/);
   assert.match(html, /<wa-carousel-item><p>Third panel <strong>content<\/strong><\/p><\/wa-carousel-item>/);

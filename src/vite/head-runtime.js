@@ -1,7 +1,6 @@
 import '../../assets/js/utils.js';
-import { registerIconLibrary } from '../web-awesome/dist-cdn/components/icon/library.js';
-import defaultIconLibrary from '../web-awesome/dist-cdn/components/icon/library.default.js';
-import { icons as systemIcons } from '../web-awesome/dist-cdn/chunks/chunk.DSSPBSBT.js';
+import { registerIconLibrary } from '../web-awesome/dist/components/icon/library.js';
+import { icons as systemIcons } from '../web-awesome/dist/chunks/chunk.DSSPBSBT.js';
 
 const SPEC_UP_ICON_NAMES = new Set([
   'bars',
@@ -40,19 +39,19 @@ function getDefaultVariant(name, variant = 'solid') {
   return getSystemVariant(name, variant);
 }
 
-function resolvesToLocalDefaultIcon(name) {
-  return name === 'bars' || Boolean(systemIcons.solid?.[name] || systemIcons.regular?.[name]);
+function getDefaultIconName(name) {
+  if (name === 'bars' || systemIcons.solid?.[name] || systemIcons.regular?.[name]) {
+    return name;
+  }
+
+  return SYSTEM_ICON_FALLBACK;
 }
 
 registerIconLibrary('default', {
-  resolver(name, family = 'classic', variant = 'solid') {
-    if (resolvesToLocalDefaultIcon(name)) {
-      return `${DEFAULT_ICON_BASE_PATH}/${getDefaultVariant(name, variant)}/${name}.svg`;
-    }
-
-    return defaultIconLibrary.resolver(name, family, variant);
-  },
-  mutator: defaultIconLibrary.mutator
+  resolver(name, _family = 'classic', variant = 'solid') {
+    const resolvedName = getDefaultIconName(name);
+    return `${DEFAULT_ICON_BASE_PATH}/${getDefaultVariant(resolvedName, variant)}/${resolvedName}.svg`;
+  }
 });
 
 registerIconLibrary('system', {
