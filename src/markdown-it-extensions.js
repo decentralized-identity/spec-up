@@ -1,12 +1,10 @@
-'use strict';
-
 const levels = 2;
 const openString = '['.repeat(levels);
 const closeString = ']'.repeat(levels);
 const contentRegex = /\s*([^\s\[\]:]+):?\s*([^\]\n]+)?/i;
 const replacerArgsRegex = /\s*,+\s*/;
 
-module.exports = function markdownItExtensions(md, templates = []) {
+export default function markdownItExtensions(md, templates = []) {
   md.inline.ruler.after('emphasis', 'templates', function templatesRule(state) {
     const start = state.pos;
     const prefix = state.src.slice(start, start + levels);
@@ -85,4 +83,4 @@ module.exports = function markdownItExtensions(md, templates = []) {
   md.renderer.rules.link_close = function renderLinkClose(tokens, idx) {
     return tokens[idx].markup === 'linkify' ? '</span></a>' : '</a>';
   };
-};
+}

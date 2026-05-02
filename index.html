@@ -12,7 +12,31 @@
 
         <link rel="icon" href="logo.svg">
 
-        <script type="module" src="http://127.0.0.1:5173/src/vite/theme.js"></script><script type="module" src="http://127.0.0.1:5173/@vite/client"></script><script type="module" src="http://127.0.0.1:5173/src/vite/head.js"></script><script type="module" src="http://127.0.0.1:5173/src/vite/katex.js"></script>
+        <script>(function() {
+  const storageKey = 'spec-up-color-scheme';
+  const root = document.documentElement;
+  const media = window.matchMedia ? window.matchMedia('(prefers-color-scheme: dark)') : null;
+  let themePreference = 'auto';
+
+  try {
+    const storedThemePreference = window.localStorage.getItem(storageKey);
+
+    if (storedThemePreference === 'light' || storedThemePreference === 'dark' || storedThemePreference === 'auto') {
+      themePreference = storedThemePreference;
+    }
+  }
+  catch {}
+
+  const theme = themePreference === 'auto'
+    ? (media && media.matches ? 'dark' : 'light')
+    : themePreference;
+
+  root.classList.remove('wa-light', 'wa-dark');
+  root.classList.add(theme === 'dark' ? 'wa-dark' : 'wa-light');
+  root.dataset.theme = theme;
+  root.dataset.themePreference = themePreference;
+  root.style.colorScheme = theme;
+})();</script><script type="module" src="http://127.0.0.1:5173/@vite/client"></script><script type="module" src="http://127.0.0.1:5173/src/vite/head.js"></script><script type="module" src="http://127.0.0.1:5173/src/vite/katex.js"></script>
       </head>
       <body features="logo source">
         <svg id="svg" version="1.1" xmlns="http://www.w3.org/2000/svg">
@@ -165,8 +189,8 @@
 <li>
 <p>Render either programmatically or through the Vite workflow:</p>
 <ul>
-<li><code>require('spec-up')({ nowatch: true })</code> renders once.</li>
-<li><code>require('spec-up')()</code> renders and keeps file watchers running.</li>
+<li><code>import specUp from 'spec-up'; await specUp({ nowatch: true })</code> renders once.</li>
+<li><code>await specUp()</code> renders and keeps file watchers running.</li>
 <li>The default local workflow in this repo uses Vite, as shown below.</li>
 </ul>
 </li>

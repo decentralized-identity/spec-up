@@ -1,7 +1,6 @@
-'use strict';
-
-const path = require('node:path');
-const { resolveProjectFile, unique, unwrapDefault } = require('./utils');
+import path from 'node:path';
+import { pathToFileURL } from 'node:url';
+import { resolveProjectFile, unique, unwrapDefault } from './utils.js';
 
 const PLUGIN_HOOKS = new Set([
   'afterRender',
@@ -15,6 +14,7 @@ const PLUGIN_HOOKS = new Set([
   'transformPageHtml',
   'transformRenderedHtml'
 ]);
+let pluginImportVersion = 0;
 
 function normalizePluginEntry(entry, projectRoot) {
   if (!entry) {
@@ -93,10 +93,17 @@ function pluginName(plugin, fallback) {
   return fallback;
 }
 
-function loadPlugin(entry) {
+async function loadPlugin(entry) {
   if (entry.type === 'path') {
-    delete require.cache[require.resolve(entry.sourcePath)];
-    return instantiatePlugin(require(entry.sourcePath), entry.options);
+    if (!entry.sourcePath) {
+      throw new TypeError('Plugin path entries must resolve to a local file.');
+    }
+
+    const pluginUrl = pathToFileURL(entry.sourcePath);
+
+    pluginUrl.searchParams.set('t', String(++pluginImportVersion));
+
+    return instantiatePlugin(await import(pluginUrl.href), entry.options);
   }
 
   return instantiatePlugin(entry.value, entry.options);
@@ -109,13 +116,13 @@ function createPluginManager(entries, projectRoot) {
     return unique(normalizedEntries.filter(entry => entry.type === 'path').map(entry => entry.sourcePath));
   }
 
-  function loadPlugins() {
-    return normalizedEntries.map((entry, index) => {
-      const plugin = loadPlugin(entry);
+  async function loadPlugins() {
+    return Promise.all(normalizedEntries.map(async (entry, index) => {
+      const plugin = await loadPlugin(entry);
       plugin.name = pluginName(plugin, entry.sourcePath ? path.basename(entry.sourcePath, path.extname(entry.sourcePath)) : `plugin-${index + 1}`);
       plugin.sourcePath = entry.sourcePath || null;
       return plugin;
-    });
+    }));
   }
 
   async function runHook(plugins, hookName, context) {
@@ -179,6 +186,6 @@ function createPluginManager(entries, projectRoot) {
   };
 }
 
-module.exports = {
+export {
   createPluginManager
 };

@@ -1,9 +1,8 @@
-'use strict';
-
-const fsp = require('node:fs/promises');
-const path = require('node:path');
-const katex = require('katex');
-const { unwrapDefault } = require('../utils');
+import fsp from 'node:fs/promises';
+import path from 'node:path';
+import katex from 'katex';
+import markdownItKatexModule from '@vscode/markdown-it-katex';
+import { unwrapDefault } from '../utils.js';
 
 const KATEX_OUTPUT_PATH = 'assets/compiled/katex.css';
 const KATEX_FONTS_OUTPUT_PATH = 'assets/compiled/fonts';
@@ -19,7 +18,7 @@ function buildKatexAssetTag({ devServerUrl }) {
 }
 
 function createKatexPlugin() {
-  const markdownItKatex = unwrapDefault(require('@vscode/markdown-it-katex'));
+  const markdownItKatex = unwrapDefault(markdownItKatexModule);
 
   return {
     name: 'katex',
@@ -64,4 +63,4 @@ function createKatexPlugin() {
   };
 }
 
-module.exports = createKatexPlugin;
+export default createKatexPlugin;

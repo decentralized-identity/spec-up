@@ -1,23 +1,24 @@
-'use strict';
+import { JSDOM } from 'jsdom';
+import markdownItContainer from 'markdown-it-container';
+import markdownItDeflist from 'markdown-it-deflist';
+import markdownItAttrs from 'markdown-it-attrs';
+import markdownItIns from 'markdown-it-ins';
+import markdownItMark from 'markdown-it-mark';
+import markdownItSub from 'markdown-it-sub';
+import markdownItSup from 'markdown-it-sup';
+import markdownItTaskLists from 'markdown-it-task-lists';
+import markdownItMultiTable from 'markdown-it-multimd-table';
+import markdownItReferences from 'markdown-it-references';
+import markdownItTextualUml from 'markdown-it-textual-uml';
+import Prism from 'prismjs';
+import markdownItChartModule from 'markdown-it-chart';
+import markdownItIconsModule from 'markdown-it-icons';
+import markdownItPrismModule from 'markdown-it-prism';
+import { escapeHtml, unwrapDefault } from '../utils.js';
 
-const { JSDOM } = require('jsdom');
-const markdownItContainer = require('markdown-it-container');
-const markdownItDeflist = require('markdown-it-deflist');
-const markdownItAttrs = require('markdown-it-attrs');
-const markdownItIns = require('markdown-it-ins');
-const markdownItMark = require('markdown-it-mark');
-const markdownItSub = require('markdown-it-sub');
-const markdownItSup = require('markdown-it-sup');
-const markdownItTaskLists = require('markdown-it-task-lists');
-const markdownItMultiTable = require('markdown-it-multimd-table');
-const markdownItReferences = require('markdown-it-references');
-const markdownItTextualUml = require('markdown-it-textual-uml');
-const Prism = require('prismjs');
-const { escapeHtml, unwrapDefault } = require('../utils');
-
-const markdownItChart = unwrapDefault(require('markdown-it-chart'));
-const markdownItIcons = unwrapDefault(require('markdown-it-icons'));
-const markdownItPrism = unwrapDefault(require('markdown-it-prism'));
+const markdownItChart = unwrapDefault(markdownItChartModule);
+const markdownItIcons = unwrapDefault(markdownItIconsModule);
+const markdownItPrism = unwrapDefault(markdownItPrismModule);
 
 const NOTICE_CONFIG = {
   example: {
@@ -746,4 +747,4 @@ function createCoreMarkdownPlugin() {
   };
 }
 
-module.exports = createCoreMarkdownPlugin;
+export default createCoreMarkdownPlugin;

@@ -1,17 +1,17 @@
-'use strict';
+import assert from 'node:assert/strict';
+import * as fsp from 'node:fs/promises';
+import os from 'node:os';
+import path from 'node:path';
+import { test } from 'node:test';
+import { fileURLToPath } from 'node:url';
+import { JSDOM } from 'jsdom';
+import MarkdownIt from 'markdown-it';
+import specUp from '../index.js';
+import markdownItExtensions from '../src/markdown-it-extensions.js';
+import { buildPageHtml } from '../src/template.js';
+import createCoreMarkdownPlugin from '../src/builtin-plugins/core-markdown.js';
 
-const assert = require('node:assert/strict');
-const fsp = require('node:fs/promises');
-const os = require('node:os');
-const path = require('node:path');
-const test = require('node:test');
-const { JSDOM } = require('jsdom');
-const MarkdownIt = require('markdown-it');
-
-const specUp = require('../index');
-const markdownItExtensions = require('../src/markdown-it-extensions');
-const { buildPageHtml } = require('../src/template');
-const createCoreMarkdownPlugin = require('../src/builtin-plugins/core-markdown');
+const testDirectory = path.dirname(fileURLToPath(import.meta.url));
 
 function getContentSecurityPolicy(html) {
   const match = html.match(/<meta http-equiv="Content-Security-Policy" content="([^"]+)">/);
@@ -37,8 +37,8 @@ test('renders custom plugins alongside built-in reference and katex plugins', as
   await fsp.mkdir(specDirectory, { recursive: true });
   await fsp.mkdir(pluginDirectory, { recursive: true });
 
-  await fsp.writeFile(path.join(pluginDirectory, 'test-plugin.js'), `
-module.exports = function createTestPlugin() {
+  await fsp.writeFile(path.join(pluginDirectory, 'test-plugin.mjs'), `
+export default function createTestPlugin() {
   return {
     name: 'test-plugin',
     markdownTemplates() {
@@ -55,7 +55,7 @@ module.exports = function createTestPlugin() {
       return html.replace('</body>', '<div id="page-plugin">plugin</div></body>');
     }
   };
-};
+}
 `);
 
   await fsp.writeFile(path.join(specDirectory, 'spec.md'), `
@@ -82,7 +82,7 @@ $x^2$
         output_path: './dist',
         katex: true,
         plugins: [
-          './plugins/test-plugin.js'
+          './plugins/test-plugin.mjs'
         ]
       }
     ]
@@ -243,7 +243,7 @@ test('embedded spec config remains readable when rendered inside a template elem
 });
 
 test('github issue drawer defers base issue loading until the drawer opens, reads template config, and avoids the close-button DOM hack', async () => {
-  const issueBrowser = await fsp.readFile(path.join(__dirname, '..', 'assets', 'js', 'index.js'), 'utf8');
+  const issueBrowser = await fsp.readFile(path.join(testDirectory, '..', 'assets', 'js', 'index.js'), 'utf8');
 
   assert.match(issueBrowser, /const ISSUE_REQUEST_TIMEOUT_MS = 12000;/);
   assert.match(issueBrowser, /configNode\.tagName === 'TEMPLATE' && configNode\.content/);
@@ -315,7 +315,7 @@ test('template CSP allows remote asset origins and dev-server sockets', () => {
 });
 
 test('vite body entry does not load the legacy Font Awesome CSS kit', async () => {
-  const bodyEntry = await fsp.readFile(path.join(__dirname, '..', 'src', 'vite', 'body.js'), 'utf8');
+  const bodyEntry = await fsp.readFile(path.join(testDirectory, '..', 'src', 'vite', 'body.js'), 'utf8');
 
   assert.doesNotMatch(bodyEntry, /font-awesome\.js/);
 });

@@ -1,12 +1,10 @@
-'use strict';
-
-const {
+import {
   fetchExternalSpecs,
   findExternalSpecByKey,
   logReferenceWarnings,
   slugifyTerm,
   validateReferences
-} = require('../../references');
+} from '../../references.js';
 
 const terminologyRegex = /^def$|^ref$|^xref/i;
 
@@ -77,4 +75,4 @@ function createTerminologyPlugin() {
   };
 }
 
-module.exports = createTerminologyPlugin;
+export default createTerminologyPlugin;

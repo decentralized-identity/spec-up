@@ -1,7 +1,5 @@
-'use strict';
-
-const { JSDOM } = require('jsdom');
-const { slugifyTerm } = require('./src/utils');
+import { JSDOM } from 'jsdom';
+import { slugifyTerm } from './src/utils.js';
 
 function validateReferences(references, definitions, html) {
   const unresolvedRefs = [];
@@ -104,7 +102,7 @@ function createNewDLWithTerms(title, html) {
   return newDl.outerHTML;
 }
 
-module.exports = {
+export {
   createNewDLWithTerms,
   fetchExternalSpecs,
   findExternalSpecByKey,

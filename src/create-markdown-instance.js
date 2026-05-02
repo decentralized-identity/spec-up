@@ -1,7 +1,5 @@
-'use strict';
-
-const MarkdownIt = require('markdown-it');
-const markdownItExtensions = require('./markdown-it-extensions');
+import MarkdownIt from 'markdown-it';
+import markdownItExtensions from './markdown-it-extensions.js';
 
 async function createMarkdownInstance({ context, pluginManager, plugins }) {
   const md = new MarkdownIt({
@@ -23,6 +21,6 @@ async function createMarkdownInstance({ context, pluginManager, plugins }) {
   return md;
 }
 
-module.exports = {
+export {
   createMarkdownInstance
 };

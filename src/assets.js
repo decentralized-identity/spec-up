@@ -1,8 +1,6 @@
-'use strict';
-
-const fs = require('node:fs');
-const fsp = require('node:fs/promises');
-const path = require('node:path');
+import fs from 'node:fs';
+import fsp from 'node:fs/promises';
+import path from 'node:path';
 
 const COMPILED_ASSET_DIRECTORY = path.join('assets', 'compiled');
 const COMPILED_BODY_PATH = path.join(COMPILED_ASSET_DIRECTORY, 'body.js');
@@ -115,6 +113,6 @@ async function buildAssetTags({ options, packageRoot, spec }) {
   };
 }
 
-module.exports = {
+export {
   buildAssetTags
 };

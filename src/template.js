@@ -1,6 +1,4 @@
-'use strict';
-
-const { escapeHtml, unique } = require('./utils');
+import { escapeHtml, unique } from './utils.js';
 const DEFAULT_CSP_DIRECTIVES = Object.freeze({
   'default-src': ["'self'"],
   'base-uri': ["'self'"],
@@ -262,6 +260,6 @@ function buildPageHtml({
   `;
 }
 
-module.exports = {
+export {
   buildPageHtml
 };

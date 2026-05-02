@@ -7,7 +7,7 @@ Using Spec-Up is easy peasy lemon squeezy:
     - `spec_directory` points at the directory that contains your spec source files
     - `markdown_paths` lists the files to assemble, in order
     - `output_path`, `assets`, `plugins`, and `katex` are available when you need them
-3. Render programmatically with `require('spec-up')({ nowatch: true })`, or use the Vite-based workflow shown below.
+3. Render programmatically with `import specUp from 'spec-up'; await specUp({ nowatch: true })`, or use the Vite-based workflow shown below.
 
 Boom! That's it. For local authoring, `npm run edit` and `npm run dev` will watch your spec sources and re-render automatically when files change.
 

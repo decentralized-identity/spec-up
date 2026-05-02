@@ -1,7 +1,5 @@
-'use strict';
-
-const path = require('node:path');
-const { readJson } = require('../utils');
+import path from 'node:path';
+import { readJson } from '../utils.js';
 
 const specNameRegex = /^spec$|^spec[-]*\w+$/i;
 
@@ -90,4 +88,4 @@ function createSpecReferencesPlugin() {
   };
 }
 
-module.exports = createSpecReferencesPlugin;
+export default createSpecReferencesPlugin;

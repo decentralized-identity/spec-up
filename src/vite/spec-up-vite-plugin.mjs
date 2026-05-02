@@ -1,11 +1,8 @@
 import path from 'node:path';
-import { createRequire } from 'node:module';
 import { buildCompiledAssets } from '../../scripts/build-assets.mjs';
-
-const require = createRequire(import.meta.url);
-const { loadSpecContexts, renderSpec } = require('../run-spec-up');
-const { createRenderScheduler, customAssetWatchPaths } = require('../watch');
-const { relativeTo, unique } = require('../utils');
+import { loadSpecContexts, renderSpec } from '../run-spec-up.js';
+import { createRenderScheduler, customAssetWatchPaths } from '../watch.js';
+import { relativeTo, unique } from '../utils.js';
 
 function isWithinDirectory(filePath, directoryPath) {
   const relativePath = path.relative(directoryPath, filePath);

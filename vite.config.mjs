@@ -1,11 +1,8 @@
 import fs from 'node:fs';
 import path from 'node:path';
-import { createRequire } from 'node:module';
 import { defineConfig } from 'vite';
 import { createSpecUpBuildPlugin, createSpecUpVitePlugin } from './src/vite/spec-up-vite-plugin.mjs';
-
-const require = createRequire(import.meta.url);
-const { loadSpecContexts } = require('./src/run-spec-up');
+import { loadSpecContexts } from './src/run-spec-up.js';
 
 function toWatchPattern(rootDirectory, targetPath, suffix = '') {
   const relativePath = path.relative(rootDirectory, targetPath).split(path.sep).join('/');

@@ -1,7 +1,8 @@
-'use strict';
+import fsp from 'node:fs/promises';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 
-const path = require('node:path');
-const fsp = require('node:fs/promises');
+const moduleDirectory = path.dirname(fileURLToPath(import.meta.url));
 
 async function fetchJson(url) {
   const response = await fetch(url);
@@ -20,7 +21,7 @@ async function main() {
     fetchJson('https://raw.githubusercontent.com/tobie/specref/master/refs/whatwg.json')
   ]);
   const merged = Object.assign({}, ...refs);
-  const outputPath = path.join(__dirname, '..', 'assets/compiled/refs.json');
+  const outputPath = path.join(moduleDirectory, '..', 'assets/compiled/refs.json');
 
   await fsp.mkdir(path.dirname(outputPath), { recursive: true });
   await fsp.writeFile(outputPath, JSON.stringify(merged));

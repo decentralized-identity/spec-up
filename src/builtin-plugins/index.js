@@ -1,10 +1,8 @@
-'use strict';
-
-const createCoreMarkdownPlugin = require('./core-markdown');
-const createInsertPlugin = require('./insert');
-const createKatexPlugin = require('./katex');
-const createSpecReferencesPlugin = require('./spec-references');
-const createTerminologyPlugin = require('./terminology');
+import createCoreMarkdownPlugin from './core-markdown.js';
+import createInsertPlugin from './insert.js';
+import createKatexPlugin from './katex.js';
+import createSpecReferencesPlugin from './spec-references.js';
+import createTerminologyPlugin from './terminology.js';
 
 function createBuiltinPlugins() {
   return [
@@ -16,6 +14,6 @@ function createBuiltinPlugins() {
   ];
 }
 
-module.exports = {
+export {
   createBuiltinPlugins
 };

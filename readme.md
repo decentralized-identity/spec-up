@@ -44,7 +44,7 @@ Installing Spec-Up is easy peasy lemon squeezy:
         - **`plugins`** _(ARRAY, optional)_ - Plugins that should run only for this spec.
 3. Render either programmatically or through the Vite-based workflow used by this repo:
 
-    - Programmatic: `require('spec-up')({ nowatch: true })` renders once, while `require('spec-up')()` renders and keeps file watchers running.
+    - Programmatic: `import specUp from 'spec-up'; await specUp({ nowatch: true })` renders once, while `await specUp()` renders and keeps file watchers running.
     - Vite workflow: use the `vite.config.mjs` pattern in this repo and the package scripts shown below.
 
 Boom! That's it. You're ready to start rendering specs as HTML sites locally and/or pushing them to github pages however you see fit to automate.
@@ -81,11 +81,11 @@ SPEC_UP_DEV_HOST=docs.localhost SPEC_UP_DEV_PORT=4443 npm run dev:dns
 
 ## Plugins
 
-Spec-Up now supports plugins at the top level of `specs.json`, per-spec via `plugins`, or programmatically via `require('spec-up')({ plugins: [...] })`.
+Spec-Up now supports plugins at the top level of `specs.json`, per-spec via `plugins`, or programmatically via `specUp({ plugins: [...] })`.
 
 Plugin entries can be either:
 
-- a relative module path string such as `"./plugins/my-plugin.js"`
+- a relative ESM module path string such as `"./plugins/my-plugin.mjs"`
 - an object with `resolve` and `options`
 - a plugin object or factory passed through `options.plugins`
 

@@ -1,7 +1,7 @@
-'use strict';
+import { runSpecUp } from './src/run-spec-up.js';
 
-const { runSpecUp } = require('./src/run-spec-up');
-
-module.exports = function specUp(options = {}) {
+export default function specUp(options = {}) {
   return runSpecUp(options);
-};
+}
+
+export { loadSpecContexts, renderSpec, runSpecUp } from './src/run-spec-up.js';

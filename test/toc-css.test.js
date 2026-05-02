@@ -1,12 +1,13 @@
-'use strict';
+import assert from 'node:assert/strict';
+import * as fs from 'node:fs';
+import path from 'node:path';
+import { test } from 'node:test';
+import { fileURLToPath } from 'node:url';
 
-const assert = require('node:assert/strict');
-const fs = require('node:fs');
-const path = require('node:path');
-const test = require('node:test');
+const testDirectory = path.dirname(fileURLToPath(import.meta.url));
 
 test('toc counters increment on list items so nested sections inherit parent numbering', () => {
-  const css = fs.readFileSync(path.join(__dirname, '..', 'assets', 'css', 'index.css'), 'utf8');
+  const css = fs.readFileSync(path.join(testDirectory, '..', 'assets', 'css', 'index.css'), 'utf8');
 
   assert.match(css, /\.toc > li\s*\{\s*counter-increment: toc1;/);
   assert.match(css, /\.toc > li > a:before\s*\{[^}]*content:\s*counter\(toc1\)\s+"\.";?/s);
@@ -18,7 +19,7 @@ test('toc counters increment on list items so nested sections inherit parent num
 });
 
 test('heading counters increment on headings so nested sections inherit the active section number', () => {
-  const css = fs.readFileSync(path.join(__dirname, '..', 'assets', 'css', 'index.css'), 'utf8');
+  const css = fs.readFileSync(path.join(testDirectory, '..', 'assets', 'css', 'index.css'), 'utf8');
 
   assert.match(css, /main article h2\s*\{[^}]*counter-reset:\s*h3 h4;[^}]*counter-increment:\s*h2;/s);
   assert.match(css, /main article h3\s*\{[^}]*counter-reset:\s*h4;[^}]*counter-increment:\s*h3;/s);
@@ -31,7 +32,7 @@ test('heading counters increment on headings so nested sections inherit the acti
 });
 
 test('sidebar layout removes drawer body padding and resets toc item offsets', () => {
-  const css = fs.readFileSync(path.join(__dirname, '..', 'assets', 'css', 'index.css'), 'utf8');
+  const css = fs.readFileSync(path.join(testDirectory, '..', 'assets', 'css', 'index.css'), 'utf8');
 
   assert.match(css, /wa-page\.spec-up-shell::part\(drawer__body\)\s*\{[^}]*padding:\s*0;/s);
   assert.match(css, /wa-page\.spec-up-shell\[view='desktop'\]::part\(navigation\)\s*\{[^}]*display:\s*flex;/s);
@@ -49,7 +50,7 @@ test('sidebar layout removes drawer body padding and resets toc item offsets', (
 });
 
 test('github issues drawer keeps the built-in header inline and moves search into the body', () => {
-  const css = fs.readFileSync(path.join(__dirname, '..', 'assets', 'css', 'index.css'), 'utf8');
+  const css = fs.readFileSync(path.join(testDirectory, '..', 'assets', 'css', 'index.css'), 'utf8');
 
   assert.match(css, /wa-drawer\.spec-up-issues-drawer::part\(body\)\s*\{[^}]*display:\s*flex;[^}]*flex-direction:\s*column;[^}]*gap:\s*0\.75rem;[^}]*padding:\s*0\.75rem 1rem 1rem;/s);
   assert.match(css, /\.spec-up-issues-search-row\s*\{[^}]*width:\s*100%;[^}]*flex:\s*none;/s);
@@ -58,7 +59,7 @@ test('github issues drawer keeps the built-in header inline and moves search int
 });
 
 test('header layout keeps actions inline and truncates the title instead of wrapping', () => {
-  const css = fs.readFileSync(path.join(__dirname, '..', 'assets', 'css', 'index.css'), 'utf8');
+  const css = fs.readFileSync(path.join(testDirectory, '..', 'assets', 'css', 'index.css'), 'utf8');
 
   assert.match(css, /#app_header\s*\{[^}]*flex-wrap:\s*nowrap;/s);
   assert.match(css, /\.spec-up-brand\s*\{[^}]*flex:\s*1 1 auto;[^}]*flex-wrap:\s*nowrap;[^}]*min-width:\s*0;/s);

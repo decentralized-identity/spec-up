@@ -1,14 +1,15 @@
-'use strict';
+import fsp from 'node:fs/promises';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
+import { buildAssetTags } from './assets.js';
+import { createBuiltinPlugins } from './builtin-plugins/index.js';
+import { createMarkdownInstance } from './create-markdown-instance.js';
+import { createPluginManager } from './plugin-manager.js';
+import { buildPageHtml } from './template.js';
+import { normalizeSpec, readJson } from './utils.js';
+import { watchSpec } from './watch.js';
 
-const path = require('node:path');
-const fsp = require('node:fs/promises');
-const { buildAssetTags } = require('./assets');
-const { createBuiltinPlugins } = require('./builtin-plugins');
-const { createMarkdownInstance } = require('./create-markdown-instance');
-const { createPluginManager } = require('./plugin-manager');
-const { buildPageHtml } = require('./template');
-const { normalizeSpec, readJson } = require('./utils');
-const { watchSpec } = require('./watch');
+const moduleDirectory = path.dirname(fileURLToPath(import.meta.url));
 
 function createPluginEntries(config, options, spec) {
   return [
@@ -44,7 +45,7 @@ async function renderSpec(context) {
     projectRoot,
     spec
   } = context;
-  const plugins = pluginManager.loadPlugins();
+  const plugins = await pluginManager.loadPlugins();
   const state = createRenderState();
   const hookContext = {
     config,
@@ -145,7 +146,7 @@ async function renderSpec(context) {
 
 function loadSpecContexts(options = {}) {
   const logger = options.logger || console;
-  const packageRoot = path.resolve(__dirname, '..');
+  const packageRoot = path.resolve(moduleDirectory, '..');
   const projectRoot = path.resolve(options.cwd || process.cwd());
   const configPath = path.resolve(options.configPath || path.join(projectRoot, 'specs.json'));
   const config = readJson(configPath);
@@ -206,7 +207,7 @@ async function runSpecUp(options = {}) {
   };
 }
 
-module.exports = {
+export {
   loadSpecContexts,
   renderSpec,
   runSpecUp

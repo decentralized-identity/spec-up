@@ -39,8 +39,8 @@ Using Spec-Up is easy peasy lemon squeezy:
     - **`plugins`** _(ARRAY, optional)_ - Adds plugins for this spec, or at the top level of `specs.json` for every spec in the project.
 3. Render either programmatically or through the Vite workflow:
 
-    - `require('spec-up')({ nowatch: true })` renders once.
-    - `require('spec-up')()` renders and keeps file watchers running.
+    - `import specUp from 'spec-up'; await specUp({ nowatch: true })` renders once.
+    - `await specUp()` renders and keeps file watchers running.
     - The default local workflow in this repo uses Vite, as shown below.
 
 Boom! That's it. Use `npm run build` for a one-shot render, `npm run edit` for a watch build, or `npm run dev` for a live-reloading dev server.

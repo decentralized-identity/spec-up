@@ -1,8 +1,6 @@
-'use strict';
-
-const chokidar = require('chokidar');
-const path = require('node:path');
-const { relativeTo, resolveProjectFile, unique } = require('./utils');
+import chokidar from 'chokidar';
+import path from 'node:path';
+import { relativeTo, resolveProjectFile, unique } from './utils.js';
 
 function customAssetWatchPaths(projectRoot, spec) {
   return (spec.assets || [])
@@ -66,7 +64,7 @@ function watchSpec({ logger, pluginWatchPaths, projectRoot, renderFn, spec }) {
   return watcher;
 }
 
-module.exports = {
+export {
   buildIgnorePaths,
   buildWatchPaths,
   createRenderScheduler,

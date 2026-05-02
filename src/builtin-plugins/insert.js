@@ -1,7 +1,5 @@
-'use strict';
-
-const fs = require('node:fs');
-const path = require('node:path');
+import fs from 'node:fs';
+import path from 'node:path';
 
 const replacerRegex = /\[\[\s*([^\s\[\]:]+):?\s*([^\]\n]+)?\]\]/gim;
 const replacerArgsRegex = /\s*,+\s*/;
@@ -28,4 +26,4 @@ function createInsertPlugin() {
   };
 }
 
-module.exports = createInsertPlugin;
+export default createInsertPlugin;

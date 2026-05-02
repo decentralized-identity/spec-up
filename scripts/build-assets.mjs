@@ -3,9 +3,9 @@ import { cp, mkdir, readFile, rm, writeFile } from 'node:fs/promises';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 import { build } from 'vite';
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-const rootDirectory = path.resolve(__dirname, '..');
+const modulePath = fileURLToPath(import.meta.url);
+const moduleDirectory = path.dirname(modulePath);
+const rootDirectory = path.resolve(moduleDirectory, '..');
 const outputDirectory = path.join(rootDirectory, 'assets', 'compiled');
 const ICON_LIBRARY_DIRECTORY_NAME = 'icon-library';
 const HEAD_CSS_SOURCES = [

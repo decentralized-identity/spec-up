@@ -1,7 +1,5 @@
-'use strict';
-
-const fs = require('node:fs');
-const path = require('node:path');
+import fs from 'node:fs';
+import path from 'node:path';
 
 function readJson(filePath) {
   return JSON.parse(fs.readFileSync(filePath, 'utf8'));
@@ -64,7 +62,7 @@ function relativeTo(root, filePath) {
   return path.relative(root, filePath) || '.';
 }
 
-module.exports = {
+export {
   escapeHtml,
   isRemoteUrl,
   normalizeSpec,

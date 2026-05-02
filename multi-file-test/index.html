@@ -12,7 +12,31 @@
 
         <link rel="icon" href="../logo.svg">
 
-        <script type="module" src="http://127.0.0.1:5173/src/vite/theme.js"></script><script type="module" src="http://127.0.0.1:5173/@vite/client"></script><script type="module" src="http://127.0.0.1:5173/src/vite/head.js"></script>
+        <script>(function() {
+  const storageKey = 'spec-up-color-scheme';
+  const root = document.documentElement;
+  const media = window.matchMedia ? window.matchMedia('(prefers-color-scheme: dark)') : null;
+  let themePreference = 'auto';
+
+  try {
+    const storedThemePreference = window.localStorage.getItem(storageKey);
+
+    if (storedThemePreference === 'light' || storedThemePreference === 'dark' || storedThemePreference === 'auto') {
+      themePreference = storedThemePreference;
+    }
+  }
+  catch {}
+
+  const theme = themePreference === 'auto'
+    ? (media && media.matches ? 'dark' : 'light')
+    : themePreference;
+
+  root.classList.remove('wa-light', 'wa-dark');
+  root.classList.add(theme === 'dark' ? 'wa-dark' : 'wa-light');
+  root.dataset.theme = theme;
+  root.dataset.themePreference = themePreference;
+  root.style.colorScheme = theme;
+})();</script><script type="module" src="http://127.0.0.1:5173/@vite/client"></script><script type="module" src="http://127.0.0.1:5173/src/vite/head.js"></script>
       </head>
       <body features="logo source">
         <svg id="svg" version="1.1" xmlns="http://www.w3.org/2000/svg">
@@ -155,7 +179,7 @@
 <li><code>output_path</code>, <code>assets</code>, <code>plugins</code>, and <code>katex</code> are available when you need them</li>
 </ul>
 </li>
-<li>Render programmatically with <code>require('spec-up')({ nowatch: true })</code>, or use the Vite-based workflow shown below.</li>
+<li>Render programmatically with <code>import specUp from 'spec-up'; await specUp({ nowatch: true })</code>, or use the Vite-based workflow shown below.</li>
 </ol>
 <p>Boom! That’s it. For local authoring, <code>npm run edit</code> and <code>npm run dev</code> will watch your spec sources and re-render automatically when files change.</p>
 <p><strong>Usage</strong></p>
