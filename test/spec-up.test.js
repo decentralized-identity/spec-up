@@ -361,7 +361,7 @@ Check this out.
   assert.match(html, /<wa-callout id="basic-note" class="spec-up-notice spec-up-notice--note" variant="brand" appearance="filled-outlined">/);
   assert.match(html, /<wa-icon library="spec-up" slot="icon" name="circle-info" label="note"><\/wa-icon>/);
   assert.doesNotMatch(html, /<span class="spec-up-notice-title">Basic Note<\/span>/);
-  assert.match(html, /<wa-callout id="code-example" class="spec-up-notice spec-up-notice--example" variant="neutral" appearance="filled-outlined"><div class="spec-up-notice-heading"><a class="notice-link" href="#code-example">EXAMPLE<\/a><span class="spec-up-notice-title">Code Example<\/span><\/div>/);
+  assert.match(html, /<wa-callout id="code-example" class="spec-up-notice spec-up-notice--example" variant="neutral" appearance="filled-outlined"><div class="spec-up-notice-heading"><span class="spec-up-notice-title">Code Example<\/span><\/div>/);
   assert.doesNotMatch(html, /spec-up-notice--example"[^>]*><wa-icon/s);
   assert.match(html, /<wa-tab-group class="spec-up-tab-group" active="second-tab">/);
   assert.match(html, /<wa-tab panel="first-tab">First Tab<\/wa-tab>/);
@@ -409,8 +409,8 @@ Bar test
   assert.match(html, /<wa-tab-group class="spec-up-tab-group" active="tab-title-1">/);
   assert.match(html, /<wa-tab panel="tab-title-1">Tab Title 1<\/wa-tab>/);
   assert.match(html, /<wa-tab panel="tab-title-2">Tab Title 2<\/wa-tab>/);
-  assert.match(html, /<wa-tab-panel name="tab-title-1"><p>Foo <em>test<\/em><\/p>[\s\S]*<pre class="language-json"><code class="language-json">[\s\S]*"foo"[\s\S]*"bar"[\s\S]*<\/code><\/pre><\/wa-tab-panel>/);
-  assert.match(html, /<wa-tab-panel name="tab-title-2"><p>Bar test<\/p>[\s\S]*<pre class="language-json"><code class="language-json">[\s\S]*"bar"[\s\S]*"baz"[\s\S]*<\/code><\/pre><\/wa-tab-panel>/);
+  assert.match(html, /<wa-tab-panel name="tab-title-1"><p>Foo <em>test<\/em><\/p>[\s\S]*<div class="spec-up-code-block-wrapper"><pre class="language-json spec-up-code-block"><code class="language-json" id="spec-up-code-copy-target-1">[\s\S]*"foo"[\s\S]*"bar"[\s\S]*<\/code><\/pre><wa-copy-button class="spec-up-code-copy-button" from="spec-up-code-copy-target-1" copy-label="Copy" success-label="Copied" error-label="Copy failed"><\/wa-copy-button><\/div><\/wa-tab-panel>/);
+  assert.match(html, /<wa-tab-panel name="tab-title-2"><p>Bar test<\/p>[\s\S]*<div class="spec-up-code-block-wrapper"><pre class="language-json spec-up-code-block"><code class="language-json" id="spec-up-code-copy-target-2">[\s\S]*"bar"[\s\S]*"baz"[\s\S]*<\/code><\/pre><wa-copy-button class="spec-up-code-copy-button" from="spec-up-code-copy-target-2" copy-label="Copy" success-label="Copied" error-label="Copy failed"><\/wa-copy-button><\/div><\/wa-tab-panel>/);
   assert.doesNotMatch(html, /<p>::: tabs<\/p>/);
   assert.doesNotMatch(html, /<p>:: Tab Title 1<\/p>/);
 });
@@ -478,8 +478,44 @@ Details of what I want to show here.
 
   assert.match(html, /<wa-details class="spec-up-details" summary="My summary text here">/);
   assert.match(html, /<p>Details of what I want to show here\.<\/p>/);
-  assert.match(html, /<pre class="language-json"><code class="language-json">[\s\S]*"foo"[\s\S]*"bar"[\s\S]*<\/code><\/pre>/);
+  assert.match(html, /<div class="spec-up-code-block-wrapper"><pre class="language-json spec-up-code-block"><code class="language-json" id="spec-up-code-copy-target-1">[\s\S]*"foo"[\s\S]*"bar"[\s\S]*<\/code><\/pre><wa-copy-button class="spec-up-code-copy-button" from="spec-up-code-copy-target-1" copy-label="Copy" success-label="Copied" error-label="Copy failed"><\/wa-copy-button><\/div>/);
   assert.doesNotMatch(html, /<p>::: summary My summary text here<\/p>/);
+});
+
+test('core markdown adds copy buttons to rendered code blocks', async () => {
+  const plugin = createCoreMarkdownPlugin();
+  const state = {};
+  const md = new MarkdownIt({
+    html: true,
+    linkify: true,
+    typographer: true
+  });
+
+  await plugin.beforeRender({ state });
+  plugin.configureMarkdownIt({ md, state });
+
+  const html = plugin.transformRenderedHtml({
+    html: md.render(`
+Inline \`code\`
+
+\`\`\`json
+{"foo":"bar"}
+\`\`\`
+
+\`\`\`
+plain text
+\`\`\`
+
+<pre>raw sample
+line two
+</pre>
+`)
+  });
+
+  assert.match(html, /<p>Inline <code>code<\/code><\/p>/);
+  assert.match(html, /<div class="spec-up-code-block-wrapper"><pre class="language-json spec-up-code-block"><code class="language-json" id="spec-up-code-copy-target-1">[\s\S]*"foo"[\s\S]*"bar"[\s\S]*<\/code><\/pre><wa-copy-button class="spec-up-code-copy-button" from="spec-up-code-copy-target-1" copy-label="Copy" success-label="Copied" error-label="Copy failed"><\/wa-copy-button><\/div>/);
+  assert.match(html, /<div class="spec-up-code-block-wrapper"><pre class="spec-up-code-block"><code id="spec-up-code-copy-target-2">plain text\s*<\/code><\/pre><wa-copy-button class="spec-up-code-copy-button" from="spec-up-code-copy-target-2" copy-label="Copy" success-label="Copied" error-label="Copy failed"><\/wa-copy-button><\/div>/);
+  assert.match(html, /<div class="spec-up-code-block-wrapper"><pre id="spec-up-code-copy-target-3" class="spec-up-code-block">raw sample\s*line two\s*<\/pre><wa-copy-button class="spec-up-code-copy-button" from="spec-up-code-copy-target-3" copy-label="Copy" success-label="Copied" error-label="Copy failed"><\/wa-copy-button><\/div>/);
 });
 
 test('core markdown renders [[badge: ...]] tokens as Web Awesome badges with default and explicit variants', async () => {

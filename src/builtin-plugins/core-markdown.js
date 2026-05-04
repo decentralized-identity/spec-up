@@ -51,6 +51,7 @@ const PROGRESS_COMPONENTS = {
   'wa-progress-bar': 'wa-progress-bar',
   'wa-progress-ring': 'wa-progress-ring'
 };
+const CODE_COPY_TARGET_ID_PREFIX = 'spec-up-code-copy-target';
 const RELATIVE_TIME_FORMATS = new Set(['long', 'short', 'narrow']);
 
 function slugifyHeading(value) {
@@ -362,8 +363,61 @@ function convertLegacyCharts(document) {
   }
 }
 
+function isSafeCopyTargetId(id) {
+  return Boolean(id && !/[.[\]]/.test(id));
+}
+
+function createCodeCopyTargetId(document, state) {
+  let id;
+
+  do {
+    id = `${CODE_COPY_TARGET_ID_PREFIX}-${state.nextCodeCopyTargetIndex++}`;
+  } while (document.getElementById(id));
+
+  return id;
+}
+
+function createCodeCopyButton(document, copyTargetId) {
+  const copyButton = document.createElement('wa-copy-button');
+
+  copyButton.className = 'spec-up-code-copy-button';
+  copyButton.setAttribute('from', copyTargetId);
+  copyButton.setAttribute('copy-label', 'Copy');
+  copyButton.setAttribute('success-label', 'Copied');
+  copyButton.setAttribute('error-label', 'Copy failed');
+
+  return copyButton;
+}
+
+function enhanceCodeBlocks(document) {
+  const state = { nextCodeCopyTargetIndex: 1 };
+
+  for (const pre of document.querySelectorAll('pre')) {
+    const code = Array.from(pre.children).find(child => child.tagName === 'CODE');
+    const copyTarget = code || pre;
+
+    if (pre.parentElement?.classList.contains('spec-up-code-block-wrapper') || !(copyTarget.textContent || '').trim()) {
+      continue;
+    }
+
+    let copyTargetId = copyTarget.getAttribute('id') || '';
+
+    if (!isSafeCopyTargetId(copyTargetId)) {
+      copyTargetId = createCodeCopyTargetId(document, state);
+      copyTarget.setAttribute('id', copyTargetId);
+    }
+
+    const wrapper = document.createElement('div');
+
+    wrapper.className = 'spec-up-code-block-wrapper';
+    pre.classList.add('spec-up-code-block');
+    pre.replaceWith(wrapper);
+    wrapper.append(pre, createCodeCopyButton(document, copyTargetId));
+  }
+}
+
 function transformLegacyMarkup(html) {
-  if (!html.includes('<tab-panels') && !html.includes('class="chartjs"') && !html.includes('::: tabs') && !html.includes('::: carousel')) {
+  if (!html.includes('<pre') && !html.includes('<tab-panels') && !html.includes('class="chartjs"') && !html.includes('::: tabs') && !html.includes('::: carousel')) {
     return html;
   }
 
@@ -374,6 +428,7 @@ function transformLegacyMarkup(html) {
   convertTabsFenceMarkup(document.body);
   convertLegacyTabPanels(document);
   convertLegacyCharts(document);
+  enhanceCodeBlocks(document);
 
   return document.body.innerHTML;
 }
@@ -513,7 +568,11 @@ function renderNoticeOpenTag(matches, state) {
     id = `${type}-${state.noticeCounts[type]++}`;
   }
 
-  return `<wa-callout id="${id}" class="spec-up-notice spec-up-notice--${type}" variant="${config.variant}" appearance="filled-outlined">${iconMarkup}<div class="spec-up-notice-heading"><a class="notice-link" href="#${id}">${escapeHtml(type.toUpperCase())}</a>${titleMarkup}</div>`;
+  const typeLink = type === 'example' && title
+    ? ''
+    : `<a class="notice-link" href="#${id}">${escapeHtml(type.toUpperCase())}</a>`;
+
+  return `<wa-callout id="${id}" class="spec-up-notice spec-up-notice--${type}" variant="${config.variant}" appearance="filled-outlined">${iconMarkup}<div class="spec-up-notice-heading">${typeLink}${titleMarkup}</div>`;
 }
 
 function renderDetailsOpenTag(summary) {

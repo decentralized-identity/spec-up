@@ -192,12 +192,12 @@ No more;
 
 
 <pre>
-::: example Code Example
+::: example Code Example 1
   Put your code block here
 :::
 </pre>
 
-::: example Code Example
+::: example Code Example 1
 ```json
 // Some comment in JSON
 {
@@ -219,14 +219,14 @@ This text has been inserted here from another file: [[insert: ./single-file-test
 
 You can even insert content within more complex blocks, like the JSON object below which is being pulled in and rendered in a syntax-highlighted example block:
 <pre>
-::: example Code Example
+::: example Code Example 2
 ```json
 &#91;&#91;insert: ./single-file-test/assets/test.json&#93;&#93;
 ```
 :::
 </pre>
 
-::: example Code Example
+::: example Code Example 2
 ```json
 [[insert: ./single-file-test/assets/test.json]]
 ```

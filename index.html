@@ -229,7 +229,7 @@
 <h2 id="term-references"><span class="spec-up-heading-text">Term References</span><a class="toc-anchor" href="#term-references">§</a></h2>
 <h3 id="definition-lists"><span class="spec-up-heading-text">Definition Lists</span><a class="toc-anchor" href="#definition-lists">§</a></h3>
 <p>Many specs may want to include a section for terminology references, and Definition Lists are a great way to do that. Here’s how to leverage Spec-Up’s automatic term reference features via Definition List markup:</p>
-<pre>[[def: Term 1, Term One]]:
+<div class="spec-up-code-block-wrapper"><pre id="spec-up-code-copy-target-1" class="spec-up-code-block">[[def: Term 1, Term One]]:
 ~ This is the first term we will define.
 
 [[def: Term 2, Term Two]]:
@@ -237,7 +237,7 @@
 
 [[def: Term 3, Term Three]]:
 ~ This is the last term, because you know what they say: third term's the charm!
-</pre>
+</pre><wa-copy-button class="spec-up-code-copy-button" from="spec-up-code-copy-target-1" copy-label="Copy" success-label="Copied" error-label="Copy failed"></wa-copy-button></div>
 <dl>
 <dt><span id="term:term-one"><span id="term:term-1">Term 1</span></span>:</dt>
 <dd>This is the first term we will define.</dd>
@@ -249,10 +249,10 @@
 <p>Now let’s refer to some of the terms defined above to show how the auto-linking of terms works: <a class="term-reference" href="#term:term-1">Term 1</a>, <a class="term-reference" href="#term:term-two">Term Two</a>, <a class="term-reference" href="#term:term-3">Term 3</a>. Additionally, as long as you define your terms using Definition Lists (as seen in the markdown above), you will be able to hover any reference to a term to see a tooltip with its definition.</p>
 <h3 id="table-defined-terms"><span class="spec-up-heading-text">Table-defined Terms</span><a class="toc-anchor" href="#table-defined-terms">§</a></h3>
 <p>You can also reference table-oriented terms and definitions which are decomposed into heading-titled attributes in distinct cells:</p>
-<pre>Variable           | Default Value | Max Value
+<div class="spec-up-code-block-wrapper"><pre id="spec-up-code-copy-target-2" class="spec-up-code-block">Variable           | Default Value | Max Value
 ------------------- | -------------- | ---------
 [[def: Variable 1]] | 123          | 9999
-</pre>
+</pre><wa-copy-button class="spec-up-code-copy-button" from="spec-up-code-copy-target-2" copy-label="Copy" success-label="Copied" error-label="Copy failed"></wa-copy-button></div>
 <table>
 <thead>
 <tr>
@@ -272,7 +272,7 @@
 <p>Anytime you add a definition of a term in the first column of a table, like <a class="term-reference" href="#term:variable-1">Variable 1</a>, it will link to the cell and display a tooltip with the entire set of row values when you hover the term.</p>
 <h3 id="external-term-references"><span class="spec-up-heading-text">External Term References</span><a class="toc-anchor" href="#external-term-references">§</a></h3>
 <p>It is possible to include references to terms from external spec-up generated specifications. To include a source you would like to pull references from include an <code>external_specs</code> array in your spec config. The value should be a key/value object where the key is used in the external reference below and the value is the URL of the external spec.</p>
-<wa-callout id="example-1" class="spec-up-notice spec-up-notice--example" variant="neutral" appearance="filled-outlined"><div class="spec-up-notice-heading"><a class="notice-link" href="#example-1">EXAMPLE</a></div><pre class="language-json"><code class="language-json"><span class="token punctuation">{</span>
+<wa-callout id="example-1" class="spec-up-notice spec-up-notice--example" variant="neutral" appearance="filled-outlined"><div class="spec-up-notice-heading"><a class="notice-link" href="#example-1">EXAMPLE</a></div><div class="spec-up-code-block-wrapper"><pre class="language-json spec-up-code-block"><code class="language-json" id="spec-up-code-copy-target-3"><span class="token punctuation">{</span>
   <span class="token property">"specs"</span><span class="token operator">:</span> <span class="token punctuation">[</span>
     <span class="token punctuation">{</span>
       ...
@@ -282,7 +282,7 @@
     <span class="token punctuation">}</span>
   <span class="token punctuation">]</span>
 <span class="token punctuation">}</span>
-</code></pre>
+</code></pre><wa-copy-button class="spec-up-code-copy-button" from="spec-up-code-copy-target-3" copy-label="Copy" success-label="Copied" error-label="Copy failed"></wa-copy-button></div>
 </wa-callout>
 <p>To include an external term reference within your spec use the following format <code>[[xref: {title}, {term}]]</code> where <code>{title}</code> is the title given to the spec in the config and <code>{term}</code> is the term being used. For example using the PE spec given in the example above <a class="term-reference" data-local-href="#term:PE:holder" href="https://identity.foundation/presentation-exchange#term:holder">Holder</a></p>
 <h2 id="blockquote"><span class="spec-up-heading-text">Blockquote</span><a class="toc-anchor" href="#blockquote">§</a></h2>
@@ -295,10 +295,10 @@ And by opposing end them. To die—to sleep,
 No more;</p>
 </blockquote>
 <h2 id="notices"><span class="spec-up-heading-text">Notices</span><a class="toc-anchor" href="#notices">§</a></h2>
-<pre>::: note Basic Note
+<div class="spec-up-code-block-wrapper"><pre id="spec-up-code-copy-target-4" class="spec-up-code-block">::: note Basic Note
   Check this out.
 :::
-</pre>
+</pre><wa-copy-button class="spec-up-code-copy-button" from="spec-up-code-copy-target-4" copy-label="Copy" success-label="Copied" error-label="Copy failed"></wa-copy-button></div>
 <wa-callout id="basic-note" class="spec-up-notice spec-up-notice--note" variant="brand" appearance="filled-outlined"><wa-icon library="spec-up" slot="icon" name="circle-info" label="note"></wa-icon><div class="spec-up-notice-heading"><a class="notice-link" href="#basic-note">NOTE</a></div><p>Check this out.</p>
 </wa-callout>
 <wa-callout id="note-1" class="spec-up-notice spec-up-notice--note" variant="brand" appearance="filled-outlined"><wa-icon library="spec-up" slot="icon" name="circle-info" label="note"></wa-icon><div class="spec-up-notice-heading"><a class="notice-link" href="#note-1">NOTE</a></div><p>Here’s another.</p>
@@ -307,56 +307,56 @@ No more;</p>
 </wa-callout>
 <wa-callout id="basic-note-1" class="spec-up-notice spec-up-notice--note" variant="brand" appearance="filled-outlined"><wa-icon library="spec-up" slot="icon" name="circle-info" label="note"></wa-icon><div class="spec-up-notice-heading"><a class="notice-link" href="#basic-note-1">NOTE</a></div><p>One last note!!!</p>
 </wa-callout>
-<pre>::: issue Issue Notice
+<div class="spec-up-code-block-wrapper"><pre id="spec-up-code-copy-target-5" class="spec-up-code-block">::: issue Issue Notice
   I take issue with that, kind sir.
 :::
-</pre>
+</pre><wa-copy-button class="spec-up-code-copy-button" from="spec-up-code-copy-target-5" copy-label="Copy" success-label="Copied" error-label="Copy failed"></wa-copy-button></div>
 <wa-callout id="issue-notice" class="spec-up-notice spec-up-notice--issue" variant="danger" appearance="filled-outlined"><wa-icon library="spec-up" slot="icon" name="circle-exclamation" label="issue"></wa-icon><div class="spec-up-notice-heading"><a class="notice-link" href="#issue-notice">ISSUE</a></div><p>I take issue with that, kind sir.</p>
 </wa-callout>
-<pre>::: warning Warning Notice
+<div class="spec-up-code-block-wrapper"><pre id="spec-up-code-copy-target-6" class="spec-up-code-block">::: warning Warning Notice
   Houston, I think we have a problem
 :::
-</pre>
+</pre><wa-copy-button class="spec-up-code-copy-button" from="spec-up-code-copy-target-6" copy-label="Copy" success-label="Copied" error-label="Copy failed"></wa-copy-button></div>
 <wa-callout id="warning-notice" class="spec-up-notice spec-up-notice--warning" variant="warning" appearance="filled-outlined"><wa-icon library="spec-up" slot="icon" name="triangle-exclamation" label="warning"></wa-icon><div class="spec-up-notice-heading"><a class="notice-link" href="#warning-notice">WARNING</a></div><p>Houston, I think we have a problem</p>
 </wa-callout>
-<pre>::: todo Really Important
+<div class="spec-up-code-block-wrapper"><pre id="spec-up-code-copy-target-7" class="spec-up-code-block">::: todo Really Important
   Get this done!
 :::
-</pre>
+</pre><wa-copy-button class="spec-up-code-copy-button" from="spec-up-code-copy-target-7" copy-label="Copy" success-label="Copied" error-label="Copy failed"></wa-copy-button></div>
 <wa-callout id="really-important" class="spec-up-notice spec-up-notice--todo" variant="warning" appearance="filled-outlined"><wa-icon library="spec-up" slot="icon" name="circle-check" label="todo"></wa-icon><div class="spec-up-notice-heading"><a class="notice-link" href="#really-important">TODO</a></div><p>Get this done!</p>
 </wa-callout>
-<pre>::: example Code Example
+<div class="spec-up-code-block-wrapper"><pre id="spec-up-code-copy-target-8" class="spec-up-code-block">::: example Code Example 1
   Put your code block here
 :::
-</pre>
-<wa-callout id="code-example" class="spec-up-notice spec-up-notice--example" variant="neutral" appearance="filled-outlined"><div class="spec-up-notice-heading"><a class="notice-link" href="#code-example">EXAMPLE</a><span class="spec-up-notice-title">Code Example</span></div><pre class="language-json"><code class="language-json"><span class="token comment">// Some comment in JSON</span>
+</pre><wa-copy-button class="spec-up-code-copy-button" from="spec-up-code-copy-target-8" copy-label="Copy" success-label="Copied" error-label="Copy failed"></wa-copy-button></div>
+<wa-callout id="code-example-1" class="spec-up-notice spec-up-notice--example" variant="neutral" appearance="filled-outlined"><div class="spec-up-notice-heading"><span class="spec-up-notice-title">Code Example 1</span></div><div class="spec-up-code-block-wrapper"><pre class="language-json spec-up-code-block"><code class="language-json" id="spec-up-code-copy-target-9"><span class="token comment">// Some comment in JSON</span>
 <span class="token punctuation">{</span>
   <span class="token property">"foo"</span><span class="token operator">:</span> <span class="token string">"bar"</span><span class="token punctuation">,</span>
   <span class="token property">"baz"</span><span class="token operator">:</span> <span class="token number">2</span>
 <span class="token punctuation">}</span>
-</code></pre>
+</code></pre><wa-copy-button class="spec-up-code-copy-button" from="spec-up-code-copy-target-9" copy-label="Copy" success-label="Copied" error-label="Copy failed"></wa-copy-button></div>
 </wa-callout>
 <h2 id="content-insertion"><span class="spec-up-heading-text">Content Insertion</span><a class="toc-anchor" href="#content-insertion">§</a></h2>
 <p>Use the following format to pull in content from other files in your project:</p>
-<pre>This text has been inserted here from another file: [[insert: ./single-file-test/assets/test.text]]
-</pre>
+<div class="spec-up-code-block-wrapper"><pre id="spec-up-code-copy-target-10" class="spec-up-code-block">This text has been inserted here from another file: [[insert: ./single-file-test/assets/test.text]]
+</pre><wa-copy-button class="spec-up-code-copy-button" from="spec-up-code-copy-target-10" copy-label="Copy" success-label="Copied" error-label="Copy failed"></wa-copy-button></div>
 <p>This text has been inserted here from another file: Beam me in, Scotty!</p>
 <p>You can even insert content within more complex blocks, like the JSON object below which is being pulled in and rendered in a syntax-highlighted example block:</p>
-<pre>::: example Code Example
+<div class="spec-up-code-block-wrapper"><pre id="spec-up-code-copy-target-11" class="spec-up-code-block">::: example Code Example 2
 ```json
 [[insert: ./single-file-test/assets/test.json]]
 ```
 :::
-</pre>
-<wa-callout id="code-example-1" class="spec-up-notice spec-up-notice--example" variant="neutral" appearance="filled-outlined"><div class="spec-up-notice-heading"><a class="notice-link" href="#code-example-1">EXAMPLE</a><span class="spec-up-notice-title">Code Example</span></div><pre class="language-json"><code class="language-json"><span class="token punctuation">{</span>
+</pre><wa-copy-button class="spec-up-code-copy-button" from="spec-up-code-copy-target-11" copy-label="Copy" success-label="Copied" error-label="Copy failed"></wa-copy-button></div>
+<wa-callout id="code-example-2" class="spec-up-notice spec-up-notice--example" variant="neutral" appearance="filled-outlined"><div class="spec-up-notice-heading"><span class="spec-up-notice-title">Code Example 2</span></div><div class="spec-up-code-block-wrapper"><pre class="language-json spec-up-code-block"><code class="language-json" id="spec-up-code-copy-target-12"><span class="token punctuation">{</span>
   <span class="token property">"foo"</span><span class="token operator">:</span> <span class="token punctuation">{</span>
     <span class="token property">"bar"</span><span class="token operator">:</span> <span class="token number">1</span>
   <span class="token punctuation">}</span>
 <span class="token punctuation">}</span>
-</code></pre>
+</code></pre><wa-copy-button class="spec-up-code-copy-button" from="spec-up-code-copy-target-12" copy-label="Copy" success-label="Copied" error-label="Copy failed"></wa-copy-button></div>
 </wa-callout>
 <h2 id="tables"><span class="spec-up-heading-text">Tables</span><a class="toc-anchor" href="#tables">§</a></h2>
-<pre>Stage | Direct Products | ATP Yields
+<div class="spec-up-code-block-wrapper"><pre id="spec-up-code-copy-target-13" class="spec-up-code-block">Stage | Direct Products | ATP Yields
 ----: | --------------: | ---------:
 Glycolysis | 2 ATP ||
 ^^ | 2 NADH | 3--5 ATP |
@@ -366,7 +366,7 @@ Citric acid cycle | 2 ATP ||
 ^^ | 2 FADH2 | 3 ATP |
 **30--32** ATP |||
 [Net ATP yields per hexose]
-</pre>
+</pre><wa-copy-button class="spec-up-code-copy-button" from="spec-up-code-copy-target-13" copy-label="Copy" success-label="Copied" error-label="Copy failed"></wa-copy-button></div>
 <table>
 <caption id="netatpyieldsperhexose" style="caption-side: bottom">Net ATP yields per hexose</caption>
 <thead>
@@ -403,7 +403,7 @@ Citric acid cycle | 2 ATP ||
 <tr></tr>
 </tbody>
 </table>
-<pre>|--|--|--|--|--|--|--|--|
+<div class="spec-up-code-block-wrapper"><pre id="spec-up-code-copy-target-14" class="spec-up-code-block">|--|--|--|--|--|--|--|--|
 |♜|  |♝|♛|♚|♝|♞|♜|
 |  |♟|♟|♟|  |♟|♟|♟|
 |♟|  |♞|  |  |  |  | |
@@ -412,7 +412,7 @@ Citric acid cycle | 2 ATP ||
 |  |  |  |  |  |♘|  | |
 |♙|♙|♙|♙|  |♙|♙|♙|
 |♖|♘|♗|♕|♔|  |  |♖|
-</pre>
+</pre><wa-copy-button class="spec-up-code-copy-button" from="spec-up-code-copy-target-14" copy-label="Copy" success-label="Copied" error-label="Copy failed"></wa-copy-button></div>
 <table>
 <tbody>
 <tr>
@@ -498,7 +498,7 @@ Citric acid cycle | 2 ATP ||
 </tbody>
 </table>
 <h2 id="sequence-diagrams"><span class="spec-up-heading-text">Sequence Diagrams</span><a class="toc-anchor" href="#sequence-diagrams">§</a></h2>
-<pre>```mermaid
+<div class="spec-up-code-block-wrapper"><pre id="spec-up-code-copy-target-15" class="spec-up-code-block">```mermaid
 sequenceDiagram
   Alice -&gt;&gt; Bob: Hello Bob, how are you?
   Bob--&gt;&gt;John: How about you John?
@@ -509,7 +509,7 @@ sequenceDiagram
   Bob--&gt;Alice: Checking with John...
   Alice-&gt;John: Yes... John, how are you?
 ```
-</pre>
+</pre><wa-copy-button class="spec-up-code-copy-button" from="spec-up-code-copy-target-15" copy-label="Copy" success-label="Copied" error-label="Copy failed"></wa-copy-button></div>
 <div class="mermaid">
 sequenceDiagram
   Alice -&gt;&gt; Bob: Hello Bob, how are you?
@@ -522,7 +522,7 @@ sequenceDiagram
   Alice-&gt;John: Yes... John, how are you?
 </div>
 <h2 id="flows"><span class="spec-up-heading-text">Flows</span><a class="toc-anchor" href="#flows">§</a></h2>
-<pre>```mermaid
+<div class="spec-up-code-block-wrapper"><pre id="spec-up-code-copy-target-16" class="spec-up-code-block">```mermaid
 graph TD
   A[Start] --&gt; B{Is it?}
   B --&gt;|Yes| C[OK]
@@ -530,7 +530,7 @@ graph TD
   D --&gt; B
   B --&gt;|No| E[End]
 ```
-</pre>
+</pre><wa-copy-button class="spec-up-code-copy-button" from="spec-up-code-copy-target-16" copy-label="Copy" success-label="Copied" error-label="Copy failed"></wa-copy-button></div>
 <div class="mermaid">
 graph TD
   A[Start] --&gt; B{Is it?}
@@ -540,7 +540,7 @@ graph TD
   B --&gt;|No| E[End]
 </div>
 <h2 id="charts"><span class="spec-up-heading-text">Charts</span><a class="toc-anchor" href="#charts">§</a></h2>
-<pre>```chart
+<div class="spec-up-code-block-wrapper"><pre id="spec-up-code-copy-target-17" class="spec-up-code-block">```chart
 {
   "type": "pie",
   "data": {
@@ -571,7 +571,7 @@ graph TD
   }
 }
 ```
-</pre>
+</pre><wa-copy-button class="spec-up-code-copy-button" from="spec-up-code-copy-target-17" copy-label="Copy" success-label="Copied" error-label="Copy failed"></wa-copy-button></div>
 <wa-chart class="spec-up-chart" label="Pie chart" description="Chart rendered from specification content."><script type="application/json">{
   "type": "pie",
   "data": {
@@ -601,7 +601,7 @@ graph TD
     ]
   }
 }</script></wa-chart><h2 id="syntax-highlighting"><span class="spec-up-heading-text">Syntax Highlighting</span><a class="toc-anchor" href="#syntax-highlighting">§</a></h2>
-<pre>```json
+<div class="spec-up-code-block-wrapper"><pre id="spec-up-code-copy-target-18" class="spec-up-code-block">```json
 {
   "@context": "https://www.w3.org/ns/did/v1",
   "id": "did:example:123456789abcdefghi",
@@ -618,8 +618,8 @@ graph TD
   }]
 }
 ```
-</pre>
-<pre class="language-json"><code class="language-json"><span class="token punctuation">{</span>
+</pre><wa-copy-button class="spec-up-code-copy-button" from="spec-up-code-copy-target-18" copy-label="Copy" success-label="Copied" error-label="Copy failed"></wa-copy-button></div>
+<div class="spec-up-code-block-wrapper"><pre class="language-json spec-up-code-block"><code class="language-json" id="spec-up-code-copy-target-19"><span class="token punctuation">{</span>
   <span class="token property">"@context"</span><span class="token operator">:</span> <span class="token string">"https://www.w3.org/ns/did/v1"</span><span class="token punctuation">,</span>
   <span class="token property">"id"</span><span class="token operator">:</span> <span class="token string">"did:example:123456789abcdefghi"</span><span class="token punctuation">,</span>
   <span class="token property">"authentication"</span><span class="token operator">:</span> <span class="token punctuation">[</span><span class="token punctuation">{</span> 
@@ -634,7 +634,7 @@ graph TD
     <span class="token property">"serviceEndpoint"</span><span class="token operator">:</span> <span class="token string">"https://example.com/vc/"</span>
   <span class="token punctuation">}</span><span class="token punctuation">]</span>
 <span class="token punctuation">}</span>
-</code></pre>
+</code></pre><wa-copy-button class="spec-up-code-copy-button" from="spec-up-code-copy-target-19" copy-label="Copy" success-label="Copied" error-label="Copy failed"></wa-copy-button></div>
 <h2 id="tex-math-equations"><span class="spec-up-heading-text">TeX Math Equations</span><a class="toc-anchor" href="#tex-math-equations">§</a></h2>
 <p>When the <code>katex</code> option is enabled, the KaTeX math engine is used for TeX rendering. You can find a list of supported features and examples here: <a path-0="katex.org" path-1="docs" path-2="supported.html" href="https://katex.org/docs/supported.html"><span>https://katex.org/docs/supported.html</span></a>.</p>
 <p class="katex-block"><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mrow><mo fence="true">(</mo><mtable rowspacing="0.16em" columnalign="center" columnspacing="1em"><mtr><mtd><mstyle scriptlevel="0" displaystyle="false"><msub><mi>x</mi><mn>2</mn></msub></mstyle></mtd></mtr><mtr><mtd><mstyle scriptlevel="0" displaystyle="false"><msub><mi>y</mi><mn>2</mn></msub></mstyle></mtd></mtr></mtable><mo fence="true">)</mo></mrow><mo>=</mo><mrow><mo fence="true">(</mo><mtable rowspacing="0.16em" columnalign="center center" columnspacing="1em"><mtr><mtd><mstyle scriptlevel="0" displaystyle="false"><mi>A</mi></mstyle></mtd><mtd><mstyle scriptlevel="0" displaystyle="false"><mi>B</mi></mstyle></mtd></mtr><mtr><mtd><mstyle scriptlevel="0" displaystyle="false"><mi>C</mi></mstyle></mtd><mtd><mstyle scriptlevel="0" displaystyle="false"><mi>D</mi></mstyle></mtd></mtr></mtable><mo fence="true">)</mo></mrow><mo>⋅</mo><mrow><mo fence="true">(</mo><mtable rowspacing="0.16em" columnalign="center" columnspacing="1em"><mtr><mtd><mstyle scriptlevel="0" displaystyle="false"><msub><mi>x</mi><mn>1</mn></msub></mstyle></mtd></mtr><mtr><mtd><mstyle scriptlevel="0" displaystyle="false"><msub><mi>y</mi><mn>1</mn></msub></mstyle></mtd></mtr></mtable><mo fence="true">)</mo></mrow></mrow><annotation encoding="application/x-tex">\begin{pmatrix}x_2 \\ y_2 \end{pmatrix} = 
@@ -659,7 +659,7 @@ c100.7 8.3 195.3 44 280 108 55.3 42 101.7 93 139 153l9 14c2.7-4 5.7-8.7 9-14
  28.7-117 45-179 50H-300V214h399897c43.3-7 81-15 113-26 100.7-33 179.7-91 237
 -174 2.7-5 6-9 10-13 .7-1 7.3-1 20-1h17z"></path></svg></span></span></span><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathnormal">a</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mord mathnormal">b</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mord mathnormal">c</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.7313em;"><span></span></span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:1.5535em;"><span></span></span></span></span></span></span></span></span></span></p>
 <h2 id="tab-panels"><span class="spec-up-heading-text">Tab Panels</span><a class="toc-anchor" href="#tab-panels">§</a></h2>
-<pre class="language-markdown"><code class="language-markdown">::: tabs
+<div class="spec-up-code-block-wrapper"><pre class="language-markdown spec-up-code-block"><code class="language-markdown" id="spec-up-code-copy-target-20">::: tabs
 
 :: First Tab
 
@@ -683,16 +683,16 @@ This is the second tab.
 }
 `` `
 :::
-</code></pre>
-<wa-tab-group class="spec-up-tab-group" active="first-tab"><wa-tab panel="first-tab">First Tab</wa-tab><wa-tab-panel name="first-tab"><p>This is the first tab.</p><pre class="language-json"><code class="language-json"><span class="token punctuation">{</span>
+</code></pre><wa-copy-button class="spec-up-code-copy-button" from="spec-up-code-copy-target-20" copy-label="Copy" success-label="Copied" error-label="Copy failed"></wa-copy-button></div>
+<wa-tab-group class="spec-up-tab-group" active="first-tab"><wa-tab panel="first-tab">First Tab</wa-tab><wa-tab-panel name="first-tab"><p>This is the first tab.</p><div class="spec-up-code-block-wrapper"><pre class="language-json spec-up-code-block"><code class="language-json" id="spec-up-code-copy-target-21"><span class="token punctuation">{</span>
   <span class="token property">"foo"</span><span class="token operator">:</span> <span class="token string">"foo"</span><span class="token punctuation">,</span>
   <span class="token property">"baz"</span><span class="token operator">:</span> <span class="token number">1</span>
 <span class="token punctuation">}</span>
-</code></pre></wa-tab-panel><wa-tab panel="second-tab">Second Tab</wa-tab><wa-tab-panel name="second-tab"><p>This is the second tab.</p><pre class="language-json"><code class="language-json"><span class="token punctuation">{</span>
+</code></pre><wa-copy-button class="spec-up-code-copy-button" from="spec-up-code-copy-target-21" copy-label="Copy" success-label="Copied" error-label="Copy failed"></wa-copy-button></div></wa-tab-panel><wa-tab panel="second-tab">Second Tab</wa-tab><wa-tab-panel name="second-tab"><p>This is the second tab.</p><div class="spec-up-code-block-wrapper"><pre class="language-json spec-up-code-block"><code class="language-json" id="spec-up-code-copy-target-22"><span class="token punctuation">{</span>
   <span class="token property">"foo"</span><span class="token operator">:</span> <span class="token string">"bar"</span><span class="token punctuation">,</span>
   <span class="token property">"baz"</span><span class="token operator">:</span> <span class="token number">2</span>
 <span class="token punctuation">}</span>
-</code></pre></wa-tab-panel></wa-tab-group>
+</code></pre><wa-copy-button class="spec-up-code-copy-button" from="spec-up-code-copy-target-22" copy-label="Copy" success-label="Copied" error-label="Copy failed"></wa-copy-button></div></wa-tab-panel></wa-tab-group>
 
 
 
@@ -701,55 +701,55 @@ This is the second tab.
 
 
 <h2 id="summary-blocks"><span class="spec-up-heading-text">Summary Blocks</span><a class="toc-anchor" href="#summary-blocks">§</a></h2>
-<pre class="language-markdown"><code class="language-markdown">::: summary My summary text here
+<div class="spec-up-code-block-wrapper"><pre class="language-markdown spec-up-code-block"><code class="language-markdown" id="spec-up-code-copy-target-23">::: summary My summary text here
 Details of what I want to show here.
 :::
-</code></pre>
+</code></pre><wa-copy-button class="spec-up-code-copy-button" from="spec-up-code-copy-target-23" copy-label="Copy" success-label="Copied" error-label="Copy failed"></wa-copy-button></div>
 <wa-details class="spec-up-details" summary="My summary text here">
 <p>Details of what I want to show here.</p>
 </wa-details>
 <h2 id="badges"><span class="spec-up-heading-text">Badges</span><a class="toc-anchor" href="#badges">§</a></h2>
-<pre class="language-markdown"><code class="language-markdown">[[badge: All Systems Operational]]
+<div class="spec-up-code-block-wrapper"><pre class="language-markdown spec-up-code-block"><code class="language-markdown" id="spec-up-code-copy-target-24">[[badge: All Systems Operational]]
 [[badge: Needs Attention, warning]]
-</code></pre>
+</code></pre><wa-copy-button class="spec-up-code-copy-button" from="spec-up-code-copy-target-24" copy-label="Copy" success-label="Copied" error-label="Copy failed"></wa-copy-button></div>
 <p><wa-badge variant="brand">All Systems Operational</wa-badge>
 <wa-badge variant="warning">Needs Attention</wa-badge></p>
 <h2 id="progress"><span class="spec-up-heading-text">Progress</span><a class="toc-anchor" href="#progress">§</a></h2>
-<pre class="language-markdown"><code class="language-markdown">[[progress: bar, 50]]
+<div class="spec-up-code-block-wrapper"><pre class="language-markdown spec-up-code-block"><code class="language-markdown" id="spec-up-code-copy-target-25">[[progress: bar, 50]]
 
 [[progress: ring, 75]]
 
 [[progress: bar, 50, 50%]]
 
 [[progress: ring, 75, 3rem]]
-</code></pre>
+</code></pre><wa-copy-button class="spec-up-code-copy-button" from="spec-up-code-copy-target-25" copy-label="Copy" success-label="Copied" error-label="Copy failed"></wa-copy-button></div>
 <p><wa-progress-bar value="50">50%</wa-progress-bar></p>
 <p><wa-progress-ring value="75">75%</wa-progress-ring></p>
 <p><wa-progress-bar value="50" style="width: 50%;">50%</wa-progress-bar></p>
 <p><wa-progress-ring value="75" style="--size: 3rem;">75%</wa-progress-ring></p>
 <h2 id="relative-time"><span class="spec-up-heading-text">Relative Time</span><a class="toc-anchor" href="#relative-time">§</a></h2>
-<pre class="language-markdown"><code class="language-markdown">[[time: 2020-07-15T09:17:00-04:00, long]]
+<div class="spec-up-code-block-wrapper"><pre class="language-markdown spec-up-code-block"><code class="language-markdown" id="spec-up-code-copy-target-26">[[time: 2020-07-15T09:17:00-04:00, long]]
 
 [[time: 2020-07-15T09:17:00-04:00, short]]
-</code></pre>
+</code></pre><wa-copy-button class="spec-up-code-copy-button" from="spec-up-code-copy-target-26" copy-label="Copy" success-label="Copied" error-label="Copy failed"></wa-copy-button></div>
 <p><wa-relative-time date="2020-07-15T09:17:00-04:00" format="long"></wa-relative-time></p>
 <p><wa-relative-time date="2020-07-15T09:17:00-04:00" format="short"></wa-relative-time></p>
 <h2 id="copy"><span class="spec-up-heading-text">Copy</span><a class="toc-anchor" href="#copy">§</a></h2>
-<pre class="language-markdown"><code class="language-markdown">[[copy: did:key:z6Mkf4XhsxVYQ1nQ6V6k4Q9j7xVjQm1Qw9Yk6B8JfP3L2mN4]]
+<div class="spec-up-code-block-wrapper"><pre class="language-markdown spec-up-code-block"><code class="language-markdown" id="spec-up-code-copy-target-27">[[copy: did:key:z6Mkf4XhsxVYQ1nQ6V6k4Q9j7xVjQm1Qw9Yk6B8JfP3L2mN4]]
 
 [[copy: https://github.com/decentralized-identity/spec-up]]
-</code></pre>
+</code></pre><wa-copy-button class="spec-up-code-copy-button" from="spec-up-code-copy-target-27" copy-label="Copy" success-label="Copied" error-label="Copy failed"></wa-copy-button></div>
 <p><span class="spec-up-copy-line"><span class="spec-up-copy-text" id="spec-up-copy-target-1">did:key:z6Mkf4XhsxVYQ1nQ6V6k4Q9j7xVjQm1Qw9Yk6B8JfP3L2mN4</span><wa-copy-button class="spec-up-copy-button" from="spec-up-copy-target-1" copy-label="Copy" success-label="Copied" error-label="Copy failed"></wa-copy-button></span></p>
 <p><span class="spec-up-copy-line"><span class="spec-up-copy-text" id="spec-up-copy-target-2">https://github.com/decentralized-identity/spec-up</span><wa-copy-button class="spec-up-copy-button" from="spec-up-copy-target-2" copy-label="Copy" success-label="Copied" error-label="Copy failed"></wa-copy-button></span></p>
 <h2 id="qr-codes"><span class="spec-up-heading-text">QR Codes</span><a class="toc-anchor" href="#qr-codes">§</a></h2>
-<pre class="language-markdown"><code class="language-markdown">[[qr: github.com/csuwildcat]]
+<div class="spec-up-code-block-wrapper"><pre class="language-markdown spec-up-code-block"><code class="language-markdown" id="spec-up-code-copy-target-28">[[qr: github.com/csuwildcat]]
 
 [[qr: github.com/csuwildcat, 200]]
-</code></pre>
+</code></pre><wa-copy-button class="spec-up-code-copy-button" from="spec-up-code-copy-target-28" copy-label="Copy" success-label="Copied" error-label="Copy failed"></wa-copy-button></div>
 <p><wa-qr-code value="github.com/csuwildcat"></wa-qr-code></p>
 <p><wa-qr-code value="github.com/csuwildcat" size="200"></wa-qr-code></p>
 <h2 id="carousel"><span class="spec-up-heading-text">Carousel</span><a class="toc-anchor" href="#carousel">§</a></h2>
-<pre class="language-markdown"><code class="language-markdown">::: carousel
+<div class="spec-up-code-block-wrapper"><pre class="language-markdown spec-up-code-block"><code class="language-markdown" id="spec-up-code-copy-target-29">::: carousel
 
 <span class="token url"><span class="token operator">!</span>[<span class="token content">Carousel panel one</span>](<span class="token url">single-file-test/assets/carousel-panel-1.svg</span> <span class="token string">"Carousel Panel One"</span>)</span>
 
@@ -762,7 +762,7 @@ Details of what I want to show here.
 <span class="token url"><span class="token operator">!</span>[<span class="token content">Carousel panel three</span>](<span class="token url">single-file-test/assets/carousel-panel-3.svg</span> <span class="token string">"Carousel Panel Three"</span>)</span>
 
 :::
-</code></pre>
+</code></pre><wa-copy-button class="spec-up-code-copy-button" from="spec-up-code-copy-target-29" copy-label="Copy" success-label="Copied" error-label="Copy failed"></wa-copy-button></div>
 <wa-carousel class="spec-up-carousel" loop="" navigation="" pagination="" mouse-dragging=""><wa-carousel-item><p><img src="single-file-test/assets/carousel-panel-1.svg" alt="Carousel panel one" title="Carousel Panel One"></p></wa-carousel-item><wa-carousel-item><p><img src="single-file-test/assets/carousel-panel-2.svg" alt="Carousel panel two" title="Carousel Panel Two"></p></wa-carousel-item><wa-carousel-item><p><img src="single-file-test/assets/carousel-panel-3.svg" alt="Carousel panel three" title="Carousel Panel Three"></p></wa-carousel-item></wa-carousel>
 
 

@@ -49,6 +49,15 @@ test('sidebar layout removes drawer body padding and resets toc item offsets', (
   assert.match(css, /wa-page\.spec-up-shell\[view='mobile'\]::part\(navigation\)\s*\{[^}]*padding-top:\s*0;[^}]*background-color:\s*transparent;/s);
 });
 
+test('code blocks position copy buttons in the top right corner', () => {
+  const css = fs.readFileSync(path.join(testDirectory, '..', 'assets', 'css', 'index.css'), 'utf8');
+
+  assert.match(css, /\.spec-up-code-block-wrapper\s*\{[^}]*position:\s*relative;[^}]*margin:\s*1em 0 1\.5em;/s);
+  assert.match(css, /pre\.spec-up-code-block\s*\{[^}]*margin:\s*0;[^}]*padding-right:\s*3rem;/s);
+  assert.match(css, /\.spec-up-code-block-wrapper > \.spec-up-code-copy-button\s*\{[^}]*display:\s*flex;[^}]*position:\s*absolute;[^}]*top:\s*0\.45rem;[^}]*right:\s*0\.45rem;/s);
+  assert.match(css, /\.spec-up-code-block-wrapper > \.spec-up-code-copy-button::part\(button\)\s*\{[^}]*background:\s*color-mix\(in srgb, var\(--wa-color-surface-raised\) 92%, transparent\);/s);
+});
+
 test('github issues drawer keeps the built-in header inline and moves search into the body', () => {
   const css = fs.readFileSync(path.join(testDirectory, '..', 'assets', 'css', 'index.css'), 'utf8');
 
