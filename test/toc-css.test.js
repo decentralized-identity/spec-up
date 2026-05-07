@@ -25,7 +25,7 @@ test('heading counters increment on headings so nested sections inherit the acti
   assert.match(css, /main article h3\s*\{[^}]*counter-reset:\s*h4;[^}]*counter-increment:\s*h3;/s);
   assert.match(css, /main article h4\s*\{[^}]*counter-increment:\s*h4;/s);
   assert.match(css, /main article h2:before,\s*main article h3:before,\s*main article h4:before\s*\{[^}]*order:\s*-1;/s);
-  assert.match(css, /\.toc-anchor\s*\{[^}]*order:\s*-2;[^}]*align-self:\s*flex-start;[^}]*block-size:\s*1lh;[^}]*margin:\s*0;/s);
+  assert.match(css, /\.toc-anchor\s*\{[^}]*order:\s*-2;[^}]*align-self:\s*flex-start;[^}]*block-size:\s*2\.25rem;[^}]*margin:\s*0;/s);
   assert.doesNotMatch(css, /main article h2:after\s*\{[^}]*counter-increment:\s*h2;/s);
   assert.doesNotMatch(css, /main article h3:after\s*\{[^}]*counter-increment:\s*h3;/s);
   assert.doesNotMatch(css, /main article h4:after\s*\{[^}]*counter-increment:\s*h4;/s);

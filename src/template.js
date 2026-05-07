@@ -220,7 +220,6 @@ function buildPageHtml({
         ${assetTags.svg}
 
         <wa-page class="spec-up-shell" mobile-breakpoint="1080" disable-navigation-toggle>
-          <span slot="skip-to-content">Skip to specification content</span>
 
           <header slot="header" id="app_header">
             <div class="spec-up-brand">

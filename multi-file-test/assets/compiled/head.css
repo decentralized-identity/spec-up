@@ -3701,7 +3701,7 @@ pre[class*=language-].line-numbers > code {
 }
 
 html {
-  font-size: clamp(15px, 12px + 0.4vw, 17px);
+  font-size: clamp(14px, 12px + 0.4vw, 16px);
 }
 
 html.wa-dark {
@@ -3777,16 +3777,17 @@ h2 {
 blockquote {
   position: relative;
   padding: 0;
-  margin: 1.75em 0.75em;
+  margin: 1.75em 0;
   color: var(--blockquote-text);
   background: var(--blockquote-bk);
+  border-inline-start: none;
 }
 
 blockquote:before, blockquote:after {
   content: "“";
   position: absolute;
-  top: 0.065em;
-  left: 0.065em;
+  top: 0;
+  left: 0.1em;
   font-size: 3em;
   height: 0.34em;
   line-height: 100%;
@@ -3797,13 +3798,13 @@ blockquote:after {
   content: "”";
   top: auto;
   left: auto;
-  bottom: 0.065em;
-  right: 0.065em;
+  bottom: 0.15em;
+  right: 0.1em;
   text-align: center;
 }
 
 blockquote > p {
-  padding: 0.6em 1.8em 0.5em 1.8em;
+  padding: 0.6em 2.2em 0.5em 2.2em;
 }
 
 strong strong {
@@ -3895,7 +3896,7 @@ h1 .toc-anchor {
   display: inline-flex;
   align-items: center;
   align-self: flex-start;
-  block-size: 1lh;
+  block-size: 2.25rem;
   margin: 0;
   font-size: 0.875em;
   line-height: inherit;
