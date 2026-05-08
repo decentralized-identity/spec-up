@@ -35,6 +35,85 @@ import mermaid from 'mermaid';
   const THEME_CHANGE_EVENT = 'spec-up-themechange';
   const MERMAID_QUERY_SELECTOR = '.mermaid';
 
+  function nextAnimationFrame() {
+    return new Promise(resolve => {
+      if (typeof window.requestAnimationFrame === 'function') {
+        window.requestAnimationFrame(resolve);
+        return;
+      }
+
+      window.setTimeout(resolve, 16);
+    });
+  }
+
+  async function waitForPageUpdate() {
+    try {
+      if (page?.updateComplete && typeof page.updateComplete.then === 'function') {
+        await page.updateComplete;
+      }
+    }
+    catch {
+      // A failed component update should not leave the document hidden.
+    }
+  }
+
+  function createSidebarRevealController() {
+    if (!page) {
+      return null;
+    }
+
+    let revealRequest = 0;
+    page.removeAttribute('data-sidebar-ready');
+
+    async function revealWhenReady() {
+      const request = ++revealRequest;
+
+      try {
+        if (globalThis.customElements?.whenDefined) {
+          await globalThis.customElements.whenDefined('wa-page');
+        }
+      }
+      catch {}
+
+      await waitForPageUpdate();
+
+      if (request !== revealRequest || page.getAttribute('view') !== 'desktop') {
+        return;
+      }
+
+      await nextAnimationFrame();
+      await nextAnimationFrame();
+
+      if (request === revealRequest && page.getAttribute('view') === 'desktop') {
+        page.setAttribute('data-sidebar-ready', '');
+      }
+    }
+
+    function syncSidebarReveal() {
+      page.removeAttribute('data-sidebar-ready');
+
+      if (page.getAttribute('view') === 'desktop') {
+        revealWhenReady();
+      }
+    }
+
+    const observer = typeof MutationObserver === 'function'
+      ? new MutationObserver(syncSidebarReveal)
+      : null;
+
+    observer?.observe(page, {
+      attributeFilter: ['view'],
+      attributes: true
+    });
+    syncSidebarReveal();
+
+    return {
+      disconnect() {
+        observer?.disconnect();
+      }
+    };
+  }
+
   function escapeHtml(value) {
     return String(value)
       .replace(/&/g, '&amp;')
@@ -1010,6 +1089,7 @@ import mermaid from 'mermaid';
     };
   }
 
+  createSidebarRevealController();
   createTocController();
   const themeController = createThemeController();
   createMermaidController(themeController);

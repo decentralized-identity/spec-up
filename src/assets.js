@@ -8,6 +8,11 @@ const COMPILED_HEAD_CSS_PATH = path.join(COMPILED_ASSET_DIRECTORY, 'head.css');
 const COMPILED_HEAD_PATH = path.join(COMPILED_ASSET_DIRECTORY, 'head.js');
 const COMPILED_ICON_LIBRARY_DIRECTORY = path.join(COMPILED_ASSET_DIRECTORY, 'icon-library');
 const COMPILED_THEME_PATH = path.join(COMPILED_ASSET_DIRECTORY, 'theme.js');
+const VITE_DEV_CSS_PATHS = Object.freeze([
+  '/assets/css/prism.css',
+  '/src/web-awesome/dist/styles/webawesome.css',
+  '/assets/css/index.css'
+]);
 
 function buildInlineScriptTag(scriptContents) {
   return `<script>${String(scriptContents).replace(/<\/script/gi, '<\\/script')}</script>`;
@@ -43,10 +48,13 @@ function buildCustomAssetTags(spec) {
 function buildViteDevTags(packageRoot, devServerUrl) {
   const normalizedUrl = String(devServerUrl).replace(/\/+$/, '');
   const themeScript = buildInlineScriptTag(readScriptContents(packageRoot, path.join('src', 'vite', 'theme.js')));
+  const stylesheetTags = VITE_DEV_CSS_PATHS
+    .map(cssPath => `<link href="${normalizedUrl}${cssPath}" rel="stylesheet"/>`)
+    .join('');
 
   return {
     body: `<script type="module" src="${normalizedUrl}/src/vite/body.js"></script>`,
-    head: `${themeScript}<script type="module" src="${normalizedUrl}/@vite/client"></script><script type="module" src="${normalizedUrl}/src/vite/head.js"></script>`
+    head: `${themeScript}${stylesheetTags}<script type="module" src="${normalizedUrl}/@vite/client"></script><script type="module" src="${normalizedUrl}/src/vite/head.js"></script>`
   };
 }
 

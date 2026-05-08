@@ -17,6 +17,7 @@
   --full-color: 0,0,0;
   --active-color: var(--wa-color-text-link);
   --visited-color: color-mix(in srgb, var(--wa-color-brand-40) 72%, #5d3fd3);
+  --target-highlight-bk: color-mix(in srgb, var(--wa-color-warning-fill-normal) 50%, transparent);
   --toc-counter-color: var(--wa-color-brand-40);
   --toc-anchor-opacity: 0.35;
   --green-status: rgb(0, 123, 9);
@@ -91,6 +92,7 @@ html.wa-dark {
   --full-color: 248,250,252;
   --toc-counter-color: var(--wa-color-brand-60);
   --toc-anchor-opacity: 0.5;
+  --target-highlight-bk: color-mix(in srgb, var(--wa-color-warning-80) 72%, transparent);
   --visited-color: color-mix(in srgb, var(--wa-color-brand-40) 30%, #d195ff);
   --green-status: rgb(74, 222, 128);
   --light-green-status: rgb(187, 247, 208);
@@ -442,8 +444,45 @@ a:hover {
 
 wa-page.spec-up-shell {
   --menu-width: clamp(18rem, 24vw, 25rem);
-  --main-width: minmax(0, 1fr);
+  --main-width: 1fr;
   min-height: 100vh;
+}
+
+wa-page.spec-up-shell:is(:not(:defined), :not([view])) {
+  display: grid;
+  grid-template-columns: minmax(0, var(--menu-width)) minmax(0, 1fr);
+  grid-template-rows: auto minmax(0, 1fr);
+  grid-template-areas:
+    "header header"
+    "navigation main";
+  background: var(--wa-color-surface-default);
+}
+
+wa-page.spec-up-shell:is(:not(:defined), :not([view])) > [slot="header"] {
+  grid-area: header;
+  position: sticky;
+  top: 0;
+  z-index: 5;
+}
+
+wa-page.spec-up-shell:is(:not(:defined), :not([view])) > [slot="navigation-header"] {
+  display: none;
+}
+
+wa-page.spec-up-shell:is(:not(:defined), :not([view])) > [slot="navigation"] {
+  grid-area: navigation;
+  max-height: calc(100vh - var(--header-height));
+  overflow: auto;
+  visibility: hidden;
+}
+
+wa-page.spec-up-shell:is(:not(:defined), :not([view])) > .spec-up-main {
+  grid-area: main;
+  min-width: 0;
+}
+
+wa-page.spec-up-shell:is(:not(:defined), :not([view])) [data-toggle-nav] {
+  display: none;
 }
 
 wa-page.spec-up-shell::part(base) {
@@ -534,6 +573,19 @@ wa-page.spec-up-shell[view='desktop']::part(navigation) {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+
+.spec-up-nav-toggle {
+  flex: 0 0 2.25rem;
+  inline-size: 2.25rem;
+  block-size: 2.25rem;
+}
+
+.spec-up-nav-toggle::part(base) {
+  inline-size: 100%;
+  block-size: 100%;
+  min-inline-size: 0;
+  padding: 0;
 }
 
 .spec-up-card-eyebrow {
@@ -863,6 +915,15 @@ wa-page.spec-up-shell::part(menu) {
   width: 100%;
   max-width: 375px;
   background-color: rgba(255 255 255 / 0.03);
+}
+
+wa-page.spec-up-shell[view='desktop']:not([data-sidebar-ready])::part(menu) {
+  opacity: 0;
+}
+
+wa-page.spec-up-shell[view='desktop'][data-sidebar-ready]::part(menu) {
+  opacity: 1;
+  transition: opacity 180ms ease-out;
 }
 
 .spec-up-navigation-title {
@@ -1265,6 +1326,13 @@ wa-page.spec-up-shell[view='desktop'] [data-toggle-nav] {
   display: none;
 }
 
+wa-page.spec-up-shell[view='mobile'] [data-toggle-nav] {
+  display: inline-flex;
+  visibility: visible;
+  opacity: 1;
+  transition: opacity 140ms ease-out;
+}
+
 .spec-up-nav-toggle wa-icon {
   font-size: 1.25rem;
 }
@@ -1280,6 +1348,24 @@ wa-page.spec-up-shell[view='mobile']::part(menu) {
 wa-page.spec-up-shell[view='mobile']::part(navigation) {
   padding-top: 0;
   background-color: transparent;
+}
+
+@media (max-width: 1079.98px) {
+  wa-page.spec-up-shell:is(:not(:defined), :not([view])) {
+    display: block;
+  }
+
+  wa-page.spec-up-shell:is(:not(:defined), :not([view])) > [slot="navigation"],
+  wa-page.spec-up-shell:is(:not(:defined), :not([view])) > [slot="navigation-header"] {
+    display: none;
+  }
+
+  wa-page.spec-up-shell:is(:not(:defined), :not([view])) [data-toggle-nav] {
+    display: inline-flex;
+    visibility: hidden;
+    opacity: 0;
+    pointer-events: none;
+  }
 }
 
 @media (max-width: 720px) {
@@ -1318,6 +1404,13 @@ wa-page.spec-up-shell[view='mobile']::part(navigation) {
 
 @keyframes highlight {
   50% {
-    background-color: color-mix(in srgb, var(--wa-color-warning-fill-normal) 50%, transparent);
+    background-color: var(--target-highlight-bk);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  wa-page.spec-up-shell[view='mobile'] [data-toggle-nav],
+  wa-page.spec-up-shell[view='desktop'][data-sidebar-ready]::part(menu) {
+    transition: none;
   }
 }

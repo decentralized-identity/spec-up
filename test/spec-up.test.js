@@ -7,6 +7,7 @@ import { fileURLToPath } from 'node:url';
 import { JSDOM } from 'jsdom';
 import MarkdownIt from 'markdown-it';
 import specUp from '../index.js';
+import { buildAssetTags } from '../src/assets.js';
 import markdownItExtensions from '../src/markdown-it-extensions.js';
 import { buildPageHtml } from '../src/template.js';
 import createCoreMarkdownPlugin from '../src/builtin-plugins/core-markdown.js';
@@ -318,6 +319,47 @@ test('vite body entry does not load the legacy Font Awesome CSS kit', async () =
   const bodyEntry = await fsp.readFile(path.join(testDirectory, '..', 'src', 'vite', 'body.js'), 'utf8');
 
   assert.doesNotMatch(bodyEntry, /font-awesome\.js/);
+});
+
+test('vite dev tags load render-blocking stylesheets before module runtime', async () => {
+  const packageRoot = path.join(testDirectory, '..');
+  const assetTags = await buildAssetTags({
+    options: {
+      devServerUrl: 'http://127.0.0.1:5173/'
+    },
+    packageRoot,
+    spec: {
+      assets: []
+    }
+  });
+  const headEntry = await fsp.readFile(path.join(packageRoot, 'src', 'vite', 'head.js'), 'utf8');
+
+  assert.match(assetTags.head, /<script>\(function\(\)\s*\{/);
+  assert.match(assetTags.head, /<link href="http:\/\/127\.0\.0\.1:5173\/assets\/css\/prism\.css" rel="stylesheet"\/>/);
+  assert.match(assetTags.head, /<link href="http:\/\/127\.0\.0\.1:5173\/src\/web-awesome\/dist\/styles\/webawesome\.css" rel="stylesheet"\/>/);
+  assert.match(assetTags.head, /<link href="http:\/\/127\.0\.0\.1:5173\/assets\/css\/index\.css" rel="stylesheet"\/>/);
+  assert.match(assetTags.head, /index\.css" rel="stylesheet"\/><script type="module" src="http:\/\/127\.0\.0\.1:5173\/@vite\/client"><\/script>/);
+  assert.doesNotMatch(headEntry, /assets\/css\/index\.css|webawesome\.css|prism\.css/);
+});
+
+test('desktop sidebar reveal waits for the upgraded page to be ready', async () => {
+  const css = await fsp.readFile(path.join(testDirectory, '..', 'assets', 'css', 'index.css'), 'utf8');
+  const runtime = await fsp.readFile(path.join(testDirectory, '..', 'assets', 'js', 'index.js'), 'utf8');
+
+  assert.match(css, /wa-page\.spec-up-shell\[view='desktop'\]:not\(\[data-sidebar-ready\]\)::part\(menu\)\s*\{[^}]*opacity:\s*0;/s);
+  assert.match(css, /wa-page\.spec-up-shell\[view='desktop'\]\[data-sidebar-ready\]::part\(menu\)\s*\{[^}]*opacity:\s*1;[^}]*transition:\s*opacity 180ms ease-out;/s);
+  assert.match(runtime, /customElements\.whenDefined\('wa-page'\)/);
+  assert.match(runtime, /page\.updateComplete/);
+  assert.match(runtime, /requestAnimationFrame/);
+  assert.match(runtime, /data-sidebar-ready/);
+});
+
+test('mobile navigation toggle reserves header space before page view is ready', async () => {
+  const css = await fsp.readFile(path.join(testDirectory, '..', 'assets', 'css', 'index.css'), 'utf8');
+
+  assert.match(css, /\.spec-up-nav-toggle\s*\{[^}]*flex:\s*0 0 2\.25rem;[^}]*inline-size:\s*2\.25rem;[^}]*block-size:\s*2\.25rem;/s);
+  assert.match(css, /@media \(max-width: 1079\.98px\)\s*\{[\s\S]*wa-page\.spec-up-shell:is\(:not\(:defined\), :not\(\[view\]\)\) \[data-toggle-nav\]\s*\{[^}]*display:\s*inline-flex;[^}]*visibility:\s*hidden;[^}]*opacity:\s*0;[^}]*pointer-events:\s*none;/s);
+  assert.match(css, /wa-page\.spec-up-shell\[view='mobile'\] \[data-toggle-nav\]\s*\{[^}]*display:\s*inline-flex;[^}]*visibility:\s*visible;[^}]*opacity:\s*1;[^}]*transition:\s*opacity 140ms ease-out;/s);
 });
 
 test('core markdown renders notices as callouts and converts legacy tab panels to Web Awesome tabs', async () => {
