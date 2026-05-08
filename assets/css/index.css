@@ -268,14 +268,8 @@ h1 .toc-anchor {
 
 .toc-anchor {
   order: -2;
-  flex: none;
-  display: inline-flex;
-  align-items: center;
-  align-self: flex-start;
-  block-size: 2.25rem;
-  margin: 0;
+  margin: 0.05em 0 0;
   font-size: 0.875em;
-  line-height: inherit;
   color: unset !important;
   text-decoration: none;
   opacity: var(--toc-anchor-opacity);
@@ -987,7 +981,6 @@ pre[class*="language-"] {
 
 pre.spec-up-code-block {
   margin: 0;
-  padding-right: 3rem;
 }
 
 pre.spec-up-code-block > code {
@@ -1005,10 +998,7 @@ pre.spec-up-code-block > code {
 }
 
 .spec-up-code-block-wrapper > .spec-up-code-copy-button::part(button) {
-  background: color-mix(in srgb, var(--wa-color-surface-raised) 92%, transparent);
-  border: 1px solid var(--wa-color-surface-border);
-  border-radius: var(--wa-border-radius-s);
-  box-shadow: var(--element-shadow-low);
+  border-radius: 0;
 }
 
 .spec-up-notice .spec-up-code-block-wrapper {
@@ -1128,6 +1118,7 @@ a[path-0$="github.com"][path-3="projects"]:after {
   align-items: baseline;
   gap: 0.65rem;
   flex-wrap: wrap;
+  margin-left: 1.7rem;
 }
 
 .spec-up-notice .notice-link {
@@ -1183,6 +1174,13 @@ a[path-0$="github.com"][path-3="projects"]:after {
 .spec-up-notice--todo > wa-icon[slot='icon'],
 .spec-up-notice--todo .notice-link {
   color: var(--notice-todo-text);
+}
+
+.spec-up-notice::part(icon){
+  font-size: 1.25em;
+  position: absolute;
+  top: 0.8em;
+  left: 0.6em;
 }
 
 .spec-up-tab-group::part(body) {
