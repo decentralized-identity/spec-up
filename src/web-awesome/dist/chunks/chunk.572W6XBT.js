@@ -1,0 +1,18 @@
+/*! Copyright 2026 Fonticons, Inc. - https://webawesome.com/license */
+
+// _bundle_/src/internal/event.ts
+function waitForEvent(el, eventName) {
+  return new Promise((resolve) => {
+    function done(event) {
+      if (event.target === el) {
+        el.removeEventListener(eventName, done);
+        resolve();
+      }
+    }
+    el.addEventListener(eventName, done);
+  });
+}
+
+export {
+  waitForEvent
+};

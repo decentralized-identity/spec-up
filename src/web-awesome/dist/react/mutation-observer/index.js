@@ -1,0 +1,13 @@
+/*! Copyright 2026 Fonticons, Inc. - https://webawesome.com/license */
+import {
+  mutation_observer_default
+} from "../../chunks/chunk.TCU5QL2I.js";
+import "../../chunks/chunk.PWH6WQ5U.js";
+import "../../chunks/chunk.3CKOVY5O.js";
+import "../../chunks/chunk.VNM4DRSG.js";
+import "../../chunks/chunk.U7CMGUQU.js";
+import "../../chunks/chunk.YYVZ2GFW.js";
+import "../../chunks/chunk.7VGCIHDG.js";
+export {
+  mutation_observer_default as default
+};

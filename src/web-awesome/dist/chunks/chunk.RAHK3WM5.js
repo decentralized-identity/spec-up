@@ -1,0 +1,66 @@
+/*! Copyright 2026 Fonticons, Inc. - https://webawesome.com/license */
+
+// _bundle_/src/components/tab/tab.styles.ts
+import { css } from "lit";
+var tab_styles_default = css`
+  :host {
+    display: inline-block;
+    color: var(--wa-color-neutral-on-quiet);
+    font-weight: var(--wa-font-weight-action);
+  }
+
+  .tab {
+    display: inline-flex;
+    align-items: center;
+    font: inherit;
+    padding: 1em 1.5em;
+    white-space: nowrap;
+    user-select: none;
+    -webkit-user-select: none;
+    cursor: pointer;
+    transition: color var(--wa-transition-fast) var(--wa-transition-easing);
+
+    ::slotted(wa-icon:first-child) {
+      margin-inline-end: 0.5em;
+    }
+
+    ::slotted(wa-icon:last-child) {
+      margin-inline-start: 0.5em;
+    }
+  }
+
+  @media (hover: hover) {
+    :host(:hover:not([disabled])) .tab {
+      color: currentColor;
+    }
+  }
+
+  :host(:focus) {
+    outline: transparent;
+  }
+
+  :host(:focus-visible) .tab {
+    outline: var(--wa-focus-ring);
+    outline-offset: calc(-1 * var(--wa-border-width-l) - var(--wa-focus-ring-offset));
+  }
+
+  :host([active]:not([disabled])) {
+    color: var(--wa-color-brand-on-quiet);
+  }
+
+  :host([disabled]) .tab {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  @media (forced-colors: active) {
+    :host([active]:not([disabled])) {
+      outline: solid 1px transparent;
+      outline-offset: -3px;
+    }
+  }
+`;
+
+export {
+  tab_styles_default
+};

@@ -86,6 +86,10 @@ typings/
 # Nuxt.js build / generate output
 .nuxt
 dist
+# Spec-Up vendors Web Awesome's package output and imports it during builds.
+!src/web-awesome/dist/
+!src/web-awesome/dist/**
+.DS_Store
 
 # Gatsby files
 .cache/
