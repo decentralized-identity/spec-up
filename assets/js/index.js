@@ -454,6 +454,7 @@ import mermaid from 'mermaid';
     const searchClearButton = document.getElementById('repo_issue_search_clear');
     const searchSpinner = document.getElementById('repo_issue_search_spinner');
     const loadMoreIndicator = document.getElementById('repo_issue_load_more');
+    const panelLoadingOverlay = document.getElementById('repo_issue_panel_loading');
     const repositoryPath = `${account}/${repo}`;
     const state = {
       base: {
@@ -507,6 +508,73 @@ import mermaid from 'mermaid';
       }
     }
 
+    let panelOverlayTimer = null;
+    let panelOverlayShowTime = null;
+    const PANEL_OVERLAY_MIN_MS = 1500;
+
+    function setPanelLoadingOverlay(mode) {
+      if (!panelLoadingOverlay) {
+        return;
+      }
+
+      const spinner = panelLoadingOverlay.querySelector('wa-spinner');
+      const emptyMsg = panelLoadingOverlay.querySelector('.spec-up-issues-panel-empty-msg');
+
+      if (mode === 'loading') {
+        window.clearTimeout(panelOverlayTimer);
+        panelOverlayTimer = null;
+        panelOverlayShowTime = Date.now();
+
+        if (spinner) {
+          spinner.hidden = false;
+        }
+
+        if (emptyMsg) {
+          emptyMsg.hidden = true;
+        }
+
+        panelLoadingOverlay.classList.add('is-active');
+        panelLoadingOverlay.setAttribute('aria-hidden', 'false');
+      }
+      else {
+        const elapsed = panelOverlayShowTime ? Date.now() - panelOverlayShowTime : PANEL_OVERLAY_MIN_MS;
+        const remaining = Math.max(0, PANEL_OVERLAY_MIN_MS - elapsed);
+
+        window.clearTimeout(panelOverlayTimer);
+        panelOverlayTimer = window.setTimeout(() => {
+          panelOverlayTimer = null;
+          panelOverlayShowTime = null;
+
+          if (mode === 'empty') {
+            if (spinner) {
+              spinner.hidden = true;
+            }
+
+            if (emptyMsg) {
+              emptyMsg.hidden = false;
+            }
+
+            panelLoadingOverlay.classList.add('is-active');
+            panelLoadingOverlay.setAttribute('aria-hidden', 'false');
+          }
+          else {
+            panelLoadingOverlay.classList.remove('is-active');
+            panelLoadingOverlay.setAttribute('aria-hidden', 'true');
+
+            window.setTimeout(() => {
+              if (spinner) {
+                spinner.hidden = false;
+              }
+
+              if (emptyMsg) {
+                emptyMsg.hidden = true;
+              }
+            }, 300);
+          }
+        }, remaining);
+      }
+    }
+
     function syncSearchControls() {
       if (!searchClearButton) {
         return;
@@ -530,9 +598,23 @@ import mermaid from 'mermaid';
         visibleCollection.loading &&
         visibleCollection.hasMore
       );
+      const isPanelOverlayLoading = (
+        state.requestPage === 1 &&
+        (
+          (state.requestMode === 'base' && state.base.loading) ||
+          (state.requestMode === 'search' && state.search.loading)
+        )
+      );
+      const isPanelOverlayEmpty = (
+        !isPanelOverlayLoading &&
+        state.mode === 'base' &&
+        state.base.loaded &&
+        state.base.items.length === 0
+      );
 
       setSearchLoading(isSearchLoading);
       setLoadMoreLoading(isLoadMoreVisible);
+      setPanelLoadingOverlay(isPanelOverlayLoading ? 'loading' : isPanelOverlayEmpty ? 'empty' : false);
     }
 
     function buildBaseStatus() {

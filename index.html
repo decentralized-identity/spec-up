@@ -865,12 +865,18 @@ Details of what I want to show here.
             </span>
           </wa-input>
         </div>
-        <div id="repo_issue_panel" class="spec-up-issues-panel">
-          <p id="repo_issue_status">Loading open GitHub issues…</p>
-          <ul id="repo_issue_list" class="spec-up-issue-list"></ul>
-          <div id="repo_issue_load_more" class="spec-up-issues-loading" hidden>
+        <div class="spec-up-issues-panel-wrap">
+          <div id="repo_issue_panel_loading" class="spec-up-issues-panel-loading" aria-hidden="true">
             <wa-spinner></wa-spinner>
-            <span>Loading more issues…</span>
+            <p class="spec-up-issues-panel-empty-msg" hidden>No issues found in this repo</p>
+          </div>
+          <div id="repo_issue_panel" class="spec-up-issues-panel">
+            <p id="repo_issue_status"></p>
+            <ul id="repo_issue_list" class="spec-up-issue-list"></ul>
+            <div id="repo_issue_load_more" class="spec-up-issues-loading" hidden>
+              <wa-spinner></wa-spinner>
+              <span>Loading more issues…</span>
+            </div>
           </div>
         </div>
       </wa-drawer>

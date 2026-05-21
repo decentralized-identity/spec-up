@@ -3773,7 +3773,7 @@ h1 {
 }
 
 h2 {
-  margin: 1.5em 0 1em;
+  margin: 1.25em 0 0.8em;
 }
 
 blockquote {
@@ -4388,7 +4388,7 @@ wa-drawer.spec-up-issues-drawer::part(body) {
 }
 
 #content h1:first-of-type {
-  margin: 0 0 0.5em;
+  margin: 0.8em 0 0.5em;
 }
 
 #content h1:first-of-type .markdownIt-Anchor {
@@ -4407,9 +4407,51 @@ wa-drawer.spec-up-issues-drawer::part(body) {
   font-size: 0.95rem;
 }
 
-#repo_issue_panel {
+.spec-up-issues-panel-wrap {
   flex: 1 1 auto;
   min-height: 0;
+  position: relative;
+}
+
+.spec-up-issues-panel-loading {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1;
+  pointer-events: none;
+  background-color: var(--wa-color-surface-raised);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.35s ease, visibility 0s linear 0.35s;
+}
+
+.spec-up-issues-panel-loading.is-active {
+  opacity: 1;
+  visibility: visible;
+  transition: opacity 0s, visibility 0s;
+}
+
+.spec-up-issues-panel-loading wa-spinner {
+  font-size: 2rem;
+  color: var(--wa-color-text-quiet);
+}
+
+.spec-up-issues-panel-empty-msg {
+  margin: 0;
+  font-size: 0.95rem;
+  color: var(--wa-color-text-quiet);
+  text-align: center;
+}
+
+.spec-up-issues-panel-empty-msg[hidden] {
+  display: none;
+}
+
+
+#repo_issue_panel {
+  height: 100%;
   overflow-y: auto;
   padding: 0 0.5rem 0 0;
   scrollbar-width: thin;
