@@ -7,7 +7,7 @@ Spec-Up Example
   [https://identity.foundation/spec-up](https://identity.foundation/spec-up)
 
 Editors:
-~ [Daniel Buchner](https://www.linkedin.com/in/dbuchner/)
+~ [Daniel Buchner](https://www.linkedin.com/in/dbuchner/) - [Proof](https://proof.com)
 
 Participate:
 ~ [GitHub repo](https://github.com/decentralized-identity/spec-up)

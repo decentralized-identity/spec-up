@@ -1,10 +1,16 @@
+import { createFaviconStyler } from './utils.js';
+
 const levels = 2;
 const openString = '['.repeat(levels);
 const closeString = ']'.repeat(levels);
 const contentRegex = /\s*([^\s\[\]:]+):?\s*([^\]\n]+)?/i;
 const replacerArgsRegex = /\s*,+\s*/;
 
-export default function markdownItExtensions(md, templates = []) {
+export default function markdownItExtensions(md, templates = [], options = {}) {
+  // Decorates external links with a leading favicon; a configured canonical URL
+  // lets it skip self-references and resolve relative cross-document links.
+  const buildFaviconStyle = createFaviconStyler(options.canonical);
+
   md.inline.ruler.after('emphasis', 'templates', function templatesRule(state) {
     const start = state.pos;
     const prefix = state.src.slice(start, start + levels);
@@ -61,13 +67,15 @@ export default function markdownItExtensions(md, templates = []) {
 
   md.renderer.rules.link_open = function renderLinkOpen(tokens, idx) {
     const token = tokens[idx];
+    let href = null;
     const attributes = (token.attrs || []).reduce((html, [name, value]) => {
       let next = html;
 
       if (name === 'href') {
+        href = String(value);
         let index = 0;
 
-        String(value).replace(pathSegmentRegex, (match, domain, segment) => {
+        href.replace(pathSegmentRegex, (match, domain, segment) => {
           next += `path-${index++}="${domain || segment}" `;
           return match;
         });
@@ -76,7 +84,7 @@ export default function markdownItExtensions(md, templates = []) {
       return `${next}${name}="${value}" `;
     }, '');
 
-    const anchor = `<a ${attributes}>`;
+    const anchor = `<a ${attributes}${buildFaviconStyle(href)}>`;
     return token.markup === 'linkify' ? `${anchor}<span>` : anchor;
   };
 
