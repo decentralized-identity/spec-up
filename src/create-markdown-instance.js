@@ -10,8 +10,7 @@ async function createMarkdownInstance({ context, pluginManager, plugins }) {
   const templates = await pluginManager.collectHook(plugins, 'markdownTemplates', context);
 
   if (templates.length > 0) {
-    const canonical = context?.spec?.canonical ?? context?.spec?.url ?? null;
-    md.use(markdownItExtensions, templates, { canonical });
+    md.use(markdownItExtensions, templates);
   }
 
   await pluginManager.runHook(plugins, 'configureMarkdownIt', {
