@@ -12,31 +12,7 @@
 
         <link rel="icon" href="../logo.svg">
 
-        <script>(function() {
-  const storageKey = 'spec-up-color-scheme';
-  const root = document.documentElement;
-  const media = window.matchMedia ? window.matchMedia('(prefers-color-scheme: dark)') : null;
-  let themePreference = 'auto';
-
-  try {
-    const storedThemePreference = window.localStorage.getItem(storageKey);
-
-    if (storedThemePreference === 'light' || storedThemePreference === 'dark' || storedThemePreference === 'auto') {
-      themePreference = storedThemePreference;
-    }
-  }
-  catch {}
-
-  const theme = themePreference === 'auto'
-    ? (media && media.matches ? 'dark' : 'light')
-    : themePreference;
-
-  root.classList.remove('wa-light', 'wa-dark');
-  root.classList.add(theme === 'dark' ? 'wa-dark' : 'wa-light');
-  root.dataset.theme = theme;
-  root.dataset.themePreference = themePreference;
-  root.style.colorScheme = theme;
-})();</script><link href="http://127.0.0.1:5173/assets/css/prism.css" rel="stylesheet"/><link href="http://127.0.0.1:5173/src/web-awesome/dist/styles/webawesome.css" rel="stylesheet"/><link href="http://127.0.0.1:5173/assets/css/index.css" rel="stylesheet"/><script type="module" src="http://127.0.0.1:5173/@vite/client"></script><script type="module" src="http://127.0.0.1:5173/src/vite/head.js"></script>
+        <script>(function(){"use strict";(function(){const r="spec-up-color-scheme",e=document.documentElement,o=window.matchMedia?window.matchMedia("(prefers-color-scheme: dark)"):null;let t="auto";try{const a=window.localStorage.getItem(r);(a==="light"||a==="dark"||a==="auto")&&(t=a)}catch{}const c=t==="auto"?o&&o.matches?"dark":"light":t;e.classList.remove("wa-light","wa-dark"),e.classList.add(c==="dark"?"wa-dark":"wa-light"),e.dataset.theme=c,e.dataset.themePreference=t,e.style.colorScheme=c})()})();</script><link href="assets/compiled/head.css" rel="stylesheet"/><script src="assets/compiled/head.js"></script>
       </head>
       <body features="logo source">
         <svg id="svg" version="1.1" xmlns="http://www.w3.org/2000/svg">
@@ -152,7 +128,7 @@
               <h1 id="spec-up-multi-file-example"><span class="spec-up-heading-text">Spec-Up Multi-File Example</span><a class="toc-anchor" href="#spec-up-multi-file-example">§</a></h1>
 <p><strong>Specification Status:</strong> Strawman</p>
 <p><strong>Latest Draft:</strong>
-<a path-0="github.com" path-1="decentralized-identity" path-2="spec-up" href="https://github.com/decentralized-identity/spec-up" style="--favicon:url('https://www.google.com/s2/favicons?domain=github.com&amp;sz=64')">https://github.com/decentralized-identity/spec-up</a></p>
+<a path-0="github.com" path-1="decentralized-identity" path-2="spec-up" href="https://github.com/decentralized-identity/spec-up">https://github.com/decentralized-identity/spec-up</a></p>
 <dl>
 <dt><strong>Editors:</strong></dt>
 <dd><a path-0="www.linkedin.com" path-1="in" path-2="dbuchner" path-3="" href="https://www.linkedin.com/in/dbuchner/">Daniel Buchner</a></dd>
@@ -160,9 +136,9 @@
 <!-- -->
 <dl>
 <dt><strong>Participate:</strong></dt>
-<dd><a path-0="github.com" path-1="csuwildcat" path-2="spec-up" href="https://github.com/csuwildcat/spec-up" style="--favicon:url('https://www.google.com/s2/favicons?domain=github.com&amp;sz=64')">GitHub repo</a></dd>
-<dd><a path-0="github.com" path-1="csuwildcat" path-2="spec-up" path-3="issues" href="https://github.com/csuwildcat/spec-up/issues" style="--favicon:url('https://www.google.com/s2/favicons?domain=github.com&amp;sz=64')">File a bug</a></dd>
-<dd><a path-0="github.com" path-1="csuwildcat" path-2="spec-up" path-3="commits" path-4="master" href="https://github.com/csuwildcat/spec-up/commits/master" style="--favicon:url('https://www.google.com/s2/favicons?domain=github.com&amp;sz=64')">Commit history</a></dd>
+<dd><a path-0="github.com" path-1="csuwildcat" path-2="spec-up" href="https://github.com/csuwildcat/spec-up">GitHub repo</a></dd>
+<dd><a path-0="github.com" path-1="csuwildcat" path-2="spec-up" path-3="issues" href="https://github.com/csuwildcat/spec-up/issues">File a bug</a></dd>
+<dd><a path-0="github.com" path-1="csuwildcat" path-2="spec-up" path-3="commits" path-4="master" href="https://github.com/csuwildcat/spec-up/commits/master">Commit history</a></dd>
 </dl>
 <hr>
 <h2 id="abstract"><span class="spec-up-heading-text">Abstract</span><a class="toc-anchor" href="#abstract">§</a></h2>
@@ -363,7 +339,7 @@ sequenceDiagram
 
         
         <template id="spec_up_config">{&quot;title&quot;:&quot;Spec-Up Multi-File Example&quot;,&quot;spec_directory&quot;:&quot;./multi-file-test&quot;,&quot;markdown_paths&quot;:[&quot;header.md&quot;,&quot;abstract.md&quot;,&quot;getting-started.md&quot;,&quot;features.md&quot;],&quot;logo&quot;:&quot;../logo.svg&quot;,&quot;logo_link&quot;:&quot;https://github.com/decentralized-identity/spec-up&quot;,&quot;source&quot;:{&quot;host&quot;:&quot;github&quot;,&quot;account&quot;:&quot;decentralized-identity&quot;,&quot;repo&quot;:&quot;spec-up&quot;}}</template>
-        <script type="module" src="http://127.0.0.1:5173/src/vite/body.js"></script>
+        <script src="assets/compiled/body.js"></script>
       </body>
     </html>
   

@@ -1,5 +1,5 @@
 import path from 'node:path';
-import { createFaviconStyler, readJson } from '../utils.js';
+import { readJson } from '../utils.js';
 
 const specNameRegex = /^spec$|^spec[-]*\w+$/i;
 
@@ -15,7 +15,7 @@ function formatAuthors(reference) {
   return '';
 }
 
-function renderReferenceGroup(group, faviconStyle) {
+function renderReferenceGroup(group) {
   const items = Object.keys(group).sort().map(name => {
     const reference = group[name];
     const authorMarkup = formatAuthors(reference);
@@ -25,7 +25,7 @@ function renderReferenceGroup(group, faviconStyle) {
     return `
       <dt id="ref:${name}">${name}</dt>
       <dd>
-        <cite><a href="${reference.href}" ${faviconStyle(reference.href)}>${reference.title}</a></cite>.
+        <cite><a href="${reference.href}">${reference.title}</a></cite>.
         ${authorMarkup ? `${authorMarkup}; ` : ''}${dateMarkup}${statusMarkup}
       </dd>
     `;
@@ -53,9 +53,7 @@ function createSpecReferencesPlugin() {
       state.specGroups = {};
       state.specCorpus = readJson(path.join(packageRoot, 'assets/compiled/refs.json'));
     },
-    markdownTemplates({ spec, state }) {
-      const faviconStyle = createFaviconStyler(spec?.canonical ?? spec?.url ?? null);
-
+    markdownTemplates({ state }) {
       return [
         {
           filter: type => specNameRegex.test(type),
@@ -82,7 +80,7 @@ function createSpecReferencesPlugin() {
             }
 
             const group = state.specGroups[type];
-            return group ? renderReferenceGroup(group, faviconStyle) : '';
+            return group ? renderReferenceGroup(group) : '';
           }
         }
       ];

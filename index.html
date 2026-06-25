@@ -12,31 +12,7 @@
 
         <link rel="icon" href="logo.svg">
 
-        <script>(function() {
-  const storageKey = 'spec-up-color-scheme';
-  const root = document.documentElement;
-  const media = window.matchMedia ? window.matchMedia('(prefers-color-scheme: dark)') : null;
-  let themePreference = 'auto';
-
-  try {
-    const storedThemePreference = window.localStorage.getItem(storageKey);
-
-    if (storedThemePreference === 'light' || storedThemePreference === 'dark' || storedThemePreference === 'auto') {
-      themePreference = storedThemePreference;
-    }
-  }
-  catch {}
-
-  const theme = themePreference === 'auto'
-    ? (media && media.matches ? 'dark' : 'light')
-    : themePreference;
-
-  root.classList.remove('wa-light', 'wa-dark');
-  root.classList.add(theme === 'dark' ? 'wa-dark' : 'wa-light');
-  root.dataset.theme = theme;
-  root.dataset.themePreference = themePreference;
-  root.style.colorScheme = theme;
-})();</script><link href="http://127.0.0.1:5173/assets/css/prism.css" rel="stylesheet"/><link href="http://127.0.0.1:5173/src/web-awesome/dist/styles/webawesome.css" rel="stylesheet"/><link href="http://127.0.0.1:5173/assets/css/index.css" rel="stylesheet"/><script type="module" src="http://127.0.0.1:5173/@vite/client"></script><script type="module" src="http://127.0.0.1:5173/src/vite/head.js"></script><script type="module" src="http://127.0.0.1:5173/src/vite/katex.js"></script>
+        <script>(function(){"use strict";(function(){const r="spec-up-color-scheme",e=document.documentElement,o=window.matchMedia?window.matchMedia("(prefers-color-scheme: dark)"):null;let t="auto";try{const a=window.localStorage.getItem(r);(a==="light"||a==="dark"||a==="auto")&&(t=a)}catch{}const c=t==="auto"?o&&o.matches?"dark":"light":t;e.classList.remove("wa-light","wa-dark"),e.classList.add(c==="dark"?"wa-dark":"wa-light"),e.dataset.theme=c,e.dataset.themePreference=t,e.style.colorScheme=c})()})();</script><link href="assets/compiled/head.css" rel="stylesheet"/><script src="assets/compiled/head.js"></script><link href="assets/compiled/katex.css" rel="stylesheet"/>
       </head>
       <body features="logo source">
         <svg id="svg" version="1.1" xmlns="http://www.w3.org/2000/svg">
@@ -152,14 +128,14 @@
               <h1 id="spec-up-example"><span class="spec-up-heading-text">Spec-Up Example</span><a class="toc-anchor" href="#spec-up-example">§</a></h1>
 <p><strong>Specification Status:</strong> <wa-badge variant="brand">Draft</wa-badge></p>
 <p><strong>Latest Draft:</strong>
-<a path-0="identity.foundation" path-1="spec-up" href="https://identity.foundation/spec-up" style="--favicon:url('https://www.google.com/s2/favicons?domain=identity.foundation&amp;sz=64')">https://identity.foundation/spec-up</a></p>
+<a path-0="identity.foundation" path-1="spec-up" href="https://identity.foundation/spec-up">https://identity.foundation/spec-up</a></p>
 <dl>
 <dt>Editors:</dt>
-<dd><a path-0="www.linkedin.com" path-1="in" path-2="dbuchner" path-3="" href="https://www.linkedin.com/in/dbuchner/">Daniel Buchner</a> - <a path-0="proof.com" href="https://proof.com" style="--favicon:url('https://www.google.com/s2/favicons?domain=proof.com&amp;sz=64')">Proof</a></dd>
+<dd><a path-0="www.linkedin.com" path-1="in" path-2="dbuchner" path-3="" href="https://www.linkedin.com/in/dbuchner/">Daniel Buchner</a> - <a path-0="proof.com" href="https://proof.com">Proof</a></dd>
 <dt>Participate:</dt>
-<dd><a path-0="github.com" path-1="decentralized-identity" path-2="spec-up" href="https://github.com/decentralized-identity/spec-up" style="--favicon:url('https://www.google.com/s2/favicons?domain=github.com&amp;sz=64')">GitHub repo</a></dd>
-<dd><a path-0="github.com" path-1="decentralized-identity" path-2="spec-up" path-3="issues" href="https://github.com/decentralized-identity/spec-up/issues" style="--favicon:url('https://www.google.com/s2/favicons?domain=github.com&amp;sz=64')">File a bug</a></dd>
-<dd><a path-0="github.com" path-1="decentralized-identity" path-2="spec-up" path-3="commits" path-4="master" href="https://github.com/decentralized-identity/spec-up/commits/master" style="--favicon:url('https://www.google.com/s2/favicons?domain=github.com&amp;sz=64')">Commit history</a></dd>
+<dd><a path-0="github.com" path-1="decentralized-identity" path-2="spec-up" href="https://github.com/decentralized-identity/spec-up">GitHub repo</a></dd>
+<dd><a path-0="github.com" path-1="decentralized-identity" path-2="spec-up" path-3="issues" href="https://github.com/decentralized-identity/spec-up/issues">File a bug</a></dd>
+<dd><a path-0="github.com" path-1="decentralized-identity" path-2="spec-up" path-3="commits" path-4="master" href="https://github.com/decentralized-identity/spec-up/commits/master">Commit history</a></dd>
 </dl>
 <hr>
 <h2 id="abstract"><span class="spec-up-heading-text">Abstract</span><a class="toc-anchor" href="#abstract">§</a></h2>
@@ -635,7 +611,7 @@ graph TD
 <span class="token punctuation">}</span>
 </code></pre><wa-copy-button class="spec-up-code-copy-button" from="spec-up-code-copy-target-19" copy-label="Copy" success-label="Copied" error-label="Copy failed"></wa-copy-button></div>
 <h2 id="tex-math-equations"><span class="spec-up-heading-text">TeX Math Equations</span><a class="toc-anchor" href="#tex-math-equations">§</a></h2>
-<p>When the <code>katex</code> option is enabled, the KaTeX math engine is used for TeX rendering. You can find a list of supported features and examples here: <a path-0="katex.org" path-1="docs" path-2="supported.html" href="https://katex.org/docs/supported.html" style="--favicon:url('https://www.google.com/s2/favicons?domain=katex.org&amp;sz=64')"><span>https://katex.org/docs/supported.html</span></a>.</p>
+<p>When the <code>katex</code> option is enabled, the KaTeX math engine is used for TeX rendering. You can find a list of supported features and examples here: <a path-0="katex.org" path-1="docs" path-2="supported.html" href="https://katex.org/docs/supported.html"><span>https://katex.org/docs/supported.html</span></a>.</p>
 <p class="katex-block"><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mrow><mo fence="true">(</mo><mtable rowspacing="0.16em" columnalign="center" columnspacing="1em"><mtr><mtd><mstyle scriptlevel="0" displaystyle="false"><msub><mi>x</mi><mn>2</mn></msub></mstyle></mtd></mtr><mtr><mtd><mstyle scriptlevel="0" displaystyle="false"><msub><mi>y</mi><mn>2</mn></msub></mstyle></mtd></mtr></mtable><mo fence="true">)</mo></mrow><mo>=</mo><mrow><mo fence="true">(</mo><mtable rowspacing="0.16em" columnalign="center center" columnspacing="1em"><mtr><mtd><mstyle scriptlevel="0" displaystyle="false"><mi>A</mi></mstyle></mtd><mtd><mstyle scriptlevel="0" displaystyle="false"><mi>B</mi></mstyle></mtd></mtr><mtr><mtd><mstyle scriptlevel="0" displaystyle="false"><mi>C</mi></mstyle></mtd><mtd><mstyle scriptlevel="0" displaystyle="false"><mi>D</mi></mstyle></mtd></mtr></mtable><mo fence="true">)</mo></mrow><mo>⋅</mo><mrow><mo fence="true">(</mo><mtable rowspacing="0.16em" columnalign="center" columnspacing="1em"><mtr><mtd><mstyle scriptlevel="0" displaystyle="false"><msub><mi>x</mi><mn>1</mn></msub></mstyle></mtd></mtr><mtr><mtd><mstyle scriptlevel="0" displaystyle="false"><msub><mi>y</mi><mn>1</mn></msub></mstyle></mtd></mtr></mtable><mo fence="true">)</mo></mrow></mrow><annotation encoding="application/x-tex">\begin{pmatrix}x_2 \\ y_2 \end{pmatrix} = 
 \begin{pmatrix} A &amp; B \\ C &amp; D \end{pmatrix}\cdot
 \begin{pmatrix} x_1 \\ y_1 \end{pmatrix}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:2.4em;vertical-align:-0.95em;"></span><span class="minner"><span class="mopen delimcenter" style="top:0em;"><span class="delimsizing size3">(</span></span><span class="mord"><span class="mtable"><span class="col-align-c"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.45em;"><span style="top:-3.61em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord"><span class="mord mathnormal">x</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span><span style="top:-2.41em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord"><span class="mord mathnormal" style="margin-right:0.03588em;">y</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:-0.0359em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.95em;"><span></span></span></span></span></span></span></span><span class="mclose delimcenter" style="top:0em;"><span class="delimsizing size3">)</span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:2.4em;vertical-align:-0.95em;"></span><span class="minner"><span class="mopen delimcenter" style="top:0em;"><span class="delimsizing size3">(</span></span><span class="mord"><span class="mtable"><span class="col-align-c"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.45em;"><span style="top:-3.61em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathnormal">A</span></span></span><span style="top:-2.41em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.07153em;">C</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.95em;"><span></span></span></span></span></span><span class="arraycolsep" style="width:0.5em;"></span><span class="arraycolsep" style="width:0.5em;"></span><span class="col-align-c"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.45em;"><span style="top:-3.61em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.05017em;">B</span></span></span><span style="top:-2.41em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.02778em;">D</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.95em;"><span></span></span></span></span></span></span></span><span class="mclose delimcenter" style="top:0em;"><span class="delimsizing size3">)</span></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">⋅</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:2.4em;vertical-align:-0.95em;"></span><span class="minner"><span class="mopen delimcenter" style="top:0em;"><span class="delimsizing size3">(</span></span><span class="mord"><span class="mtable"><span class="col-align-c"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.45em;"><span style="top:-3.61em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord"><span class="mord mathnormal">x</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span><span style="top:-2.41em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord"><span class="mord mathnormal" style="margin-right:0.03588em;">y</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:-0.0359em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.95em;"><span></span></span></span></span></span></span></span><span class="mclose delimcenter" style="top:0em;"><span class="delimsizing size3">)</span></span></span></span></span></span></span></p>
@@ -776,25 +752,25 @@ Details of what I want to show here.
 <li><strong>Issues</strong>
 <ul>
 <li>Source: <code>https://github.com/decentralized-identity/presentation-exchange/issues/119</code></li>
-<li>Render: <a path-0="github.com" path-1="decentralized-identity" path-2="presentation-exchange" path-3="issues" path-4="119" href="https://github.com/decentralized-identity/presentation-exchange/issues/119" style="--favicon:url('https://www.google.com/s2/favicons?domain=github.com&amp;sz=64')"><span>https://github.com/decentralized-identity/presentation-exchange/issues/119</span></a></li>
+<li>Render: <a path-0="github.com" path-1="decentralized-identity" path-2="presentation-exchange" path-3="issues" path-4="119" href="https://github.com/decentralized-identity/presentation-exchange/issues/119"><span>https://github.com/decentralized-identity/presentation-exchange/issues/119</span></a></li>
 </ul>
 </li>
 <li><strong>Pull Requests</strong>
 <ul>
 <li>Source: <code>https://github.com/decentralized-identity/sidetree/pull/863</code></li>
-<li>Render: <a path-0="github.com" path-1="decentralized-identity" path-2="sidetree" path-3="pull" path-4="863" href="https://github.com/decentralized-identity/sidetree/pull/863" style="--favicon:url('https://www.google.com/s2/favicons?domain=github.com&amp;sz=64')"><span>https://github.com/decentralized-identity/sidetree/pull/863</span></a></li>
+<li>Render: <a path-0="github.com" path-1="decentralized-identity" path-2="sidetree" path-3="pull" path-4="863" href="https://github.com/decentralized-identity/sidetree/pull/863"><span>https://github.com/decentralized-identity/sidetree/pull/863</span></a></li>
 </ul>
 </li>
 <li><strong>Releases</strong>
 <ul>
 <li>Source: <code>https://github.com/decentralized-identity/sidetree/releases/tag/v0.9.1</code></li>
-<li>Render: <a path-0="github.com" path-1="decentralized-identity" path-2="sidetree" path-3="releases" path-4="tag" path-5="v0.9.1" href="https://github.com/decentralized-identity/sidetree/releases/tag/v0.9.1" style="--favicon:url('https://www.google.com/s2/favicons?domain=github.com&amp;sz=64')"><span>https://github.com/decentralized-identity/sidetree/releases/tag/v0.9.1</span></a></li>
+<li>Render: <a path-0="github.com" path-1="decentralized-identity" path-2="sidetree" path-3="releases" path-4="tag" path-5="v0.9.1" href="https://github.com/decentralized-identity/sidetree/releases/tag/v0.9.1"><span>https://github.com/decentralized-identity/sidetree/releases/tag/v0.9.1</span></a></li>
 </ul>
 </li>
 <li><strong>Projects</strong>
 <ul>
 <li>Source: <code>https://github.com/decentralized-identity/sidetree/projects/1</code></li>
-<li>Render: <a path-0="github.com" path-1="decentralized-identity" path-2="sidetree" path-3="projects" path-4="1" href="https://github.com/decentralized-identity/sidetree/projects/1" style="--favicon:url('https://www.google.com/s2/favicons?domain=github.com&amp;sz=64')"><span>https://github.com/decentralized-identity/sidetree/projects/1</span></a></li>
+<li>Render: <a path-0="github.com" path-1="decentralized-identity" path-2="sidetree" path-3="projects" path-4="1" href="https://github.com/decentralized-identity/sidetree/projects/1"><span>https://github.com/decentralized-identity/sidetree/projects/1</span></a></li>
 </ul>
 </li>
 </ul>
@@ -823,13 +799,13 @@ Details of what I want to show here.
 </p><dl class="reference-list">
       <dt id="ref:RFC3548">RFC3548</dt>
       <dd>
-        <cite><a href="https://www.rfc-editor.org/rfc/rfc3548" style="--favicon:url('https://www.google.com/s2/favicons?domain=www.rfc-editor.org&amp;sz=64')">The Base16, Base32, and Base64 Data Encodings</a></cite>.
+        <cite><a href="https://www.rfc-editor.org/rfc/rfc3548">The Base16, Base32, and Base64 Data Encodings</a></cite>.
         S. Josefsson, Ed.; 2003-07. <span class="reference-status">Status: Informational</span>.
       </dd>
     
       <dt id="ref:RFC7518">RFC7518</dt>
       <dd>
-        <cite><a href="https://www.rfc-editor.org/rfc/rfc7518" style="--favicon:url('https://www.google.com/s2/favicons?domain=www.rfc-editor.org&amp;sz=64')">JSON Web Algorithms (JWA)</a></cite>.
+        <cite><a href="https://www.rfc-editor.org/rfc/rfc7518">JSON Web Algorithms (JWA)</a></cite>.
         M. Jones; 2015-05. <span class="reference-status">Status: Proposed Standard</span>.
       </dd>
     
@@ -841,13 +817,13 @@ Details of what I want to show here.
 </p><dl class="reference-list">
       <dt id="ref:DID-CORE">DID-CORE</dt>
       <dd>
-        <cite><a href="https://www.w3.org/TR/did-core/" style="--favicon:url('https://www.google.com/s2/favicons?domain=www.w3.org&amp;sz=64')">Decentralized Identifiers (DIDs) v1.0</a></cite>.
+        <cite><a href="https://www.w3.org/TR/did-core/">Decentralized Identifiers (DIDs) v1.0</a></cite>.
         Manu Sporny; Amy Guy; Markus Sabadello; Drummond Reed; 2022-07-19. <span class="reference-status">Status: REC</span>.
       </dd>
     
       <dt id="ref:DID-SPEC-REGISTRIES">DID-SPEC-REGISTRIES</dt>
       <dd>
-        <cite><a href="https://www.w3.org/TR/did-spec-registries/" style="--favicon:url('https://www.google.com/s2/favicons?domain=www.w3.org&amp;sz=64')">DID Specification Registries</a></cite>.
+        <cite><a href="https://www.w3.org/TR/did-spec-registries/">DID Specification Registries</a></cite>.
         Orie Steele; Manu Sporny; 2023-09-11. <span class="reference-status">Status: NOTE</span>.
       </dd>
     
@@ -859,13 +835,13 @@ Details of what I want to show here.
 </p><dl class="reference-list">
       <dt id="ref:RFC6901">RFC6901</dt>
       <dd>
-        <cite><a href="https://www.rfc-editor.org/rfc/rfc6901" style="--favicon:url('https://www.google.com/s2/favicons?domain=www.rfc-editor.org&amp;sz=64')">JavaScript Object Notation (JSON) Pointer</a></cite>.
+        <cite><a href="https://www.rfc-editor.org/rfc/rfc6901">JavaScript Object Notation (JSON) Pointer</a></cite>.
         P. Bryan, Ed.; K. Zyp; M. Nottingham, Ed.; 2013-04. <span class="reference-status">Status: Proposed Standard</span>.
       </dd>
     
       <dt id="ref:RFC7230">RFC7230</dt>
       <dd>
-        <cite><a href="https://httpwg.org/specs/rfc7230.html" style="--favicon:url('https://www.google.com/s2/favicons?domain=httpwg.org&amp;sz=64')">Hypertext Transfer Protocol (HTTP/1.1): Message Syntax and Routing</a></cite>.
+        <cite><a href="https://httpwg.org/specs/rfc7230.html">Hypertext Transfer Protocol (HTTP/1.1): Message Syntax and Routing</a></cite>.
         R. Fielding, Ed.; J. Reschke, Ed.; 2014-06. <span class="reference-status">Status: Proposed Standard</span>.
       </dd>
     
@@ -995,7 +971,7 @@ an interaction. A Verifier is a <a class="term-reference" href="#term:conformant
 <a class="term-reference" href="#term:presentation-definition">Presentation Definition</a> and a <a class="term-reference" href="#term:conformant-consumer">Conformant Consumer</a> of a
 <a class="term-reference" href="#term:presentation-submission">Presentation Submission</a>.</dd><dt><span id="term:PE:oidc">OIDC</span></dt><dd><a path-0="openid.net" path-1="specs" path-2="openid-connect-core-1_0.html" href="https://openid.net/specs/openid-connect-core-1_0.html">Open ID Connect</a>. Jones, M., Bradley, J., and N. Sakimura. Status: Approved Specification</dd><dt><span id="term:PE:linked-data-proofs"><span id="term:linked-data-proof">Linked Data Proof</span></span></dt><dd><a path-0="w3c-ccg.github.io" path-1="data-integrity-spec" path-2="" href="https://w3c-ccg.github.io/data-integrity-spec/">Data Integrity 1.0</a>. Dave Longley, Manu Sporny. 2022-03. Status: Draft Community Group Report.</dd><dt><span id="term:PE:linked-data-proofs"><span id="term:PE:linked-data-proof">Linked Data Proof</span></span></dt><dd><a path-0="w3c-ccg.github.io" path-1="data-integrity-spec" path-2="" href="https://w3c-ccg.github.io/data-integrity-spec/">Data Integrity 1.0</a>. Dave Longley, Manu Sporny. 2022-03. Status: Draft Community Group Report.</dd><dt><span id="term:PE:json-schema-draft-7"><span id="term:json-schema">JSON Schema</span></span></dt><dd><a path-0="json-schema.org" path-1="draft-07" path-2="json-schema-release-notes.html" href="https://json-schema.org/draft-07/json-schema-release-notes.html">JSON Schema Draft-07</a>. OpenJS Foundation. 2018-03-19. Status: Internet-Draft.</dd><dt><span id="term:PE:json-schema-draft-7"><span id="term:PE:json-schema">JSON Schema</span></span></dt><dd><a path-0="json-schema.org" path-1="draft-07" path-2="json-schema-release-notes.html" href="https://json-schema.org/draft-07/json-schema-release-notes.html">JSON Schema Draft-07</a>. OpenJS Foundation. 2018-03-19. Status: Internet-Draft.</dd><dt><span id="term:PE:credential-handler-api"><span id="term:chapi">CHAPI</span></span></dt><dd><a path-0="w3c-ccg.github.io" path-1="credential-handler-api" path-2="" href="https://w3c-ccg.github.io/credential-handler-api/">W3C Credential Handler API 1.0</a>. Dave Longley, Manu Sporny. 2020-2-19. Status: Draft Community Group Report.</dd><dt><span id="term:PE:credential-handler-api"><span id="term:PE:chapi">CHAPI</span></span></dt><dd><a path-0="w3c-ccg.github.io" path-1="credential-handler-api" path-2="" href="https://w3c-ccg.github.io/credential-handler-api/">W3C Credential Handler API 1.0</a>. Dave Longley, Manu Sporny. 2020-2-19. Status: Draft Community Group Report.</dd><dt><span id="term:PE:didcomm">DIDComm</span></dt><dd><a path-0="github.com" path-1="decentralized-identity" path-2="didcomm-messaging" href="https://github.com/decentralized-identity/didcomm-messaging">DIF DIDComm Messaging</a>. Daniel Hardman, Sam Curren. Status: Working Group Draft.</dd></dl></div>
         <template id="spec_up_config">{&quot;title&quot;:&quot;Spec-Up Example&quot;,&quot;spec_directory&quot;:&quot;./single-file-test&quot;,&quot;output_path&quot;:&quot;./&quot;,&quot;logo&quot;:&quot;logo.svg&quot;,&quot;logo_link&quot;:&quot;https://github.com/decentralized-identity/spec-up&quot;,&quot;source&quot;:{&quot;host&quot;:&quot;github&quot;,&quot;account&quot;:&quot;decentralized-identity&quot;,&quot;repo&quot;:&quot;spec-up&quot;},&quot;external_specs&quot;:[{&quot;PE&quot;:&quot;https://identity.foundation/presentation-exchange&quot;}],&quot;katex&quot;:true}</template>
-        <script type="module" src="http://127.0.0.1:5173/src/vite/body.js"></script>
+        <script src="assets/compiled/body.js"></script>
       </body>
     </html>
   
