@@ -12,7 +12,31 @@
 
         <link rel="icon" href="logo.svg">
 
-        <script>(function(){"use strict";(function(){const r="spec-up-color-scheme",e=document.documentElement,o=window.matchMedia?window.matchMedia("(prefers-color-scheme: dark)"):null;let t="auto";try{const a=window.localStorage.getItem(r);(a==="light"||a==="dark"||a==="auto")&&(t=a)}catch{}const c=t==="auto"?o&&o.matches?"dark":"light":t;e.classList.remove("wa-light","wa-dark"),e.classList.add(c==="dark"?"wa-dark":"wa-light"),e.dataset.theme=c,e.dataset.themePreference=t,e.style.colorScheme=c})()})();</script><link href="assets/compiled/head.css" rel="stylesheet"/><script src="assets/compiled/head.js"></script><link href="assets/compiled/katex.css" rel="stylesheet"/>
+        <script>(function() {
+  const storageKey = 'spec-up-color-scheme';
+  const root = document.documentElement;
+  const media = window.matchMedia ? window.matchMedia('(prefers-color-scheme: dark)') : null;
+  let themePreference = 'auto';
+
+  try {
+    const storedThemePreference = window.localStorage.getItem(storageKey);
+
+    if (storedThemePreference === 'light' || storedThemePreference === 'dark' || storedThemePreference === 'auto') {
+      themePreference = storedThemePreference;
+    }
+  }
+  catch {}
+
+  const theme = themePreference === 'auto'
+    ? (media && media.matches ? 'dark' : 'light')
+    : themePreference;
+
+  root.classList.remove('wa-light', 'wa-dark');
+  root.classList.add(theme === 'dark' ? 'wa-dark' : 'wa-light');
+  root.dataset.theme = theme;
+  root.dataset.themePreference = themePreference;
+  root.style.colorScheme = theme;
+})();</script><link href="http://127.0.0.1:5173/assets/css/prism.css" rel="stylesheet"/><link href="http://127.0.0.1:5173/src/web-awesome/dist/styles/webawesome.css" rel="stylesheet"/><link href="http://127.0.0.1:5173/assets/css/index.css" rel="stylesheet"/><script type="module" src="http://127.0.0.1:5173/@vite/client"></script><script type="module" src="http://127.0.0.1:5173/src/vite/head.js"></script><script type="module" src="http://127.0.0.1:5173/src/vite/katex.js"></script>
       </head>
       <body features="logo source">
         <svg id="svg" version="1.1" xmlns="http://www.w3.org/2000/svg">
@@ -120,7 +144,7 @@
           </div>
 
           <nav id="toc" slot="navigation" aria-label="Table of contents">
-            <ul class="toc"><li><a href="#abstract">Abstract</a></li><li><a href="#getting-started">Getting Started</a></li><li><a href="#table-of-contents">Table of Contents</a></li><li><a href="#term-references">Term References</a><ul><li><a href="#definition-lists">Definition Lists</a></li><li><a href="#table-defined-terms">Table-defined Terms</a></li><li><a href="#external-term-references">External Term References</a></li></ul></li><li><a href="#blockquote">Blockquote</a></li><li><a href="#notices">Notices</a></li><li><a href="#content-insertion">Content Insertion</a></li><li><a href="#tables">Tables</a></li><li><a href="#sequence-diagrams">Sequence Diagrams</a></li><li><a href="#flows">Flows</a></li><li><a href="#charts">Charts</a></li><li><a href="#syntax-highlighting">Syntax Highlighting</a></li><li><a href="#tex-math-equations">TeX Math Equations</a></li><li><a href="#tab-panels">Tab Panels</a></li><li><a href="#summary-blocks">Summary Blocks</a></li><li><a href="#badges">Badges</a></li><li><a href="#progress">Progress</a></li><li><a href="#relative-time">Relative Time</a></li><li><a href="#copy">Copy</a></li><li><a href="#qr-codes">QR Codes</a></li><li><a href="#carousel">Carousel</a></li><li><a href="#fancy-links">Fancy Links</a><ul><li><a href="#github">GitHub</a></li></ul></li><li><a href="#external-spec-references">External Spec References</a><ul><li><a href="#default-references">Default References</a></li><li><a href="#normative-references">Normative References</a></li><li><a href="#informative-references">Informative References</a></li></ul></li></ul>
+            <ul class="toc"><li><a href="#abstract">Abstract</a></li><li><a href="#getting-started">Getting Started</a></li><li><a href="#table-of-contents">Table of Contents</a></li><li><a href="#term-references">Term References</a><ul><li><a href="#definition-lists">Definition Lists</a></li><li><a href="#table-defined-terms">Table-defined Terms</a></li><li><a href="#external-term-references">External Term References</a></li></ul></li><li><a href="#blockquote">Blockquote</a></li><li><a href="#notices">Notices</a></li><li><a href="#content-insertion">Content Insertion</a></li><li><a href="#tables">Tables</a></li><li><a href="#sequence-diagrams">Sequence Diagrams</a></li><li><a href="#flows">Flows</a></li><li><a href="#charts">Charts</a></li><li><a href="#syntax-highlighting">Syntax Highlighting</a></li><li><a href="#tex-math-equations">TeX Math Equations</a></li><li><a href="#tab-panels">Tab Panels</a></li><li><a href="#summary-blocks">Summary Blocks</a></li><li><a href="#columns">Columns</a></li><li><a href="#badges">Badges</a></li><li><a href="#progress">Progress</a></li><li><a href="#relative-time">Relative Time</a></li><li><a href="#copy">Copy</a></li><li><a href="#qr-codes">QR Codes</a></li><li><a href="#carousel">Carousel</a></li><li><a href="#fancy-links">Fancy Links</a><ul><li><a href="#github">GitHub</a></li></ul></li><li><a href="#external-spec-references">External Spec References</a><ul><li><a href="#default-references">Default References</a></li><li><a href="#normative-references">Normative References</a></li><li><a href="#informative-references">Informative References</a></li></ul></li></ul>
           </nav>
 
           <main class="spec-up-main">
@@ -683,48 +707,82 @@ Details of what I want to show here.
 <wa-details class="spec-up-details" summary="My summary text here">
 <p>Details of what I want to show here.</p>
 </wa-details>
-<h2 id="badges"><span class="spec-up-heading-text">Badges</span><a class="toc-anchor" href="#badges">§</a></h2>
-<div class="spec-up-code-block-wrapper"><pre class="language-markdown spec-up-code-block"><code class="language-markdown" id="spec-up-code-copy-target-24">[[badge: All Systems Operational]]
-[[badge: Needs Attention, warning]]
+<h2 id="columns"><span class="spec-up-heading-text">Columns</span><a class="toc-anchor" href="#columns">§</a></h2>
+<div class="spec-up-code-block-wrapper"><pre class="language-markdown spec-up-code-block"><code class="language-markdown" id="spec-up-code-copy-target-24">::: columns gap-l
+
+:: min-column-size: 200px
+
+<span class="token bold"><span class="token punctuation">**</span><span class="token content">First Column</span><span class="token punctuation">**</span></span>
+
+Columns can contain regular <span class="token bold"><span class="token punctuation">**</span><span class="token content">markdown</span><span class="token punctuation">**</span></span> content.
+
+::
+
+<span class="token bold"><span class="token punctuation">**</span><span class="token content">Second Column</span><span class="token punctuation">**</span></span>
+
+Each <span class="token code-snippet code keyword">`::`</span> separator starts a new grid item.
+
+::
+
+<span class="token bold"><span class="token punctuation">**</span><span class="token content">Third Column</span><span class="token punctuation">**</span></span>
+
+The first column's <span class="token code-snippet code keyword">`min-column-size`</span> declaration sets the grid's minimum column size.
+
+:::
 </code></pre><wa-copy-button class="spec-up-code-copy-button" from="spec-up-code-copy-target-24" copy-label="Copy" success-label="Copied" error-label="Copy failed"></wa-copy-button></div>
+<div class="spec-up-columns wa-grid wa-gap-l" style="--min-column-size: 200px;"><div class="spec-up-column wa-stack" style="--min-column-size: 200px;"><p><strong>First Column</strong></p><p>Columns can contain regular <strong>markdown</strong> content.</p></div><div class="spec-up-column wa-stack"><p><strong>Second Column</strong></p><p>Each <code>::</code> separator starts a new grid item.</p></div><div class="spec-up-column wa-stack"><p><strong>Third Column</strong></p><p>The first column’s <code>min-column-size</code> declaration sets the grid’s minimum column size.</p></div></div>
+
+
+
+
+
+
+
+
+
+
+<h2 id="badges"><span class="spec-up-heading-text">Badges</span><a class="toc-anchor" href="#badges">§</a></h2>
+<div class="spec-up-code-block-wrapper"><pre class="language-markdown spec-up-code-block"><code class="language-markdown" id="spec-up-code-copy-target-25">[[badge: All Systems Operational]]
+[[badge: Needs Attention, warning]]
+</code></pre><wa-copy-button class="spec-up-code-copy-button" from="spec-up-code-copy-target-25" copy-label="Copy" success-label="Copied" error-label="Copy failed"></wa-copy-button></div>
 <p><wa-badge variant="brand">All Systems Operational</wa-badge>
 <wa-badge variant="warning">Needs Attention</wa-badge></p>
 <h2 id="progress"><span class="spec-up-heading-text">Progress</span><a class="toc-anchor" href="#progress">§</a></h2>
-<div class="spec-up-code-block-wrapper"><pre class="language-markdown spec-up-code-block"><code class="language-markdown" id="spec-up-code-copy-target-25">[[progress: bar, 50]]
+<div class="spec-up-code-block-wrapper"><pre class="language-markdown spec-up-code-block"><code class="language-markdown" id="spec-up-code-copy-target-26">[[progress: bar, 50]]
 
 [[progress: ring, 75]]
 
 [[progress: bar, 50, 50%]]
 
 [[progress: ring, 75, 3rem]]
-</code></pre><wa-copy-button class="spec-up-code-copy-button" from="spec-up-code-copy-target-25" copy-label="Copy" success-label="Copied" error-label="Copy failed"></wa-copy-button></div>
+</code></pre><wa-copy-button class="spec-up-code-copy-button" from="spec-up-code-copy-target-26" copy-label="Copy" success-label="Copied" error-label="Copy failed"></wa-copy-button></div>
 <p><wa-progress-bar value="50">50%</wa-progress-bar></p>
 <p><wa-progress-ring value="75">75%</wa-progress-ring></p>
 <p><wa-progress-bar value="50" style="width: 50%;">50%</wa-progress-bar></p>
 <p><wa-progress-ring value="75" style="--size: 3rem;">75%</wa-progress-ring></p>
 <h2 id="relative-time"><span class="spec-up-heading-text">Relative Time</span><a class="toc-anchor" href="#relative-time">§</a></h2>
-<div class="spec-up-code-block-wrapper"><pre class="language-markdown spec-up-code-block"><code class="language-markdown" id="spec-up-code-copy-target-26">[[time: 2020-07-15T09:17:00-04:00, long]]
+<div class="spec-up-code-block-wrapper"><pre class="language-markdown spec-up-code-block"><code class="language-markdown" id="spec-up-code-copy-target-27">[[time: 2020-07-15T09:17:00-04:00, long]]
 
 [[time: 2020-07-15T09:17:00-04:00, short]]
-</code></pre><wa-copy-button class="spec-up-code-copy-button" from="spec-up-code-copy-target-26" copy-label="Copy" success-label="Copied" error-label="Copy failed"></wa-copy-button></div>
+</code></pre><wa-copy-button class="spec-up-code-copy-button" from="spec-up-code-copy-target-27" copy-label="Copy" success-label="Copied" error-label="Copy failed"></wa-copy-button></div>
 <p><wa-relative-time date="2020-07-15T09:17:00-04:00" format="long"></wa-relative-time></p>
 <p><wa-relative-time date="2020-07-15T09:17:00-04:00" format="short"></wa-relative-time></p>
 <h2 id="copy"><span class="spec-up-heading-text">Copy</span><a class="toc-anchor" href="#copy">§</a></h2>
-<div class="spec-up-code-block-wrapper"><pre class="language-markdown spec-up-code-block"><code class="language-markdown" id="spec-up-code-copy-target-27">[[copy: did:key:z6Mkf4XhsxVYQ1nQ6V6k4Q9j7xVjQm1Qw9Yk6B8JfP3L2mN4]]
+<div class="spec-up-code-block-wrapper"><pre class="language-markdown spec-up-code-block"><code class="language-markdown" id="spec-up-code-copy-target-28">[[copy: did:key:z6Mkf4XhsxVYQ1nQ6V6k4Q9j7xVjQm1Qw9Yk6B8JfP3L2mN4]]
 
 [[copy: https://github.com/decentralized-identity/spec-up]]
-</code></pre><wa-copy-button class="spec-up-code-copy-button" from="spec-up-code-copy-target-27" copy-label="Copy" success-label="Copied" error-label="Copy failed"></wa-copy-button></div>
+</code></pre><wa-copy-button class="spec-up-code-copy-button" from="spec-up-code-copy-target-28" copy-label="Copy" success-label="Copied" error-label="Copy failed"></wa-copy-button></div>
 <p><span class="spec-up-copy-line"><span class="spec-up-copy-text" id="spec-up-copy-target-1">did:key:z6Mkf4XhsxVYQ1nQ6V6k4Q9j7xVjQm1Qw9Yk6B8JfP3L2mN4</span><wa-copy-button class="spec-up-copy-button" from="spec-up-copy-target-1" copy-label="Copy" success-label="Copied" error-label="Copy failed"></wa-copy-button></span></p>
 <p><span class="spec-up-copy-line"><span class="spec-up-copy-text" id="spec-up-copy-target-2">https://github.com/decentralized-identity/spec-up</span><wa-copy-button class="spec-up-copy-button" from="spec-up-copy-target-2" copy-label="Copy" success-label="Copied" error-label="Copy failed"></wa-copy-button></span></p>
 <h2 id="qr-codes"><span class="spec-up-heading-text">QR Codes</span><a class="toc-anchor" href="#qr-codes">§</a></h2>
-<div class="spec-up-code-block-wrapper"><pre class="language-markdown spec-up-code-block"><code class="language-markdown" id="spec-up-code-copy-target-28">[[qr: github.com/csuwildcat]]
+<div class="spec-up-code-block-wrapper"><pre class="language-markdown spec-up-code-block"><code class="language-markdown" id="spec-up-code-copy-target-29">[[qr: github.com/csuwildcat]]
 
 [[qr: github.com/csuwildcat, 200]]
-</code></pre><wa-copy-button class="spec-up-code-copy-button" from="spec-up-code-copy-target-28" copy-label="Copy" success-label="Copied" error-label="Copy failed"></wa-copy-button></div>
+</code></pre><wa-copy-button class="spec-up-code-copy-button" from="spec-up-code-copy-target-29" copy-label="Copy" success-label="Copied" error-label="Copy failed"></wa-copy-button></div>
 <p><wa-qr-code value="github.com/csuwildcat"></wa-qr-code></p>
 <p><wa-qr-code value="github.com/csuwildcat" size="200"></wa-qr-code></p>
 <h2 id="carousel"><span class="spec-up-heading-text">Carousel</span><a class="toc-anchor" href="#carousel">§</a></h2>
-<div class="spec-up-code-block-wrapper"><pre class="language-markdown spec-up-code-block"><code class="language-markdown" id="spec-up-code-copy-target-29">::: carousel
+<div class="spec-up-code-block-wrapper"><pre class="language-markdown spec-up-code-block"><code class="language-markdown" id="spec-up-code-copy-target-30">::: carousel
 
 <span class="token url"><span class="token operator">!</span>[<span class="token content">Carousel panel one</span>](<span class="token url">single-file-test/assets/carousel-panel-1.svg</span> <span class="token string">"Carousel Panel One"</span>)</span>
 
@@ -737,7 +795,7 @@ Details of what I want to show here.
 <span class="token url"><span class="token operator">!</span>[<span class="token content">Carousel panel three</span>](<span class="token url">single-file-test/assets/carousel-panel-3.svg</span> <span class="token string">"Carousel Panel Three"</span>)</span>
 
 :::
-</code></pre><wa-copy-button class="spec-up-code-copy-button" from="spec-up-code-copy-target-29" copy-label="Copy" success-label="Copied" error-label="Copy failed"></wa-copy-button></div>
+</code></pre><wa-copy-button class="spec-up-code-copy-button" from="spec-up-code-copy-target-30" copy-label="Copy" success-label="Copied" error-label="Copy failed"></wa-copy-button></div>
 <wa-carousel class="spec-up-carousel" loop="" navigation="" pagination="" mouse-dragging=""><wa-carousel-item><p><img src="single-file-test/assets/carousel-panel-1.svg" alt="Carousel panel one" title="Carousel Panel One"></p></wa-carousel-item><wa-carousel-item><p><img src="single-file-test/assets/carousel-panel-2.svg" alt="Carousel panel two" title="Carousel Panel Two"></p></wa-carousel-item><wa-carousel-item><p><img src="single-file-test/assets/carousel-panel-3.svg" alt="Carousel panel three" title="Carousel Panel Three"></p></wa-carousel-item></wa-carousel>
 
 
@@ -971,7 +1029,7 @@ an interaction. A Verifier is a <a class="term-reference" href="#term:conformant
 <a class="term-reference" href="#term:presentation-definition">Presentation Definition</a> and a <a class="term-reference" href="#term:conformant-consumer">Conformant Consumer</a> of a
 <a class="term-reference" href="#term:presentation-submission">Presentation Submission</a>.</dd><dt><span id="term:PE:oidc">OIDC</span></dt><dd><a path-0="openid.net" path-1="specs" path-2="openid-connect-core-1_0.html" href="https://openid.net/specs/openid-connect-core-1_0.html">Open ID Connect</a>. Jones, M., Bradley, J., and N. Sakimura. Status: Approved Specification</dd><dt><span id="term:PE:linked-data-proofs"><span id="term:linked-data-proof">Linked Data Proof</span></span></dt><dd><a path-0="w3c-ccg.github.io" path-1="data-integrity-spec" path-2="" href="https://w3c-ccg.github.io/data-integrity-spec/">Data Integrity 1.0</a>. Dave Longley, Manu Sporny. 2022-03. Status: Draft Community Group Report.</dd><dt><span id="term:PE:linked-data-proofs"><span id="term:PE:linked-data-proof">Linked Data Proof</span></span></dt><dd><a path-0="w3c-ccg.github.io" path-1="data-integrity-spec" path-2="" href="https://w3c-ccg.github.io/data-integrity-spec/">Data Integrity 1.0</a>. Dave Longley, Manu Sporny. 2022-03. Status: Draft Community Group Report.</dd><dt><span id="term:PE:json-schema-draft-7"><span id="term:json-schema">JSON Schema</span></span></dt><dd><a path-0="json-schema.org" path-1="draft-07" path-2="json-schema-release-notes.html" href="https://json-schema.org/draft-07/json-schema-release-notes.html">JSON Schema Draft-07</a>. OpenJS Foundation. 2018-03-19. Status: Internet-Draft.</dd><dt><span id="term:PE:json-schema-draft-7"><span id="term:PE:json-schema">JSON Schema</span></span></dt><dd><a path-0="json-schema.org" path-1="draft-07" path-2="json-schema-release-notes.html" href="https://json-schema.org/draft-07/json-schema-release-notes.html">JSON Schema Draft-07</a>. OpenJS Foundation. 2018-03-19. Status: Internet-Draft.</dd><dt><span id="term:PE:credential-handler-api"><span id="term:chapi">CHAPI</span></span></dt><dd><a path-0="w3c-ccg.github.io" path-1="credential-handler-api" path-2="" href="https://w3c-ccg.github.io/credential-handler-api/">W3C Credential Handler API 1.0</a>. Dave Longley, Manu Sporny. 2020-2-19. Status: Draft Community Group Report.</dd><dt><span id="term:PE:credential-handler-api"><span id="term:PE:chapi">CHAPI</span></span></dt><dd><a path-0="w3c-ccg.github.io" path-1="credential-handler-api" path-2="" href="https://w3c-ccg.github.io/credential-handler-api/">W3C Credential Handler API 1.0</a>. Dave Longley, Manu Sporny. 2020-2-19. Status: Draft Community Group Report.</dd><dt><span id="term:PE:didcomm">DIDComm</span></dt><dd><a path-0="github.com" path-1="decentralized-identity" path-2="didcomm-messaging" href="https://github.com/decentralized-identity/didcomm-messaging">DIF DIDComm Messaging</a>. Daniel Hardman, Sam Curren. Status: Working Group Draft.</dd></dl></div>
         <template id="spec_up_config">{&quot;title&quot;:&quot;Spec-Up Example&quot;,&quot;spec_directory&quot;:&quot;./single-file-test&quot;,&quot;output_path&quot;:&quot;./&quot;,&quot;logo&quot;:&quot;logo.svg&quot;,&quot;logo_link&quot;:&quot;https://github.com/decentralized-identity/spec-up&quot;,&quot;source&quot;:{&quot;host&quot;:&quot;github&quot;,&quot;account&quot;:&quot;decentralized-identity&quot;,&quot;repo&quot;:&quot;spec-up&quot;},&quot;external_specs&quot;:[{&quot;PE&quot;:&quot;https://identity.foundation/presentation-exchange&quot;}],&quot;katex&quot;:true}</template>
-        <script src="assets/compiled/body.js"></script>
+        <script type="module" src="http://127.0.0.1:5173/src/vite/body.js"></script>
       </body>
     </html>
   

@@ -536,11 +536,11 @@ Details of what I want to show here.
 
 Columns can contain regular **markdown** content.
 
-:: span-grid
+::
 
-**Full-Width Column**
+**Second Column**
 
-Use `span-grid` on a column separator to make that section span every grid column.
+Each `::` separator starts a new grid item.
 
 ::
 
@@ -559,11 +559,11 @@ The first column's `min-column-size` declaration sets the grid's minimum column 
 
 Columns can contain regular **markdown** content.
 
-:: span-grid
+::
 
-**Full-Width Column**
+**Second Column**
 
-Use `span-grid` on a column separator to make that section span every grid column.
+Each `::` separator starts a new grid item.
 
 ::
 
