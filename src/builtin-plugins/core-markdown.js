@@ -53,6 +53,10 @@ const PROGRESS_COMPONENTS = {
 };
 const CODE_COPY_TARGET_ID_PREFIX = 'spec-up-code-copy-target';
 const RELATIVE_TIME_FORMATS = new Set(['long', 'short', 'narrow']);
+const COLUMNS_FENCE_OPEN_REGEX = /^:::\s+columns(?:\s+(.+?))?\s*$/i;
+const COLUMNS_SECTION_REGEX = /^::(?:\s+(.+?))?\s*$/;
+const DECLARATION_PROPERTY_REGEX = /(?:^|;)\s*([a-z][a-z0-9-]*)\s*:\s*([^;]+)\s*/gi;
+const DECLARATION_CLASS_REGEX = /^[a-z][a-z0-9:-]*$/i;
 
 function slugifyHeading(value) {
   const base = String(value)
@@ -138,6 +142,93 @@ function createCarousel(document, slides) {
   return carousel;
 }
 
+function parseUtilityDeclaration(value) {
+  const source = String(value || '').trim();
+  const classNames = [];
+  const styles = [];
+  const consumedRanges = [];
+  let match;
+
+  DECLARATION_PROPERTY_REGEX.lastIndex = 0;
+
+  while ((match = DECLARATION_PROPERTY_REGEX.exec(source))) {
+    const property = match[1].toLowerCase();
+    const propertyValue = match[2].trim();
+
+    if (propertyValue) {
+      styles.push([property, propertyValue]);
+      consumedRanges.push([match.index, match.index + match[0].length]);
+    }
+  }
+
+  const classSource = source
+    .split('')
+    .map((character, index) => consumedRanges.some(([start, end]) => index >= start && index < end) ? ' ' : character)
+    .join('');
+
+  for (const token of classSource.split(/\s+/)) {
+    const className = token.trim();
+
+    if (!className || !DECLARATION_CLASS_REGEX.test(className)) {
+      continue;
+    }
+
+    classNames.push(className.startsWith('wa-') ? className : `wa-${className}`);
+  }
+
+  return {
+    classNames,
+    styles
+  };
+}
+
+function applyUtilityDeclaration(element, declaration) {
+  for (const className of declaration.classNames) {
+    element.classList.add(className);
+  }
+
+  for (const [property, value] of declaration.styles) {
+    element.style.setProperty(`--${property}`, value);
+  }
+}
+
+function getDeclarationStyleValue(declaration, property) {
+  const style = declaration.styles.find(([name]) => name === property);
+
+  return style ? style[1] : '';
+}
+
+function createColumnsGrid(document, columns, gridDeclaration = parseUtilityDeclaration('')) {
+  const grid = document.createElement('div');
+
+  grid.className = 'spec-up-columns wa-grid';
+  applyUtilityDeclaration(grid, gridDeclaration);
+
+  columns.forEach((columnDefinition, index) => {
+    const column = document.createElement('div');
+    const declaration = columnDefinition.declaration || parseUtilityDeclaration('');
+
+    column.className = 'spec-up-column wa-stack';
+    applyUtilityDeclaration(column, declaration);
+
+    if (index === 0 && !grid.style.getPropertyValue('--min-column-size')) {
+      const minColumnSize = getDeclarationStyleValue(declaration, 'min-column-size');
+
+      if (minColumnSize) {
+        grid.style.setProperty('--min-column-size', minColumnSize);
+      }
+    }
+
+    for (const node of columnDefinition.nodes || []) {
+      column.append(node);
+    }
+
+    grid.append(column);
+  });
+
+  return grid;
+}
+
 function convertLegacyTabPanels(document) {
   for (const legacyGroup of document.querySelectorAll('tab-panels')) {
     const legacyNav = Array.from(legacyGroup.children).find(child => child.tagName === 'NAV');
@@ -179,6 +270,26 @@ function isCarouselFenceOpen(element) {
 
 function isCarouselSlideSeparator(element) {
   return Boolean(element && element.tagName === 'P' && /^::\s*$/.test(element.textContent.trim()));
+}
+
+function getColumnsFenceDeclaration(element) {
+  if (!element || element.tagName !== 'P') {
+    return null;
+  }
+
+  const match = element.textContent.trim().match(COLUMNS_FENCE_OPEN_REGEX);
+
+  return match ? parseUtilityDeclaration(match[1]) : null;
+}
+
+function getColumnsSectionDeclaration(element) {
+  if (!element || element.tagName !== 'P') {
+    return null;
+  }
+
+  const match = element.textContent.trim().match(COLUMNS_SECTION_REGEX);
+
+  return match ? parseUtilityDeclaration(match[1]) : null;
 }
 
 function convertTabsFenceAt(openMarker) {
@@ -286,6 +397,71 @@ function convertCarouselFenceAt(openMarker) {
   return carousel;
 }
 
+function convertColumnsFenceAt(openMarker) {
+  const document = openMarker.ownerDocument;
+  const gridDeclaration = getColumnsFenceDeclaration(openMarker);
+  const separatorMarkers = [];
+  const columns = [];
+  let closeMarker = null;
+  let currentColumn = null;
+  let cursor = openMarker.nextElementSibling;
+
+  if (!gridDeclaration) {
+    return null;
+  }
+
+  while (cursor) {
+    const next = cursor.nextElementSibling;
+
+    if (isTabsFenceClose(cursor)) {
+      closeMarker = cursor;
+      break;
+    }
+
+    const sectionDeclaration = getColumnsSectionDeclaration(cursor);
+
+    if (sectionDeclaration) {
+      currentColumn = {
+        declaration: sectionDeclaration,
+        nodes: []
+      };
+      separatorMarkers.push(cursor);
+      columns.push(currentColumn);
+      cursor = next;
+      continue;
+    }
+
+    if (!currentColumn) {
+      currentColumn = {
+        declaration: parseUtilityDeclaration(''),
+        nodes: []
+      };
+      columns.push(currentColumn);
+    }
+
+    currentColumn.nodes.push(cursor);
+    cursor = next;
+  }
+
+  const populatedColumns = columns.filter(column => column.nodes.length > 0);
+
+  if (!closeMarker || populatedColumns.length === 0) {
+    return null;
+  }
+
+  const grid = createColumnsGrid(document, populatedColumns, gridDeclaration);
+
+  openMarker.replaceWith(grid);
+
+  for (const separatorMarker of separatorMarkers) {
+    separatorMarker.remove();
+  }
+
+  closeMarker.remove();
+
+  return grid;
+}
+
 function convertTabsFenceMarkup(root) {
   let child = root.firstElementChild;
 
@@ -320,6 +496,25 @@ function convertCarouselFenceMarkup(root) {
     }
 
     convertCarouselFenceMarkup(child);
+    child = child.nextElementSibling;
+  }
+}
+
+function convertColumnsFenceMarkup(root) {
+  let child = root.firstElementChild;
+
+  while (child) {
+    if (getColumnsFenceDeclaration(child)) {
+      const replacement = convertColumnsFenceAt(child);
+
+      if (replacement) {
+        convertColumnsFenceMarkup(replacement);
+        child = replacement.nextElementSibling;
+        continue;
+      }
+    }
+
+    convertColumnsFenceMarkup(child);
     child = child.nextElementSibling;
   }
 }
@@ -417,13 +612,14 @@ function enhanceCodeBlocks(document) {
 }
 
 function transformLegacyMarkup(html) {
-  if (!html.includes('<pre') && !html.includes('<tab-panels') && !html.includes('class="chartjs"') && !html.includes('::: tabs') && !html.includes('::: carousel')) {
+  if (!html.includes('<pre') && !html.includes('<tab-panels') && !html.includes('class="chartjs"') && !html.includes('::: tabs') && !html.includes('::: carousel') && !html.includes('::: columns')) {
     return html;
   }
 
   const dom = new JSDOM(`<body>${html}</body>`);
   const { document } = dom.window;
 
+  convertColumnsFenceMarkup(document.body);
   convertCarouselFenceMarkup(document.body);
   convertTabsFenceMarkup(document.body);
   convertLegacyTabPanels(document);

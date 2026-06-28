@@ -525,6 +525,54 @@ Details of what I want to show here.
 Details of what I want to show here.
 :::
 
+## Columns
+
+```markdown
+::: columns gap-l
+
+:: min-column-size: 200px
+
+**First Column**
+
+Columns can contain regular **markdown** content.
+
+::
+
+**Second Column**
+
+Each `::` separator starts a new grid item.
+
+::
+
+**Third Column**
+
+The first column's `min-column-size` declaration sets the grid's minimum column size.
+
+:::
+```
+
+::: columns gap-l
+
+:: min-column-size: 200px
+
+**First Column**
+
+Columns can contain regular **markdown** content.
+
+::
+
+**Second Column**
+
+Each `::` separator starts a new grid item.
+
+::
+
+**Third Column**
+
+The first column's `min-column-size` declaration sets the grid's minimum column size.
+
+:::
+
 ## Badges
 
 ```markdown

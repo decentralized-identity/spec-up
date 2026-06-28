@@ -494,6 +494,49 @@ Third panel **content**
   assert.doesNotMatch(html, /<p>::<\/p>/);
 });
 
+test('core markdown renders ::: columns blocks as Web Awesome grids with markdown content in each column', async () => {
+  const plugin = createCoreMarkdownPlugin();
+  const state = {};
+  const md = new MarkdownIt({
+    html: true,
+    linkify: true,
+    typographer: true
+  });
+
+  await plugin.beforeRender({ state });
+  plugin.configureMarkdownIt({ md, state });
+
+  const rendered = md.render(`
+::: columns gap-l
+
+:: min-column-size: 200px
+
+Column 1 *content*
+
+:: span-grid
+
+Column 2 content
+
+\`\`\`json
+{"foo":"bar"}
+\`\`\`
+
+::
+
+Column 3 **content**
+
+:::
+`);
+  const html = plugin.transformRenderedHtml({ html: rendered });
+
+  assert.match(html, /<div class="spec-up-columns wa-grid wa-gap-l" style="--min-column-size: 200px;">/);
+  assert.match(html, /<div class="spec-up-column wa-stack" style="--min-column-size: 200px;"><p>Column 1 <em>content<\/em><\/p><\/div>/);
+  assert.match(html, /<div class="spec-up-column wa-stack wa-span-grid"><p>Column 2 content<\/p>[\s\S]*<div class="spec-up-code-block-wrapper"><pre class="language-json spec-up-code-block"><code class="language-json" id="spec-up-code-copy-target-1">[\s\S]*"foo"[\s\S]*"bar"[\s\S]*<\/code><\/pre><wa-copy-button class="spec-up-code-copy-button" from="spec-up-code-copy-target-1" copy-label="Copy" success-label="Copied" error-label="Copy failed"><\/wa-copy-button><\/div><\/div>/);
+  assert.match(html, /<div class="spec-up-column wa-stack"><p>Column 3 <strong>content<\/strong><\/p><\/div>/);
+  assert.doesNotMatch(html, /<p>::: columns/);
+  assert.doesNotMatch(html, /<p>::/);
+});
+
 test('core markdown renders ::: summary blocks as Web Awesome details components', async () => {
   const plugin = createCoreMarkdownPlugin();
   const state = {};
